@@ -1,0 +1,14 @@
+com\mycompany\planifai\controller\SituacionAprendizajeController.class
+com\mycompany\planifai\service\MainFrame$1.class
+com\mycompany\planifai\model\Documento.class
+com\mycompany\planifai\controller\DocumentoController.class
+com\mycompany\planifai\controller\ToDoController.class
+com\mycompany\planifai\model\Aula.class
+com\mycompany\planifai\controller\AulaController.class
+com\mycompany\planifai\controller\EventoController.class
+com\mycompany\planifai\model\ToDo.class
+com\mycompany\planifai\model\Evento.class
+com\mycompany\planifai\controller\NotaController.class
+com\mycompany\planifai\service\MainFrame.class
+com\mycompany\planifai\model\Nota.class
+com\mycompany\planifai\model\SituacionAprendizaje.class
