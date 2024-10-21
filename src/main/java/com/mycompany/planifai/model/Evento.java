@@ -1,6 +1,7 @@
 package com.mycompany.planifai.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
@@ -13,16 +14,21 @@ public class Evento {
     private Timestamp fechaEvento;
     private String tipoEvento;
     private int idAula;      // Debe estar asociado a un aula
-    private Integer idDocumento; // Puede ser null
+    private Integer idDocumento; // Puede ser nullprivate 
+    Aula aula;
+    List<Documento> documentos;  // Relación Uno a Muchos con Documento
 
-    public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento) {
+    public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, List<Documento> documentos) {
         this.idEvento = idEvento;
         this.descripcion = descripcion;
         this.fechaEvento = fechaEvento;
         this.tipoEvento = tipoEvento;
         this.idAula = idAula;
         this.idDocumento = idDocumento;
+        this.aula = aula;
+        this.documentos = documentos;
     }
+    
 
     public int getIdEvento() {
         return idEvento;
@@ -70,6 +76,22 @@ public class Evento {
 
     public void setIdDocumento(Integer idDocumento) {
         this.idDocumento = idDocumento;
+    }
+
+    public Aula getAula() {
+        return aula;
+    }
+
+    public void setAula(Aula aula) {
+        this.aula = aula;
+    }
+
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
+
+    public void setDocumentos(List<Documento> documentos) {
+        this.documentos = documentos;
     }
     
     

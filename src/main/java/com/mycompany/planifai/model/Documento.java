@@ -15,8 +15,11 @@ public class Documento {
     private String tipoDocumento;
     private Integer idAula;  // Puede ser null si no está asociado a un aula
     private Integer idEvento; // Puede ser null si no está asociado a un evento
+    private Aula aula;  // Relación con Aula
+    private Evento evento;  // Relación con Evento
+    private SituacionAprendizaje situacionAprendizaje;  // Relación con SituacionAprendizaje
 
-    public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento) {
+    public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento, Aula aula, Evento evento, SituacionAprendizaje situacionAprendizaje) {
         this.idDocumento = idDocumento;
         this.titulo = titulo;
         this.contenido = contenido;
@@ -24,6 +27,9 @@ public class Documento {
         this.tipoDocumento = tipoDocumento;
         this.idAula = idAula;
         this.idEvento = idEvento;
+        this.aula = aula;
+        this.evento = evento;
+        this.situacionAprendizaje = situacionAprendizaje;
     }
 
     public int getIdDocumento() {
@@ -81,6 +87,30 @@ public class Documento {
     public void setIdEvento(Integer idEvento) {
         this.idEvento = idEvento;
     }
-    
+
+    public Aula getAula() {
+        return aula;
+    }
+
+    public void setAula(Aula aula) {
+        this.aula = aula;
+    }
+
+    public Evento getEvento() {
+        return evento;
+    }
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
+    public SituacionAprendizaje getSituacionAprendizaje() {
+        return situacionAprendizaje;
+    }
+
+    public void setSituacionAprendizaje(SituacionAprendizaje situacionAprendizaje) {
+        this.situacionAprendizaje = situacionAprendizaje;
+    }
+
     
 }

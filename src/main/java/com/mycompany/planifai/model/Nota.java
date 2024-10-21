@@ -12,12 +12,15 @@ public class Nota {
     private String contenido;
     private Timestamp fechaCreacion;
     private int idAula;  // Debe estar asociado a un aula
+    
+    Aula aula;
 
-    public Nota(int idNota, String contenido, Timestamp fechaCreacion, int idAula) {
+    public Nota(int idNota, String contenido, Timestamp fechaCreacion, int idAula, Aula aula) {
         this.idNota = idNota;
         this.contenido = contenido;
         this.fechaCreacion = fechaCreacion;
         this.idAula = idAula;
+        this.aula = aula;
     }
 
     public int getIdNota() {
@@ -50,6 +53,14 @@ public class Nota {
 
     public void setIdAula(int idAula) {
         this.idAula = idAula;
+    }
+
+    public Aula getAula() {
+        return aula;
+    }
+
+    public void setAula(Aula aula) {
+        this.aula = aula;
     }
     
      

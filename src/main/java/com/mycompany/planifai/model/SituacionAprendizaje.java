@@ -11,13 +11,17 @@ public class SituacionAprendizaje {
     private String descripcion;
     private int idAula;        // Debe estar asociado a un aula
     private Integer idEvento;  // Puede ser null
+    
+    // Relación Muchos a Uno con Aula
+    private Aula aula;
 
-    public SituacionAprendizaje(int idSituacion, String titulo, String descripcion, int idAula, Integer idEvento) {
+    public SituacionAprendizaje(int idSituacion, String titulo, String descripcion, int idAula, Integer idEvento, Aula aula) {
         this.idSituacion = idSituacion;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.idAula = idAula;
         this.idEvento = idEvento;
+        this.aula = aula;
     }
 
     public int getIdSituacion() {
@@ -59,6 +63,13 @@ public class SituacionAprendizaje {
     public void setIdEvento(Integer idEvento) {
         this.idEvento = idEvento;
     }
-    
-    
+
+    public Aula getAula() {
+        return aula;
+    }
+
+    public void setAula(Aula aula) {
+        this.aula = aula;
+    }
+
 }

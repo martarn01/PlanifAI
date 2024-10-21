@@ -10,12 +10,15 @@ public class ToDo {
     private String descripcion;
     private boolean completado;
     private int idAula;  // Debe estar asociado a un aula
+    
+    Aula aula;
 
-    public ToDo(int idToDo, String descripcion, boolean completado, int idAula) {
+    public ToDo(int idToDo, String descripcion, boolean completado, int idAula, Aula aula) {
         this.idToDo = idToDo;
         this.descripcion = descripcion;
         this.completado = completado;
         this.idAula = idAula;
+        this.aula = aula;
     }
 
     public int getIdToDo() {
@@ -49,7 +52,13 @@ public class ToDo {
     public void setIdAula(int idAula) {
         this.idAula = idAula;
     }
-    
-    
+
+    public Aula getAula() {
+        return aula;
+    }
+
+    public void setAula(Aula aula) {
+        this.aula = aula;
+    }
     
 }
