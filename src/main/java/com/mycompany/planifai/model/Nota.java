@@ -15,6 +15,9 @@ public class Nota {
     
     Aula aula;
 
+    public Nota() {
+    }
+
     public Nota(int idNota, String contenido, Timestamp fechaCreacion, int idAula, Aula aula) {
         this.idNota = idNota;
         this.contenido = contenido;

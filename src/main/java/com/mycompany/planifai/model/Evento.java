@@ -18,6 +18,9 @@ public class Evento {
     Aula aula;
     List<Documento> documentos;  // Relación Uno a Muchos con Documento
 
+    public Evento() {
+    }
+
     public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, List<Documento> documentos) {
         this.idEvento = idEvento;
         this.descripcion = descripcion;

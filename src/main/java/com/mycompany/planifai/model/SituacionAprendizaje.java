@@ -15,6 +15,9 @@ public class SituacionAprendizaje {
     // Relación Muchos a Uno con Aula
     private Aula aula;
 
+    public SituacionAprendizaje() {
+    }
+
     public SituacionAprendizaje(int idSituacion, String titulo, String descripcion, int idAula, Integer idEvento, Aula aula) {
         this.idSituacion = idSituacion;
         this.titulo = titulo;

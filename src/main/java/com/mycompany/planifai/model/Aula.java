@@ -13,15 +13,18 @@ public class Aula {
     private String asignatura;
    
     private List<Evento> eventos; // Relación Uno a Muchos con Evento
-    private List<Documento> Documento; // Relación Uno a Muchos con documentos
+    private List<Documento> Documentos; // Relación Uno a Muchos con documentos
     private List<SituacionAprendizaje> situacionesAprendizaje; // Relación Uno a Muchos con SituacionAprendizaje
 
+    public Aula() {
+    }
+    
     public Aula(int idAula, String nombre, String asignatura, List<Evento> eventos, List<Documento> Documento, List<SituacionAprendizaje> situacionesAprendizaje) {
         this.idAula = idAula;
         this.nombre = nombre;
         this.asignatura = asignatura;
         this.eventos = eventos;
-        this.Documento = Documento;
+        this.Documentos = Documento;
         this.situacionesAprendizaje = situacionesAprendizaje;
     }
 
@@ -66,12 +69,11 @@ public class Aula {
     }
 
     public List<Documento> getDocumento() {
-        return Documento;
+        return Documentos;
     }
 
-    public void setDocumento(List<Documento> Documento) {
-        this.Documento = Documento;
-    }
-
-    
+    public void setDocumento(List<Documento> Documentos) {
+        this.Documentos = Documentos;
+    } 
+       
 }

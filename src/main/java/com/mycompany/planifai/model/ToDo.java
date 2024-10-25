@@ -13,6 +13,9 @@ public class ToDo {
     
     Aula aula;
 
+    public ToDo() {
+    }
+
     public ToDo(int idToDo, String descripcion, boolean completado, int idAula, Aula aula) {
         this.idToDo = idToDo;
         this.descripcion = descripcion;

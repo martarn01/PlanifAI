@@ -19,6 +19,9 @@ public class Documento {
     private Evento evento;  // Relación con Evento
     private SituacionAprendizaje situacionAprendizaje;  // Relación con SituacionAprendizaje
 
+    public Documento() {
+    }
+
     public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento, Aula aula, Evento evento, SituacionAprendizaje situacionAprendizaje) {
         this.idDocumento = idDocumento;
         this.titulo = titulo;
