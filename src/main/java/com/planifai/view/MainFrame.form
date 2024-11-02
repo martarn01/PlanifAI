@@ -43,6 +43,9 @@
           <Dimension value="[1536, 864]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">

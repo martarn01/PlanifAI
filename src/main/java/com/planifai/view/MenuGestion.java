@@ -1,26 +1,64 @@
 package com.planifai.view;
 
+import com.planifai.controller.AulaController;
 import com.planifai.service.AulaService;
 import java.awt.Color;
 import java.awt.Cursor;
+import com.planifai.interfaces.AulaListener;
 
 /**
  *
  * @author marta
  */
-public class MenuGestionAulaView extends javax.swing.JFrame {
+public class MenuGestion extends javax.swing.JFrame {
 
-    Color colorHover;
-    Color color;
-    AulaService databaseService;
+    private Color colorHover;
+    private Color color;
+    private AulaService aulaService;
+    private AulaController aulaController; // Añadir el controlador
+    private AulaListener aulaListener;
+    private static MenuGestion instance;
 
-    public MenuGestionAulaView() {
+    public enum TipoElemento {
+        AULA, EVENTO, DOCUMENTO
+    }
+    private static TipoElemento tipoElemento;
+    private static int idElemento;
+
+    public MenuGestion(TipoElemento tipoElemento, int idElemento) {
         initComponents();
 
         colorHover = new Color(102, 102, 102);
         color = new Color(51, 51, 51);
 
-        databaseService = new AulaService();
+        this.tipoElemento = tipoElemento;
+        this.idElemento = idElemento;
+
+        //Inicializamos los servicios aquí
+        aulaService = new AulaService();
+        aulaController = new AulaController(aulaService);
+
+    }
+
+    // Método estático para obtener la instancia
+    public static MenuGestion getInstance() {
+        if (instance == null) {
+            instance = new MenuGestion(tipoElemento, idElemento); // Crea la instancia si no existe
+        }
+        return instance; // Devuelve la instancia
+    }
+
+    public void showMenu(int x, int y) {
+        setLocation(x, y);
+        setVisible(true);
+    }
+
+    public void hideMenu() {
+        setVisible(false);
+    }
+
+    public void setAulaListener(AulaListener listener) {
+        this.aulaListener = listener;
     }
 
     /**
@@ -72,8 +110,8 @@ public class MenuGestionAulaView extends javax.swing.JFrame {
         editarPanelLayout.setVerticalGroup(
             editarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editarPanelLayout.createSequentialGroup()
-                .addComponent(editarText, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(editarText, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         eliminarPanel.setBackground(new java.awt.Color(51, 51, 51));
@@ -137,7 +175,7 @@ public class MenuGestionAulaView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(menuDesplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,7 +205,24 @@ public class MenuGestionAulaView extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarPanelMouseExited
 
     private void eliminarPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarPanelMouseClicked
+        
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas eliminar esta aula?",
+                "Confirmar eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION);
 
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            boolean eliminado = aulaController.eliminarAula(idElemento);
+
+            if (eliminado) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Aula eliminada exitosamente.");
+                aulaListener.onAulaDeleted(); // Notifica a MainFrame que se ha eliminado un aula
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar el aula. Inténtalo de nuevo.");
+            }
+        }
+
+        this.dispose(); // Cierra el menú
     }//GEN-LAST:event_eliminarPanelMouseClicked
 
     /**
@@ -187,21 +242,23 @@ public class MenuGestionAulaView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuGestionAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuGestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuGestionAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuGestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuGestionAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuGestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuGestionAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuGestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuGestionAulaView().setVisible(true);
+                new MenuGestion(tipoElemento, idElemento).setVisible(true);
             }
         });
     }

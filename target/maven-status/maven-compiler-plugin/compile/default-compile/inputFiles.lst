@@ -5,7 +5,7 @@ C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\NotaCon
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\OpenAIController.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\SituacionAprendizajeController.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\ToDoController.java
-C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\interfaces\AulaAddedListener.java
+C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\interfaces\AulaListener.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Aula.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Documento.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Evento.java
@@ -32,5 +32,5 @@ C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\EventoView.ja
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\GeneracionDocumentoView.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\GeneracionSituacionAprendizajeView.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\MainFrame.java
-C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\MenuGestionAulaView.java
+C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\MenuGestion.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\SituacionAprendizajeView.java

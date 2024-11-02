@@ -1,6 +1,5 @@
 package com.planifai.view;
 
-import com.planifai.interfaces.AulaAddedListener;
 import com.planifai.model.Aula;
 import com.planifai.service.AulaService;
 import java.awt.Dimension;
@@ -10,11 +9,9 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+import com.planifai.interfaces.AulaListener;
 
 /**
  * MainFrame es la clase principal que representa la ventana principal de la
@@ -23,13 +20,13 @@ import javax.swing.border.LineBorder;
  *
  * @author marta
  */
-public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
+public class MainFrame extends javax.swing.JFrame implements AulaListener {
 
     private AulaService aulaService;
     private AulaView aulaView;
     private boolean[] panelesCargados;
-    private MenuGestionAulaView menuDesplegable;
-    private static final int MAX_AULAS = 4; 
+    private MenuGestion menuDesplegable;
+    private static final int MAX_AULAS = 4;
 
     /**
      * Constructor de la clase MainFrame. Inicializa los componentes de la
@@ -53,24 +50,13 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
         setTitle("PlanifAI");
 
         aulaService = new AulaService();
-        menuDesplegable = new MenuGestionAulaView();
         aulaView = new AulaView();
         panelesCargados = new boolean[4];
         for (int i = 0; i < panelesCargados.length; i++) {
             panelesCargados[i] = false;
         }
-        cargarAulas();
 
-       // Añadir MouseListener a la ventana principal
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Verificar si el menú está visible y si el clic fue fuera de él
-                if (menuDesplegable.isVisible() && !menuDesplegable.getBounds().contains(e.getPoint())) {
-                    menuDesplegable.dispose();
-                }
-            }
-        });
+        cargarAulas();
     }
 
     /**
@@ -82,12 +68,12 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
     public void cargarAulas() {
         List<Aula> aulas = aulaService.getAulas();
 
-        aulasPanel.removeAll(); 
+        aulasPanel.removeAll();
 
         // Si no hay aulas, mostrar el mensaje correspondiente
         if (aulas.isEmpty()) {
             noAulasText.setVisible(true);
-            aulasPanel.add(noAulasText); 
+            aulasPanel.add(noAulasText);
             aulasPanel.revalidate();
             aulasPanel.repaint();
             return;
@@ -97,15 +83,15 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
         aulasPanel.setBackground(Color.white);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL; 
-        gbc.insets = new Insets(5, 5, 5, 5); 
-        gbc.anchor = GridBagConstraints.NORTH; 
-        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.NORTH;
+
         int numAulas = Math.min(aulas.size(), MAX_AULAS);
-        
+
         for (int i = 0; i < numAulas; i++) {
             Aula aula = aulas.get(i);
-            AulaCardTemplate card = new AulaCardTemplate(aula);
+            AulaCardTemplate card = new AulaCardTemplate(aula, this);
 
             gbc.gridy = i;
             aulasPanel.add(card, gbc);
@@ -155,6 +141,11 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setPreferredSize(new java.awt.Dimension(1536, 864));
+        background.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backgroundMouseClicked(evt);
+            }
+        });
 
         leftPanel.setBackground(new java.awt.Color(235, 241, 247));
 
@@ -551,7 +542,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
     }//GEN-LAST:event_addClassButtonMouseClicked
 
     private void verAulasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseClicked
-        AulasView aulasView = new AulasView(); 
+        AulasView aulasView = new AulasView();
         aulasView.setVisible(true);
     }//GEN-LAST:event_verAulasButtonMouseClicked
 
@@ -567,6 +558,15 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
         verAulasButton.setForeground(color);
         verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_verAulasButtonMouseExited
+
+    private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
+        System.out.println("Mouse clicked in MainFrame");
+
+        MenuGestion menu = MenuGestion.getInstance();
+        if (menu.isVisible()) {
+            menu.hideMenu(); // Oculta el menú si está visible
+        }
+    }//GEN-LAST:event_backgroundMouseClicked
 
     /**
      * @param args the command line arguments
@@ -630,14 +630,20 @@ public class MainFrame extends javax.swing.JFrame implements AulaAddedListener {
     private javax.swing.JLabel verAulasButton;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void onAulaAdded() {
-        cargarAulas();
-    }
-
     private void abrirAddAulaView() {
         AddAulaView addAulaView = new AddAulaView();
         addAulaView.setAulaAddedListener(this); // Asigna el listener
         addAulaView.setVisible(true);
     }
+
+    @Override
+    public void onAulaAdded() {
+        cargarAulas();
+    }
+
+    @Override
+    public void onAulaDeleted() {
+        cargarAulas();
+    }
+
 }

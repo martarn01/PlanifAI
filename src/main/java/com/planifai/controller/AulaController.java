@@ -10,21 +10,21 @@ import java.util.List;
  */
 public class AulaController {
 
-    private AulaService databaseService;
+    private AulaService aulaService;
 
-    public AulaController(AulaService databaseService) {
-        this.databaseService = databaseService;
+    public AulaController(AulaService aulaService) {
+        this.aulaService = aulaService;
     }
 
     public List<Aula> obtenerAulas() {
-        return databaseService.getAulas();
+        return aulaService.getAulas();
     }
 
     public void agregarAula(Aula aula) {
-        databaseService.crearAula(aula.getNombre(), aula.getAsignatura());// Método que debes implementar en DatabaseService para agregar aulas.
+        aulaService.crearAula(aula.getNombre(), aula.getAsignatura());// Método que debes implementar en DatabaseService para agregar aulas.
     }
 
-    public void eliminarAula(int aulaId) {
-       // Implementa este método en DatabaseService.
+    public boolean eliminarAula(int aulaId) {
+        return aulaService.eliminarAulaPorId(aulaId);
     }
 }

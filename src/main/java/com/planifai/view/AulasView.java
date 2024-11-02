@@ -1,6 +1,5 @@
 package com.planifai.view;
 
-import com.planifai.interfaces.AulaAddedListener;
 import com.planifai.model.Aula;
 import com.planifai.service.AulaService;
 import java.awt.Dimension;
@@ -11,23 +10,20 @@ import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+import com.planifai.interfaces.AulaListener;
 
 /**
  *
  * @author marta
  */
-public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
+public class AulasView extends javax.swing.JFrame implements AulaListener {
 
     private AulaService aulaService;
     private AulaView aulaView;
-    private MainFrame mainFrame;
     private boolean[] panelesCargados;
-    private MenuGestionAulaView menuDesplegable;
     private static final int MAX_AULAS = 8;
 
     public AulasView() {
@@ -47,26 +43,14 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
         setTitle("PlanifAI");
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+
         aulaService = new AulaService();
-        menuDesplegable = new MenuGestionAulaView();
         aulaView = new AulaView();
         panelesCargados = new boolean[4];
         for (int i = 0; i < panelesCargados.length; i++) {
             panelesCargados[i] = false;
         }
         cargarAulas();
-
-        // Añadir MouseListener a la ventana principal
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Verificar si el menú está visible y si el clic fue fuera de él
-                if (menuDesplegable.isVisible() && !menuDesplegable.getBounds().contains(e.getPoint())) {
-                    menuDesplegable.dispose();
-                }
-            }
-        });
     }
 
     /**
@@ -102,8 +86,8 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
 
         for (int i = 0; i < numAulas; i++) {
             Aula aula = aulas.get(i);
-            AulaCardTemplate card = new AulaCardTemplate(aula);
-            card.setPreferredSize(new Dimension(520,100));
+            AulaCardTemplate card = new AulaCardTemplate(aula, this);
+            card.setPreferredSize(new Dimension(520, 100));
             gbc.gridy = i;
             aulasPanel.add(card, gbc);
         }
@@ -142,6 +126,11 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setPreferredSize(new java.awt.Dimension(1536, 864));
+        background.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backgroundMouseClicked(evt);
+            }
+        });
 
         leftPanel.setBackground(new java.awt.Color(235, 241, 247));
 
@@ -349,7 +338,7 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 896, Short.MAX_VALUE)
+            .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(centerPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -401,6 +390,14 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
         verAulasButton.setForeground(color);
         verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_verAulasButtonMouseExited
+
+    private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
+        System.out.println("Mouse clicked in MainFrame");
+
+        MenuGestion menu = MenuGestion.getInstance();
+        if (menu.isVisible()) {
+            menu.hideMenu(); // Oculta el menú si está visible
+        }    }//GEN-LAST:event_backgroundMouseClicked
 
     /**
      * @param args the command line arguments
@@ -466,5 +463,10 @@ public class AulasView extends javax.swing.JFrame implements AulaAddedListener {
         AddAulaView addAulaView = new AddAulaView();
         addAulaView.setAulaAddedListener(this); // Asigna el listener
         addAulaView.setVisible(true);
+    }
+
+    @Override
+    public void onAulaDeleted() {
+        cargarAulas();
     }
 }

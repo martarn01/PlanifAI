@@ -14,8 +14,7 @@ import java.util.List;
  * @author marta
  */
 public class AulaService {
-    
-    // Método para guardar una nueva aula
+
     public void crearAula(String nombre, String asignatura) {
         // No especificamos id_aula porque se genera automáticamente
         String sql = "INSERT INTO Aulas (nombre, asignatura) VALUES (?, ?)";
@@ -43,7 +42,6 @@ public class AulaService {
                 String nombre = rs.getString("nombre");
                 String asignatura = rs.getString("asignatura");
 
-                // Crear y añadir un nuevo objeto Aula a la lista
                 aulas.add(new Aula(id, nombre, asignatura, null, null, null));
             }
 
@@ -53,16 +51,17 @@ public class AulaService {
         return aulas;
     }
 
-    public boolean eliminarAulaPorNombre(String nombreAula) {
-        String sql = "DELETE FROM Aulas WHERE nombre = ?";
+    public boolean eliminarAulaPorId(int idAula) {
+        String sql = "DELETE FROM Aulas WHERE id_aula = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nombreAula);
+
+            pstmt.setInt(1, idAula);
             int rowsAffected = pstmt.executeUpdate();
+
             return rowsAffected > 0; // True si se eliminó al menos una fila
         } catch (SQLException e) {
             System.out.println("Error al eliminar el aula: " + e.getMessage());
             return false;
         }
     }
-
 }

@@ -1,6 +1,8 @@
 package com.planifai.view;
 
+import com.planifai.interfaces.AulaListener;
 import com.planifai.model.Aula;
+import com.planifai.view.MenuGestion.TipoElemento;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.LayoutManager;
@@ -8,23 +10,27 @@ import java.awt.LayoutManager;
 /**
  * Clase que representa un template de tarjeta para mostrar información de un
  * aula.
- * 
+ *
  * @author marta rosado nabais
  */
 public class AulaCardTemplate extends javax.swing.JPanel {
 
-    private MenuGestionAulaView menuDesplegable;
+    private MenuGestion menuDesplegable;
     private Aula aula;
     private AulaView aulaView;
     private Color colorHover;
     private Color colorCard;
+    private TipoElemento tipoElemento;
 
-    public AulaCardTemplate(Aula aula) {
+    public AulaCardTemplate(Aula aula, AulaListener aulaListener) {
         initComponents();
         colorHover = new Color(215, 197, 236);
         colorCard = new Color(227, 206, 253);;
         this.aula = aula;
-        menuDesplegable = new MenuGestionAulaView();
+
+        menuDesplegable = new MenuGestion(tipoElemento.AULA, aula.getIdAula());
+        menuDesplegable.setAulaListener(aulaListener); // Establece el listener
+
         aulaView = new AulaView();
         cargarDatosAula();
 
@@ -78,6 +84,7 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         });
 
         aulaCard.setBackground(new java.awt.Color(227, 206, 253));
+        aulaCard.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         nombreLabel.setFont(new java.awt.Font("Lato Semibold", 1, 24)); // NOI18N
         nombreLabel.setForeground(new java.awt.Color(51, 51, 51));
@@ -87,8 +94,20 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         asignaturaLabel.setForeground(new java.awt.Color(51, 51, 51));
         asignaturaLabel.setText(" ");
 
-        menu.setBackground(new java.awt.Color(255, 153, 153));
+        menu.setBackground(new java.awt.Color(102, 255, 102));
         menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu1.png"))); // NOI18N
+        menu.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout aulaCardLayout = new javax.swing.GroupLayout(aulaCard);
         aulaCard.setLayout(aulaCardLayout);
@@ -144,6 +163,21 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         aulaCard.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_formMouseExited
 
+    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+
+        menuDesplegable.showMenu(x, y);
+    }//GEN-LAST:event_menuMouseClicked
+
+    private void menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseEntered
+        menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuMouseEntered
+
+    private void menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseExited
+        menu.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_menuMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel asignaturaLabel;
@@ -152,5 +186,4 @@ public class AulaCardTemplate extends javax.swing.JPanel {
     private javax.swing.JLabel nombreLabel;
     // End of variables declaration//GEN-END:variables
 
-   
 }

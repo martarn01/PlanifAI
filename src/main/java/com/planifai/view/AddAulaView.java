@@ -1,29 +1,40 @@
 package com.planifai.view;
 
-import com.planifai.interfaces.AulaAddedListener;
+import com.planifai.controller.AulaController;
 import com.planifai.service.AulaService;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+import com.planifai.interfaces.AulaListener;
 
 /**
+ * AddAulaView es una clase que representa la interfaz gráfica para la adición
+ * de nuevas aulas en la aplicación. Esta ventana permite al usuario ingresar el
+ * nombre y la asignatura de un aula y guardarla en el sistema.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class AddAulaView extends javax.swing.JFrame {
 
-    private AulaService databaseService;
-    private AulaAddedListener aulaAddedListener;
+    private AulaService aulaService;
+    private AulaController aulaController;
+  
+    private AulaListener aulaAddedListener;
 
     public AddAulaView() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        databaseService = new AulaService();
+        aulaService = new AulaService();
     }
 
-    public void setAulaAddedListener(AulaAddedListener listener) {
+    /**
+     * Establece el listener que será notificado cuando se añada un aula.
+     *
+     * @param listener El listener a establecer.
+     */
+    public void setAulaAddedListener(AulaListener listener) {
         this.aulaAddedListener = listener;
     }
 
@@ -40,7 +51,7 @@ public class AddAulaView extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         nombreText = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
+        asignaturaText = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         asignaturaField = new javax.swing.JTextField();
         nombreField = new javax.swing.JTextField();
@@ -63,8 +74,8 @@ public class AddAulaView extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
         jSeparator1.setPreferredSize(new java.awt.Dimension(50, 3));
 
-        jLabel3.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        jLabel3.setText("Asignatura");
+        asignaturaText.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
+        asignaturaText.setText("Asignatura");
 
         jSeparator2.setBackground(new java.awt.Color(204, 204, 204));
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
@@ -72,19 +83,9 @@ public class AddAulaView extends javax.swing.JFrame {
 
         asignaturaField.setBackground(new java.awt.Color(255, 255, 255));
         asignaturaField.setBorder(null);
-        asignaturaField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                asignaturaFieldActionPerformed(evt);
-            }
-        });
 
         nombreField.setBackground(new java.awt.Color(255, 255, 255));
         nombreField.setBorder(null);
-        nombreField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nombreFieldActionPerformed(evt);
-            }
-        });
 
         addClassButton.setBackground(new java.awt.Color(51, 51, 51));
         addClassButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -132,7 +133,7 @@ public class AddAulaView extends javax.swing.JFrame {
                         .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(nombreText, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(asignaturaText, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                         .addComponent(asignaturaField)
                         .addComponent(nombreField))
@@ -151,7 +152,7 @@ public class AddAulaView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addComponent(asignaturaText)
                 .addGap(18, 18, 18)
                 .addComponent(asignaturaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -175,6 +176,13 @@ public class AddAulaView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Maneja el evento de clic en el botón para añadir un aula. Valida que los
+     * campos no estén vacíos y, si es así, llama al servicio para guardar el
+     * aula y notifica al listener.
+     *
+     * @param evt El evento de mouse que desencadenó el clic.
+     */
     private void addClassButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseClicked
         String nombre = nombreField.getText();
         String asignatura = asignaturaField.getText();
@@ -185,11 +193,8 @@ public class AddAulaView extends javax.swing.JFrame {
             return;
         }
 
-        // Llama al servicio para guardar el aula
-        databaseService.crearAula(nombre, asignatura);
-
-        // Notifica a la ventana principal
-        aulaAddedListener.onAulaAdded();
+        aulaService.crearAula(nombre, asignatura);
+        aulaAddedListener.onAulaAdded(); // Notifica a la ventana principal
 
         dispose();
     }//GEN-LAST:event_addClassButtonMouseClicked
@@ -206,14 +211,6 @@ public class AddAulaView extends javax.swing.JFrame {
         addClassButton.setBackground(customColor);
         addAulaText.setForeground(Color.white);
     }//GEN-LAST:event_addClassButtonMouseExited
-
-    private void nombreFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombreFieldActionPerformed
-
-    private void asignaturaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignaturaFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_asignaturaFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,8 +251,8 @@ public class AddAulaView extends javax.swing.JFrame {
     private javax.swing.JLabel addAulaText;
     private javax.swing.JPanel addClassButton;
     private javax.swing.JTextField asignaturaField;
+    private javax.swing.JLabel asignaturaText;
     private javax.swing.JPanel background;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField nombreField;
