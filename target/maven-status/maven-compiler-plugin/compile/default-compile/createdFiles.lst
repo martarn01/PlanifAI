@@ -1,4 +1,5 @@
 com\planifai\view\GeneracionDocumentoView.class
+com\planifai\interfaces\EventoListener.class
 com\planifai\service\EventoService.class
 com\planifai\view\AulaCardTemplate.class
 com\planifai\view\GeneracionSituacionAprendizajeView$1.class
@@ -14,6 +15,7 @@ com\planifai\view\SituacionAprendizajeView$2.class
 com\planifai\view\AulaView$1.class
 com\planifai\view\GeneracionDocumentoView$2.class
 com\planifai\model\Evento.class
+com\planifai\view\EventoCardTemplate.class
 com\planifai\view\MainFrame$2.class
 com\planifai\view\DocumentoView$2.class
 com\planifai\model\Aula.class
@@ -21,6 +23,7 @@ com\planifai\view\EventoView.class
 com\planifai\view\SituacionAprendizajeView$1.class
 com\planifai\service\DocumentoService.class
 com\planifai\view\AulasView.class
+com\planifai\view\EditAulaView$2.class
 com\planifai\controller\ToDoController.class
 com\planifai\model\SituacionAprendizaje.class
 com\planifai\utils\OpenAIClient.class
@@ -36,6 +39,8 @@ com\planifai\view\AddAulaView$1.class
 com\planifai\view\MenuGestion$1.class
 com\planifai\model\Documento.class
 com\planifai\view\AulaCardTemplate$1.class
+com\planifai\view\EditAulaView$1.class
+com\planifai\interfaces\DocumentoListener.class
 com\planifai\controller\EventoController.class
 com\planifai\controller\NotaController.class
 com\planifai\view\MenuGestion$TipoElemento.class
@@ -53,7 +58,7 @@ com\planifai\view\MainFrame.class
 com\planifai\service\SituacionAprendizajeService.class
 com\planifai\view\AddAulaView$2.class
 com\planifai\view\AulasView$1.class
-com\planifai\view\DocumentoService.class
+com\planifai\view\EditAulaView.class
 com\planifai\service\NoteService.class
 com\planifai\view\GeneracionDocumentoView$1.class
 com\planifai\controller\AulaController.class

@@ -585,12 +585,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void onAulaAdded() {
-        cargarAulas();
-    }
-
-    @Override
-    public void onAulaDeleted() {
+    public void onAulaChanged() {
         cargarAulas();
     }
 

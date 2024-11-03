@@ -1,10 +1,18 @@
 package com.planifai.view;
 
 import com.planifai.controller.AulaController;
+import com.planifai.controller.DocumentoController;
+import com.planifai.controller.EventoController;
 import com.planifai.service.AulaService;
 import java.awt.Color;
 import java.awt.Cursor;
 import com.planifai.interfaces.AulaListener;
+import com.planifai.interfaces.DocumentoListener;
+import com.planifai.interfaces.EventoListener;
+import com.planifai.model.Aula;
+import com.planifai.service.DocumentoService;
+import com.planifai.service.EventoService;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,45 +20,57 @@ import com.planifai.interfaces.AulaListener;
  */
 public class MenuGestion extends javax.swing.JFrame {
 
-    private Color colorHover;
-    private Color color;
-    private AulaService aulaService;
-    private AulaController aulaController; // Añadir el controlador
+    private static final Color COLOR_HOVER = new Color(102, 102, 102);
+    private static final Color COLOR_DEFAULT = new Color(51, 51, 51);
+
+    private AulaController aulaController;
     private AulaListener aulaListener;
+
+    private EventoController eventoController;
+    private EventoListener eventoListener;
+
+    private DocumentoController documentoController;
+    private DocumentoListener documentoListener;
 
     public enum TipoElemento {
         AULA, EVENTO, DOCUMENTO
     }
-    private static TipoElemento tipoElemento;
-    private static int idElemento;
+    private TipoElemento tipoElemento;
+    private int idElemento;
 
     public MenuGestion(TipoElemento tipoElemento, int idElemento) {
         initComponents();
 
-        colorHover = new Color(102, 102, 102);
-        color = new Color(51, 51, 51);
-
         this.tipoElemento = tipoElemento;
         this.idElemento = idElemento;
 
-        //Inicializamos los servicios aquí
-        aulaService = new AulaService();
-        aulaController = new AulaController(aulaService);
+        aulaController = new AulaController(new AulaService());
+        eventoController = new EventoController(new EventoService());
+        documentoController = new DocumentoController(new DocumentoService());
+    }
 
+    public MenuGestion() {
+        initComponents();
+        aulaController = new AulaController(new AulaService());
     }
 
     public void showMenu(int x, int y, int id) {
         setLocation(x, y);
-        idElemento=id;
+        idElemento = id;
         setVisible(true);
     }
 
-    public void hideMenu() {
-        setVisible(false);
-    }
-
+    //LISTENERS
     public void setAulaListener(AulaListener listener) {
         this.aulaListener = listener;
+    }
+
+    public void setEventoListener(EventoListener listener) {
+        this.eventoListener = listener;
+    }
+
+    public void setDocumentoListener(DocumentoListener listener) {
+        this.documentoListener = listener;
     }
 
     /**
@@ -174,47 +194,114 @@ public class MenuGestion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editarPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPanelMouseEntered
-        editarPanel.setBackground(colorHover);
+        editarPanel.setBackground(COLOR_HOVER);
         editarPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));    }//GEN-LAST:event_editarPanelMouseEntered
 
     private void editarPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPanelMouseExited
-        editarPanel.setBackground(color);
+        editarPanel.setBackground(COLOR_DEFAULT);
         editarPanel.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_editarPanelMouseExited
 
     private void editarPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPanelMouseClicked
+   // Lógica para obtener los datos que se van a editar
+    String nuevoNombre;
+    String nuevaAsignatura;
+    boolean exito;
 
+    switch (tipoElemento) {
+        case AULA:
+
+        Aula aula = aulaController.getAulaById(idElemento); // Asegúrate de que el idElemento es correcto
+
+        if (aula != null) {
+            // Crear y mostrar el frame de edición
+            EditAulaView editAulaView = new EditAulaView(aulaController, aula, aulaListener);
+            editAulaView.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el aula a editar.");
+        }
+        
+        dispose();
+        break;
+
+        case EVENTO:
+            // Aquí puedes implementar la lógica para editar un evento
+            // Lógica para editar evento (implementación futura)
+            break;
+
+        case DOCUMENTO:
+            // Aquí puedes implementar la lógica para editar un documento
+            // Lógica para editar documento (implementación futura)
+            break;
+
+        default:
+            JOptionPane.showMessageDialog(this, "Tipo de elemento no reconocido.");
+            break;
+    }
     }//GEN-LAST:event_editarPanelMouseClicked
 
     private void eliminarPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarPanelMouseEntered
-        eliminarPanel.setBackground(colorHover);
+        eliminarPanel.setBackground(COLOR_HOVER);
         eliminarPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_eliminarPanelMouseEntered
 
     private void eliminarPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarPanelMouseExited
-        eliminarPanel.setBackground(color);
+        eliminarPanel.setBackground(COLOR_DEFAULT);
         eliminarPanel.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_eliminarPanelMouseExited
 
     private void eliminarPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarPanelMouseClicked
-        
+
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de que deseas eliminar esta aula?",
+                "¿Estás seguro de que deseas eliminar este elemento?",
                 "Confirmar eliminación",
                 javax.swing.JOptionPane.YES_NO_OPTION);
 
         if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-            boolean eliminado = aulaController.eliminarAula(idElemento);
+            boolean eliminado = false;
+
+            // Decide qué controlador usar basado en el tipo de elemento
+            switch (tipoElemento) {
+                case AULA:
+                    eliminado = aulaController.eliminarAula(idElemento);
+                    break;
+                case EVENTO:
+                   eliminado = eventoController.eliminarEvento(idElemento);
+                    break;
+                case DOCUMENTO:
+                    eliminado = documentoController.eliminarDocumento(idElemento);
+                    break;
+                default:
+                    javax.swing.JOptionPane.showMessageDialog(this, "Tipo de elemento no soportado.");
+                    return;
+            }
 
             if (eliminado) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Aula eliminada exitosamente.");
-                aulaListener.onAulaDeleted(); // Notifica a MainFrame que se ha eliminado un aula
+                javax.swing.JOptionPane.showMessageDialog(this, "Elemento eliminado exitosamente.");
+
+                // Notifica al listener correspondiente
+                switch (tipoElemento) {
+                    case AULA:
+                        if (aulaListener != null) {
+                            aulaListener.onAulaChanged();
+                        }
+                        break;
+                    case EVENTO:
+                        if (eventoListener != null) {
+                            eventoListener.onEventoDeleted();
+                        }
+                        break;
+                    case DOCUMENTO:
+                        if (documentoListener != null) {
+                            documentoListener.onDocumentoDeleted();
+                        }
+                        break;
+                }
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar el aula. Inténtalo de nuevo.");
+                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar el elemento. Inténtalo de nuevo.");
             }
         }
-
-        this.dispose(); // Cierra el menú
+        this.dispose();
     }//GEN-LAST:event_eliminarPanelMouseClicked
 
     /**
@@ -250,7 +337,7 @@ public class MenuGestion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuGestion(tipoElemento, idElemento).setVisible(true);
+                new MenuGestion().setVisible(true);
             }
         });
     }

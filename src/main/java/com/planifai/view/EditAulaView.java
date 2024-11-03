@@ -7,26 +7,41 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
+import com.planifai.model.Aula;
 
 /**
- * AddAulaView es una clase que representa la interfaz gráfica para la adición
- * de nuevas aulas en la aplicación. Esta ventana permite al usuario ingresar el
- * nombre y la asignatura de un aula y guardarla en el sistema.
  *
  * @author Marta Rosado Nabais
  */
-public class AddAulaView extends javax.swing.JFrame {
+public class EditAulaView extends javax.swing.JFrame {
 
     private AulaService aulaService;
     private AulaController aulaController;
-  
-    private AulaListener aulaAddedListener;
+    private Aula aulaToEdit;
 
-    public AddAulaView() {
+    private AulaListener aulaListener;
+
+    public EditAulaView(AulaController aulaController, Aula aulaToEdit,  AulaListener aulaListener) {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        aulaService = new AulaService();
+        this.aulaService = new AulaService();
+        this.aulaController = aulaController;
+        this.aulaToEdit = aulaToEdit;
+        this.aulaListener = aulaListener; // Inicializa el aulaListener
+
+        setAulaData();
+    }
+
+    public EditAulaView() {
+    }
+
+    private void setAulaData() {
+        if (aulaToEdit != null) {
+            nombreField.setText(aulaToEdit.getNombre());
+            asignaturaField.setText(aulaToEdit.getAsignatura());
+            title.setText("Editar Aula"); // Cambia el título del frame
+        }
     }
 
     /**
@@ -35,7 +50,7 @@ public class AddAulaView extends javax.swing.JFrame {
      * @param listener El listener a establecer.
      */
     public void setAulaAddedListener(AulaListener listener) {
-        this.aulaAddedListener = listener;
+        this.aulaListener = listener;
     }
 
     /**
@@ -184,6 +199,7 @@ public class AddAulaView extends javax.swing.JFrame {
      * @param evt El evento de mouse que desencadenó el clic.
      */
     private void addClassButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseClicked
+
         String nombre = nombreField.getText();
         String asignatura = asignaturaField.getText();
 
@@ -193,8 +209,10 @@ public class AddAulaView extends javax.swing.JFrame {
             return;
         }
 
-        aulaService.crearAula(nombre, asignatura);
-        aulaAddedListener.onAulaChanged(); // Notifica a la ventana principal
+        // Llamar al método de servicio para actualizar el aula
+        aulaService.actualizarAula(aulaToEdit.getIdAula(), nombre, asignatura);
+        JOptionPane.showMessageDialog(this, "Aula actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        aulaListener.onAulaChanged();
 
         dispose();
     }//GEN-LAST:event_addClassButtonMouseClicked
@@ -229,20 +247,21 @@ public class AddAulaView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditAulaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddAulaView().setVisible(true);
+                new EditAulaView().setVisible(true);
             }
         });
     }

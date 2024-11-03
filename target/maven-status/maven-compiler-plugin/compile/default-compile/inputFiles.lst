@@ -6,6 +6,8 @@ C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\OpenAIC
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\SituacionAprendizajeController.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\controller\ToDoController.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\interfaces\AulaListener.java
+C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\interfaces\DocumentoListener.java
+C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\interfaces\EventoListener.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Aula.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Documento.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\model\Evento.java
@@ -27,8 +29,8 @@ C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\AddAulaView.j
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\AulaCardTemplate.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\AulasView.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\AulaView.java
-C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\DocumentoService.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\DocumentoView.java
+C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\EditAulaView.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\EventoCardTemplate.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\EventoView.java
 C:\Users\marta\Escritorio\PlanifAI\src\main\java\com\planifai\view\GeneracionDocumentoView.java

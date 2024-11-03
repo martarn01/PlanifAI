@@ -417,11 +417,6 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
     private javax.swing.JLabel titleAulas;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void onAulaAdded() {
-        cargarAulas();
-    }
-
     private void abrirAddAulaView() {
         AddAulaView addAulaView = new AddAulaView();
         addAulaView.setAulaAddedListener(this); // Asigna el listener
@@ -429,7 +424,7 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
     }
 
     @Override
-    public void onAulaDeleted() {
+    public void onAulaChanged() {
         cargarAulas();
     }
 }
