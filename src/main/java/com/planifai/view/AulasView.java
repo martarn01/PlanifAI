@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
+import java.awt.Window;
 
 /**
  *
@@ -119,7 +120,6 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
         noAulasText = new javax.swing.JLabel();
         addClassButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
-        verAulasButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -281,21 +281,6 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        verAulasButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        verAulasButton.setForeground(new java.awt.Color(153, 153, 153));
-        verAulasButton.setText("Ver todas las aulas");
-        verAulasButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                verAulasButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                verAulasButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                verAulasButtonMouseExited(evt);
-            }
-        });
-
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
         centerPanel.setLayout(centerPanelLayout);
         centerPanelLayout.setHorizontalGroup(
@@ -304,21 +289,16 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
                 .addGap(109, 109, 109)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, centerPanelLayout.createSequentialGroup()
-                            .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(verAulasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(aulasPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(569, Short.MAX_VALUE))
         );
         centerPanelLayout.setVerticalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(verAulasButton))
+                .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 454, Short.MAX_VALUE)
@@ -334,7 +314,7 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
                 .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1069, Short.MAX_VALUE))
+                .addContainerGap(453, Short.MAX_VALUE))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,29 +354,13 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
         addAulaText.setForeground(Color.white);
     }//GEN-LAST:event_addClassButtonMouseExited
 
-    private void verAulasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseClicked
-        AulasView aulasView = new AulasView(); // Crea la instancia de AulasView
-        aulasView.setVisible(true);
-    }//GEN-LAST:event_verAulasButtonMouseClicked
-
-    private void verAulasButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseEntered
-        Color color = new Color(204, 204, 204);
-        verAulasButton.setForeground(color);
-        verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_verAulasButtonMouseEntered
-
-    private void verAulasButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseExited
-        Color color = new Color(153, 153, 153);
-        verAulasButton.setForeground(color);
-        verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_verAulasButtonMouseExited
-
     private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
         System.out.println("Mouse clicked in MainFrame");
+        for (Window window : Window.getWindows()) {
+            if (window != this && window.isVisible()) {
+                window.dispose(); // Cierra la ventana
+            }
 
-        MenuGestion menu = MenuGestion.getInstance();
-        if (menu.isVisible()) {
-            menu.hideMenu(); // Oculta el menú si está visible
         }    }//GEN-LAST:event_backgroundMouseClicked
 
     /**
@@ -451,7 +415,6 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
     private javax.swing.JLabel noAulasText;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAulas;
-    private javax.swing.JLabel verAulasButton;
     // End of variables declaration//GEN-END:variables
 
     @Override

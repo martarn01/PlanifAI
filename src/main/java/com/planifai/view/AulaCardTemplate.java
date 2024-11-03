@@ -167,7 +167,7 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
 
-        menuDesplegable.showMenu(x, y);
+        menuDesplegable.showMenu(x, y, aula.getIdAula());
     }//GEN-LAST:event_menuMouseClicked
 
     private void menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseEntered

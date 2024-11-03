@@ -20,9 +20,11 @@ public class AulaController {
         return aulaService.getAulas();
     }
 
-    public void agregarAula(Aula aula) {
-        aulaService.crearAula(aula.getNombre(), aula.getAsignatura());// Método que debes implementar en DatabaseService para agregar aulas.
-    }
+public void crearAula(String nombre, String asignatura) {
+    aulaService.crearAula(nombre, asignatura);
+    // Notificar o hacer otra gestión adicional si es necesario
+}
+
 
     public boolean eliminarAula(int aulaId) {
         return aulaService.eliminarAulaPorId(aulaId);

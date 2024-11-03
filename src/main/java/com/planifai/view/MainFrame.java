@@ -12,6 +12,9 @@ import java.awt.Insets;
 import java.util.List;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
+import com.planifai.model.Evento;
+import com.planifai.service.EventoService;
+import java.awt.Window;
 
 /**
  * MainFrame es la clase principal que representa la ventana principal de la
@@ -23,9 +26,9 @@ import com.planifai.interfaces.AulaListener;
 public class MainFrame extends javax.swing.JFrame implements AulaListener {
 
     private AulaService aulaService;
+    private EventoService eventoService;
     private AulaView aulaView;
     private boolean[] panelesCargados;
-    private MenuGestion menuDesplegable;
     private static final int MAX_AULAS = 4;
 
     /**
@@ -72,14 +75,14 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
 
         // Si no hay aulas, mostrar el mensaje correspondiente
         if (aulas.isEmpty()) {
-            noAulasText.setVisible(true);
-            aulasPanel.add(noAulasText);
+           // noAulasText.setVisible(true);
+            //aulasPanel.add(noAulasText);
             aulasPanel.revalidate();
             aulasPanel.repaint();
             return;
         }
 
-        noAulasText.setVisible(false);
+       // noAulasText.setVisible(false);
         aulasPanel.setBackground(Color.white);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -101,6 +104,42 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         aulasPanel.repaint(); // Redibujar el panel
     }
 
+    /*public void cargarEventos() {
+    List<Evento> eventos = eventoService.getEventos(); // Suponiendo que tienes un servicio para eventos
+
+    eventsPanel.removeAll();
+
+    // Si no hay eventos, mostrar el mensaje correspondiente
+    if (eventos.isEmpty()) {
+        noEventosText.setVisible(true);
+        eventosPanel.add(noEventosText);
+        eventosPanel.revalidate();
+        eventosPanel.repaint();
+        return;
+    }
+
+    noEventosText.setVisible(false);
+    eventosPanel.setBackground(Color.white);
+
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.anchor = GridBagConstraints.NORTH;
+
+    int numEventos = Math.min(eventos.size(), MAX_EVENTOS); // Asumiendo que tienes una constante similar a MAX_AULAS
+
+    for (int i = 0; i < numEventos; i++) {
+        Evento evento = eventos.get(i);
+        EventoCardTemplate card = new EventoCardTemplate(evento, this); // Crea una tarjeta para el evento
+
+        gbc.gridy = i; // Coloca cada tarjeta en una nueva fila
+        eventosPanel.add(card, gbc);
+    }
+
+    eventosPanel.revalidate(); // Actualizar el panel
+    eventosPanel.repaint(); // Redibujar el panel
+}*/
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -109,7 +148,6 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         background = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
@@ -121,20 +159,15 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         centerPanel = new javax.swing.JPanel();
         titleAulas = new javax.swing.JLabel();
         aulasPanel = new javax.swing.JPanel();
-        noAulasText = new javax.swing.JLabel();
         addClassButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
         verAulasButton = new javax.swing.JLabel();
         rightPanel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         eventosTitle = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        eventosPanel = new javax.swing.JPanel();
         documentosTitle = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        documentosPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -257,15 +290,6 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         aulasPanelLayout.rowWeights = new double[] {0.0};
         aulasPanel.setLayout(aulasPanelLayout);
 
-        noAulasText.setFont(new java.awt.Font("Lato Semibold", 0, 22)); // NOI18N
-        noAulasText.setForeground(new java.awt.Color(204, 204, 204));
-        noAulasText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        noAulasText.setText("Aún no se han añadido aulas");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        aulasPanel.add(noAulasText, gridBagConstraints);
-
         addClassButton.setBackground(new java.awt.Color(51, 51, 51));
         addClassButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -324,26 +348,26 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
                 .addGap(65, 65, 65)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, centerPanelLayout.createSequentialGroup()
-                            .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(centerPanelLayout.createSequentialGroup()
+                            .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                             .addComponent(verAulasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(aulasPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         centerPanelLayout.setVerticalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
-                .addGap(95, 95, 95)
+                .addGap(65, 65, 65)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(verAulasButton))
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
                 .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(180, 180, 180))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         rightPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -369,82 +393,17 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         eventosTitle.setText("Próximos eventos");
         eventosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        jPanel2.setBackground(new java.awt.Color(251, 251, 251));
+        eventosPanel.setBackground(new java.awt.Color(251, 251, 251));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
+        javax.swing.GroupLayout eventosPanelLayout = new javax.swing.GroupLayout(eventosPanel);
+        eventosPanel.setLayout(eventosPanelLayout);
+        eventosPanelLayout.setHorizontalGroup(
+            eventosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 331, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 319, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(78, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(10, 10, 10)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(247, Short.MAX_VALUE)))
+        eventosPanelLayout.setVerticalGroup(
+            eventosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 307, Short.MAX_VALUE)
         );
 
         documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
@@ -453,16 +412,16 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         documentosTitle.setText("Mis documentos");
         documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
+        documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout documentosPanelLayout = new javax.swing.GroupLayout(documentosPanel);
+        documentosPanel.setLayout(documentosPanelLayout);
+        documentosPanelLayout.setHorizontalGroup(
+            documentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 325, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        documentosPanelLayout.setVerticalGroup(
+            documentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 241, Short.MAX_VALUE)
         );
 
@@ -473,16 +432,16 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
+                .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 834, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(eventosTitle)
                     .addComponent(documentosTitle)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                    .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
                 .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -500,11 +459,11 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
                 .addGap(112, 112, 112)
                 .addComponent(eventosTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addComponent(documentosTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -512,7 +471,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1924, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 2463, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -536,9 +495,9 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     }//GEN-LAST:event_addClassButtonMouseExited
 
     private void addClassButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseClicked
-
-        abrirAddAulaView(); // Esto configura el listener y abre la vista de agregar aula
-
+        AddAulaView addAulaView = new AddAulaView();
+        addAulaView.setAulaAddedListener(this); // Asigna el listener
+        addAulaView.setVisible(true);
     }//GEN-LAST:event_addClassButtonMouseClicked
 
     private void verAulasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseClicked
@@ -561,10 +520,10 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
 
     private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
         System.out.println("Mouse clicked in MainFrame");
-
-        MenuGestion menu = MenuGestion.getInstance();
-        if (menu.isVisible()) {
-            menu.hideMenu(); // Oculta el menú si está visible
+        for (Window window : Window.getWindows()) {
+            if (window != this && window.isVisible()) {
+                window.dispose(); // Cierra la ventana
+            }
         }
     }//GEN-LAST:event_backgroundMouseClicked
 
@@ -612,29 +571,18 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     private javax.swing.JPanel aulasPanel;
     private javax.swing.JPanel background;
     private javax.swing.JPanel centerPanel;
+    private javax.swing.JPanel documentosPanel;
     private javax.swing.JLabel documentosTitle;
+    private javax.swing.JPanel eventosPanel;
     private javax.swing.JLabel eventosTitle;
     private javax.swing.JLabel icon;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel leftPanel;
-    private javax.swing.JLabel noAulasText;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAulas;
     private javax.swing.JLabel verAulasButton;
     // End of variables declaration//GEN-END:variables
-
-    private void abrirAddAulaView() {
-        AddAulaView addAulaView = new AddAulaView();
-        addAulaView.setAulaAddedListener(this); // Asigna el listener
-        addAulaView.setVisible(true);
-    }
 
     @Override
     public void onAulaAdded() {

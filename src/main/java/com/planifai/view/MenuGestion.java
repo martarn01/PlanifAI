@@ -17,7 +17,6 @@ public class MenuGestion extends javax.swing.JFrame {
     private AulaService aulaService;
     private AulaController aulaController; // Añadir el controlador
     private AulaListener aulaListener;
-    private static MenuGestion instance;
 
     public enum TipoElemento {
         AULA, EVENTO, DOCUMENTO
@@ -40,16 +39,9 @@ public class MenuGestion extends javax.swing.JFrame {
 
     }
 
-    // Método estático para obtener la instancia
-    public static MenuGestion getInstance() {
-        if (instance == null) {
-            instance = new MenuGestion(tipoElemento, idElemento); // Crea la instancia si no existe
-        }
-        return instance; // Devuelve la instancia
-    }
-
-    public void showMenu(int x, int y) {
+    public void showMenu(int x, int y, int id) {
         setLocation(x, y);
+        idElemento=id;
         setVisible(true);
     }
 
