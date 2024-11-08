@@ -3,8 +3,10 @@ package com.planifai.model;
 import java.sql.Timestamp;
 
 /**
+ * Clase que representa un documento en el sistema. Un documento puede estar
+ * asociado a un aula, un evento y una situación de aprendizaje.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class Documento {
 
@@ -19,9 +21,29 @@ public class Documento {
     private Evento evento;  // Relación con Evento
     private SituacionAprendizaje situacionAprendizaje;  // Relación con SituacionAprendizaje
 
+    /**
+     * Constructor por defecto de la clase Documento.
+     */
     public Documento() {
     }
 
+    /**
+     * Constructor de la clase Documento.
+     *
+     * @param idDocumento ID único del documento.
+     * @param titulo Título del documento.
+     * @param contenido Contenido del documento.
+     * @param fechaCreacion Fecha de creación del documento.
+     * @param tipoDocumento Tipo del documento (ej. PDF, Word, etc.).
+     * @param idAula ID del aula asociado al documento, puede ser null si no
+     * está asociado.
+     * @param idEvento ID del evento asociado al documento, puede ser null si no
+     * está asociado.
+     * @param aula Objeto Aula asociado al documento.
+     * @param evento Objeto Evento asociado al documento.
+     * @param situacionAprendizaje Objeto SituacionAprendizaje asociado al
+     * documento.
+     */
     public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento, Aula aula, Evento evento, SituacionAprendizaje situacionAprendizaje) {
         this.idDocumento = idDocumento;
         this.titulo = titulo;
@@ -115,5 +137,4 @@ public class Documento {
         this.situacionAprendizaje = situacionAprendizaje;
     }
 
-    
 }

@@ -1,16 +1,39 @@
 package com.planifai.view;
 
+import com.planifai.model.Evento;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 /**
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class EventoCardTemplate extends javax.swing.JPanel {
 
-    /**
-     * Creates new form EventoCardTemplate
-     */
-    public EventoCardTemplate() {
+    
+    public EventoCardTemplate(Evento evento) {
         initComponents();
+        configurarEvento(evento);
+
+    }
+
+    /**
+     * Configura los datos del evento en la tarjeta.
+     *
+     * @param evento El objeto Evento del cual se extraerán los detalles para
+     * mostrar.
+     */
+    private void configurarEvento(Evento evento) {
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM", Locale.ENGLISH);
+
+        // Extraer y formatear la fecha del evento
+        String day = dayFormat.format(evento.getFechaEvento());
+        String month = monthFormat.format(evento.getFechaEvento()).toUpperCase();
+
+        dayText.setText(day);
+        dayText1.setText(month);
+        infoText.setText(evento.getDescripcion());
     }
 
     /**
@@ -28,11 +51,11 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         dayText1 = new javax.swing.JLabel();
         infoText = new javax.swing.JLabel();
 
-        background.setBackground(new java.awt.Color(255, 255, 255));
+        background.setBackground(new java.awt.Color(238, 238, 238));
 
         date.setBackground(new java.awt.Color(246, 128, 93));
 
-        dayText.setFont(new java.awt.Font("Lato", 1, 18)); // NOI18N
+        dayText.setFont(new java.awt.Font("Lato", 1, 14)); // NOI18N
         dayText.setForeground(new java.awt.Color(51, 51, 51));
         dayText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dayText.setText("30");
@@ -47,7 +70,7 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         dateLayout.setHorizontalGroup(
             dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(dayText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(dayText1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+            .addComponent(dayText1, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
         );
         dateLayout.setVerticalGroup(
             dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -55,13 +78,13 @@ public class EventoCardTemplate extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(dayText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dayText1)
+                .addComponent(dayText1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
         infoText.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         infoText.setForeground(new java.awt.Color(153, 153, 153));
-        infoText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        infoText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         infoText.setText("Texto sobre el evento en cuestión");
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
@@ -70,9 +93,9 @@ public class EventoCardTemplate extends javax.swing.JPanel {
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoText, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(infoText, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 20, Short.MAX_VALUE))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +109,7 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

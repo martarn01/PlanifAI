@@ -3,8 +3,10 @@ package com.planifai.model;
 import java.sql.Timestamp;
 
 /**
+ * Clase que representa una nota en el sistema. Una nota está asociada a un aula
+ * específica.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class Nota {
 
@@ -12,12 +14,24 @@ public class Nota {
     private String contenido;
     private Timestamp fechaCreacion;
     private int idAula;  // Debe estar asociado a un aula
-    
-    Aula aula;
+    private Aula aula;
 
+    /**
+     * Constructor por defecto de la clase Nota.
+     */
     public Nota() {
     }
 
+    /**
+     * Constructor de la clase Nota.
+     *
+     * @param idNota ID único de la nota.
+     * @param contenido Contenido de la nota.
+     * @param fechaCreacion Fecha de creación de la nota.
+     * @param idAula ID del aula asociado a la nota, debe estar asociado a un
+     * aula.
+     * @param aula Objeto Aula asociado a la nota.
+     */
     public Nota(int idNota, String contenido, Timestamp fechaCreacion, int idAula, Aula aula) {
         this.idNota = idNota;
         this.contenido = contenido;
@@ -65,6 +79,5 @@ public class Nota {
     public void setAula(Aula aula) {
         this.aula = aula;
     }
-    
-     
+
 }

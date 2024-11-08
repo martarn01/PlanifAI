@@ -146,6 +146,11 @@
                 <Property name="text" type="java.lang.String" value="PlanifAI"/>
                 <Property name="verticalAlignment" type="int" value="3"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="titleMouseClicked"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="titleMouseEntered"/>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="titleMouseExited"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="ElemMenu1">
               <Properties>

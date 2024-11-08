@@ -1,8 +1,10 @@
 package com.planifai.model;
 
 /**
+ * Clase que representa una tarea (To-Do) en el sistema. Cada tarea está
+ * asociada a un aula y tiene un estado de completado.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class ToDo {
 
@@ -10,12 +12,24 @@ public class ToDo {
     private String descripcion;
     private boolean completado;
     private int idAula;  // Debe estar asociado a un aula
-    
-    Aula aula;
+    private Aula aula;
 
+    /**
+     * Constructor por defecto de la clase ToDo.
+     */
     public ToDo() {
     }
 
+    /**
+     * Constructor de la clase ToDo.
+     *
+     * @param idToDo ID único de la tarea.
+     * @param descripcion Descripción de la tarea.
+     * @param completado Estado de completado de la tarea.
+     * @param idAula ID del aula asociado a la tarea, debe estar asociado a un
+     * aula.
+     * @param aula Objeto Aula asociado a la tarea.
+     */
     public ToDo(int idToDo, String descripcion, boolean completado, int idAula, Aula aula) {
         this.idToDo = idToDo;
         this.descripcion = descripcion;
@@ -63,5 +77,5 @@ public class ToDo {
     public void setAula(Aula aula) {
         this.aula = aula;
     }
-    
+
 }

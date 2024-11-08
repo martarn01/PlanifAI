@@ -1,8 +1,11 @@
 package com.planifai.model;
 
 /**
+ * Clase que representa una situación de aprendizaje en el sistema. Una
+ * situación de aprendizaje está asociada a un aula y puede estar relacionada
+ * con un evento.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class SituacionAprendizaje {
 
@@ -11,13 +14,26 @@ public class SituacionAprendizaje {
     private String descripcion;
     private int idAula;        // Debe estar asociado a un aula
     private Integer idEvento;  // Puede ser null
-    
-    // Relación Muchos a Uno con Aula
-    private Aula aula;
+    private Aula aula; // Relación Muchos a Uno con Aula
 
+    /**
+     * Constructor por defecto de la clase SituacionAprendizaje.
+     */
     public SituacionAprendizaje() {
     }
 
+    /**
+     * Constructor de la clase SituacionAprendizaje.
+     *
+     * @param idSituacion ID único de la situación de aprendizaje.
+     * @param titulo Título de la situación de aprendizaje.
+     * @param descripcion Descripción de la situación de aprendizaje.
+     * @param idAula ID del aula asociado a la situación de aprendizaje, debe
+     * estar asociado a un aula.
+     * @param idEvento ID del evento asociado a la situación de aprendizaje,
+     * puede ser null.
+     * @param aula Objeto Aula asociado a la situación de aprendizaje.
+     */
     public SituacionAprendizaje(int idSituacion, String titulo, String descripcion, int idAula, Integer idEvento, Aula aula) {
         this.idSituacion = idSituacion;
         this.titulo = titulo;

@@ -17,16 +17,14 @@ import com.planifai.interfaces.AulaListener;
  */
 public class AddAulaView extends javax.swing.JFrame {
 
-    private AulaService aulaService;
     private AulaController aulaController;
-  
     private AulaListener aulaAddedListener;
 
     public AddAulaView() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        aulaService = new AulaService();
+        aulaController = new AulaController(new AulaService());
     }
 
     /**
@@ -192,8 +190,7 @@ public class AddAulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        aulaService.crearAula(nombre, asignatura);
+        aulaController.crearAula(nombre, asignatura);
         aulaAddedListener.onAulaChanged(); // Notifica a la ventana principal
 
         dispose();

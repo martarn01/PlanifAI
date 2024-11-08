@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
+ * Clase que representa un evento en el sistema. Cada evento está asociado a un
+ * aula y puede tener documentos relacionados.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class Evento {
 
@@ -18,9 +20,25 @@ public class Evento {
     Aula aula;
     List<Documento> documentos;  // Relación Uno a Muchos con Documento
 
+    /**
+     * Constructor por defecto de la clase Evento.
+     */
     public Evento() {
     }
 
+    /**
+     * Constructor de la clase Evento.
+     *
+     * @param idEvento ID único del evento.
+     * @param descripcion Descripción del evento.
+     * @param fechaEvento Fecha y hora del evento.
+     * @param tipoEvento Tipo de evento.
+     * @param idAula ID del aula asociado al evento, debe estar asociado a un
+     * aula.
+     * @param idDocumento ID del documento asociado al evento, puede ser null.
+     * @param aula Objeto Aula asociado al evento.
+     * @param documentos Lista de documentos relacionados con el evento.
+     */
     public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, List<Documento> documentos) {
         this.idEvento = idEvento;
         this.descripcion = descripcion;
@@ -31,7 +49,6 @@ public class Evento {
         this.aula = aula;
         this.documentos = documentos;
     }
-    
 
     public int getIdEvento() {
         return idEvento;
@@ -96,7 +113,5 @@ public class Evento {
     public void setDocumentos(List<Documento> documentos) {
         this.documentos = documentos;
     }
-    
-    
-}
 
+}

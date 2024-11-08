@@ -81,7 +81,7 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
-        aulasPanel.setLayout(new GridLayout(5, 2, 5, 5)); // 5 filas y 2 columnas
+        aulasPanel.setLayout(new GridLayout(5, 2, 5, 5)); 
 
         int numAulas = Math.min(aulas.size(), MAX_AULAS);
 
@@ -142,6 +142,17 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
         title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         title.setText("PlanifAI");
         title.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        title.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                titleMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                titleMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                titleMouseExited(evt);
+            }
+        });
 
         ElemMenu1.setBackground(new java.awt.Color(235, 241, 247));
 
@@ -289,9 +300,8 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
                 .addGap(109, 109, 109)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(569, Short.MAX_VALUE))
         );
         centerPanelLayout.setVerticalGroup(
@@ -362,6 +372,19 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
             }
 
         }    }//GEN-LAST:event_backgroundMouseClicked
+
+    private void titleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseClicked
+        MainFrame mainframe = new MainFrame();
+        mainframe.setVisible(true);
+    }//GEN-LAST:event_titleMouseClicked
+
+    private void titleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseEntered
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_titleMouseEntered
+
+    private void titleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseExited
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_titleMouseExited
 
     /**
      * @param args the command line arguments

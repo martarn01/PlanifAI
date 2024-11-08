@@ -14,7 +14,6 @@ public class Aula {
     private int idAula;
     private String nombre;
     private String asignatura;
-
     private List<Evento> eventos; // Relación Uno a Muchos con Evento
     private List<Documento> Documentos; // Relación Uno a Muchos con documentos
     private List<SituacionAprendizaje> situacionesAprendizaje; // Relación Uno a Muchos con SituacionAprendizaje

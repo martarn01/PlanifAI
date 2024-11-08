@@ -1,34 +1,48 @@
 package com.planifai.view;
 
+import com.planifai.controller.DocumentoController;
+import com.planifai.model.Documento;
+import com.planifai.service.DocumentoService;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import com.planifai.utils.RoundedPanel;
 import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.util.List;
+import javax.swing.JTable;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
+ * Vista de los documentos en la aplicación PlanifAI. Esta clase gestiona la
+ * interfaz gráfica donde se muestran los documentos. Se encarga de cargar los
+ * documentos desde la base de datos y de estilizar la tabla visualmente.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
-public class EventoView extends javax.swing.JFrame {
+public class DocumentosView extends javax.swing.JFrame {
+
+    DocumentoController documentoController;
+    private static final int MAX_DOCUMENTOS = 5;
+    private DefaultTableModel modeloTabla;
 
     /**
-     * Creates new form MainFrame
+     * Constructor de la vista de documentos. Inicializa los componentes, ajusta
+     * el tamaño de la ventana y carga los documentos.
      */
-    public EventoView() {
+    public DocumentosView() {
         initComponents();
-        // Obtener el tamaño de la pantalla
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        // Ajustar el tamaño de la ventana al tamaño de la pantalla
+        // Obtener el modelo de la tabla desde documentosTable
+        modeloTabla = (DefaultTableModel) documentosTable.getModel();
+
+        // Ajustar el tamaño de la ventana
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(screenSize.width, screenSize.height);
-        this.setExtendedState(EventoView.MAXIMIZED_BOTH);//maximizada por defecto
+        this.setExtendedState(DocumentosView.MAXIMIZED_BOTH);
         this.setResizable(false);
 
         // Cambiar el ícono de la ventana
@@ -36,6 +50,72 @@ public class EventoView extends javax.swing.JFrame {
         setIconImage(icon);
         setTitle("PlanifAI");
 
+        // Inicializar el controlador
+        documentoController = new DocumentoController(new DocumentoService());
+
+        estilizarTabla();
+
+        // Cargar documentos en la tabla
+        cargarDocumentos();
+    }
+
+    /**
+     * Carga los documentos desde el controlador y los agrega a la tabla.
+     * Excluye las columnas idDocumento y contenido.
+     */
+    public void cargarDocumentos() {
+        // Limpiar los datos existentes en la tabla
+        modeloTabla.setRowCount(0);
+
+        // Obtener la lista de documentos desde el controlador
+        List<Documento> documentos = documentoController.obtenerDocumentos();
+
+        // Agregar documentos al modelo de la tabla, excluyendo idDocumento y contenido
+        for (Documento documento : documentos) {
+            Object[] fila = new Object[]{
+                documento.getTitulo(),
+                documento.getFechaCreacion(),
+                documento.getTipoDocumento(),
+                documento.getIdAula(),
+                documento.getIdEvento()
+            };
+            modeloTabla.addRow(fila);
+        }
+    }
+
+    private void estilizarTabla() {
+        // Obtener el modelo de la tabla desde documentosTable
+        modeloTabla = (DefaultTableModel) documentosTable.getModel();
+
+        // Cambiar el color de fondo de la tabla y desactivar líneas de rejilla
+        documentosTable.setGridColor(new Color(200, 200, 200));
+        documentosTable.setShowGrid(false);
+        documentosTable.setRowHeight(25); // Altura de cada fila
+
+        // Color alternado de filas
+        documentosTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (!isSelected) {
+                    if (row % 2 == 0) {
+                        c.setBackground(new Color(245, 245, 245));
+                    } else {
+                        c.setBackground(Color.WHITE);
+                    }
+                }
+                return c;
+            }
+        });
+
+        // Cambiar el estilo del encabezado
+        documentosTable.getTableHeader().setBackground(new Color(100, 150, 200));
+        documentosTable.getTableHeader().setForeground(Color.WHITE);
+        documentosTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        // Ajustar bordes y relleno
+        documentosTable.setIntercellSpacing(new Dimension(0, 0));
     }
 
     /**
@@ -52,17 +132,11 @@ public class EventoView extends javax.swing.JFrame {
         icon = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
         centerPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        documentosTable = new javax.swing.JTable();
         titleAulas = new javax.swing.JLabel();
-        aulasPanel = new javax.swing.JPanel();
-        noAulasText = new javax.swing.JLabel();
         addClassButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
-        rightPanel = new javax.swing.JPanel();
-        eventosTitle = new javax.swing.JLabel();
-        documentosTitle = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -80,6 +154,17 @@ public class EventoView extends javax.swing.JFrame {
         title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         title.setText("PlanifAI");
         title.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        title.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                titleMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                titleMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                titleMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
@@ -107,32 +192,31 @@ public class EventoView extends javax.swing.JFrame {
 
         centerPanel.setBackground(new java.awt.Color(255, 255, 255));
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+
+        documentosTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Título", "Fecha de cración", "Tipo de documento", "ID Aula", "ID Evento"
+            }
+        ));
+        documentosTable.setToolTipText("");
+        documentosTable.setRowHeight(20);
+        documentosTable.setSelectionBackground(new java.awt.Color(230, 230, 144));
+        documentosTable.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        jScrollPane1.setViewportView(documentosTable);
+
         titleAulas.setFont(new java.awt.Font("Lato", 1, 32)); // NOI18N
         titleAulas.setForeground(new java.awt.Color(51, 51, 51));
         titleAulas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        titleAulas.setText("Mis aulas");
+        titleAulas.setText("Mis documentos");
         titleAulas.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        aulasPanel.setBackground(new java.awt.Color(251, 251, 251));
-        aulasPanel.setForeground(new java.awt.Color(236, 236, 236));
-
-        noAulasText.setFont(new java.awt.Font("Lato", 1, 24)); // NOI18N
-        noAulasText.setForeground(new java.awt.Color(216, 216, 216));
-        noAulasText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        noAulasText.setText("Aún no has añadido ninguna aula");
-
-        javax.swing.GroupLayout aulasPanelLayout = new javax.swing.GroupLayout(aulasPanel);
-        aulasPanel.setLayout(aulasPanelLayout);
-        aulasPanelLayout.setHorizontalGroup(
-            aulasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(aulasPanelLayout.createSequentialGroup()
-                .addComponent(noAulasText, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
-        );
-        aulasPanelLayout.setVerticalGroup(
-            aulasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(noAulasText, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
-        );
 
         addClassButton.setBackground(new java.awt.Color(51, 51, 51));
         addClassButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -147,7 +231,7 @@ public class EventoView extends javax.swing.JFrame {
         addAulaText.setFont(new java.awt.Font("Lato Semibold", 1, 16)); // NOI18N
         addAulaText.setForeground(new java.awt.Color(255, 255, 255));
         addAulaText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        addAulaText.setText("Añadir aula");
+        addAulaText.setText("Generar documento");
 
         javax.swing.GroupLayout addClassButtonLayout = new javax.swing.GroupLayout(addClassButton);
         addClassButton.setLayout(addClassButtonLayout);
@@ -160,109 +244,35 @@ public class EventoView extends javax.swing.JFrame {
         );
         addClassButtonLayout.setVerticalGroup(
             addClassButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addClassButtonLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(addAulaText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addClassButtonLayout.createSequentialGroup()
+                .addGap(0, 6, Short.MAX_VALUE)
+                .addComponent(addAulaText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
         centerPanel.setLayout(centerPanelLayout);
         centerPanelLayout.setHorizontalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(centerPanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerPanelLayout.createSequentialGroup()
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(titleAulas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(84, 84, 84))
         );
         centerPanelLayout.setVerticalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(titleAulas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125))
-        );
-
-        rightPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        eventosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 24)); // NOI18N
-        eventosTitle.setForeground(new java.awt.Color(51, 51, 51));
-        eventosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        eventosTitle.setText("Próximos eventos");
-        eventosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 24)); // NOI18N
-        documentosTitle.setForeground(new java.awt.Color(51, 51, 51));
-        documentosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentosTitle.setText("Mis documentos");
-        documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
-        );
-
-        jPanel2.setBackground(new java.awt.Color(251, 251, 251));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 307, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
-        rightPanelLayout.setHorizontalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(rightPanelLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(eventosTitle)
-                            .addComponent(documentosTitle)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(86, Short.MAX_VALUE))
-        );
-        rightPanelLayout.setVerticalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(eventosTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(documentosTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
         );
-
-        jSeparator1.setBackground(new java.awt.Color(237, 237, 237));
-        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -272,20 +282,12 @@ public class EventoView extends javax.swing.JFrame {
                 .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(centerPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -315,6 +317,19 @@ public class EventoView extends javax.swing.JFrame {
         addAulaText.setForeground(Color.white);
     }//GEN-LAST:event_addClassButtonMouseExited
 
+    private void titleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseEntered
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_titleMouseEntered
+
+    private void titleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseExited
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_titleMouseExited
+
+    private void titleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseClicked
+        MainFrame mainframe = new MainFrame();
+        mainframe.setVisible(true);
+    }//GEN-LAST:event_titleMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -332,21 +347,23 @@ public class EventoView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EventoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocumentosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EventoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocumentosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EventoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocumentosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EventoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocumentosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EventoView().setVisible(true);
+                new DocumentosView().setVisible(true);
             }
         });
     }
@@ -354,23 +371,14 @@ public class EventoView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addAulaText;
     private javax.swing.JPanel addClassButton;
-    private javax.swing.JPanel aulasPanel;
     private javax.swing.JPanel background;
     private javax.swing.JPanel centerPanel;
-    private javax.swing.JLabel documentosTitle;
-    private javax.swing.JLabel eventosTitle;
+    private javax.swing.JTable documentosTable;
     private javax.swing.JLabel icon;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel leftPanel;
-    private javax.swing.JLabel noAulasText;
-    private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAulas;
     // End of variables declaration//GEN-END:variables
 
-    private void setBorder(Border createEmptyBorder) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

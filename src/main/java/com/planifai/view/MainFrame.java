@@ -1,5 +1,8 @@
 package com.planifai.view;
 
+import com.planifai.controller.AulaController;
+import com.planifai.controller.DocumentoController;
+import com.planifai.controller.EventoController;
 import com.planifai.model.Aula;
 import com.planifai.service.AulaService;
 import java.awt.Dimension;
@@ -12,7 +15,9 @@ import java.awt.Insets;
 import java.util.List;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
+import com.planifai.model.Documento;
 import com.planifai.model.Evento;
+import com.planifai.service.DocumentoService;
 import com.planifai.service.EventoService;
 import java.awt.Window;
 
@@ -21,12 +26,13 @@ import java.awt.Window;
  * aplicación PlanifAI. Esta clase extiende javax.swing.JFrame e implementa el
  * interfaz AulaAddedListener.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class MainFrame extends javax.swing.JFrame implements AulaListener {
 
-    private AulaService aulaService;
-    private EventoService eventoService;
+    private AulaController aulaController;
+    private EventoController eventoController;
+    private DocumentoController documentoController;
     private AulaView aulaView;
     private boolean[] panelesCargados;
     private static final int MAX_AULAS = 4;
@@ -52,37 +58,39 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         setIconImage(icon);
         setTitle("PlanifAI");
 
-        aulaService = new AulaService();
+        aulaController = new AulaController(new AulaService());
+        eventoController = new EventoController(new EventoService());
+        documentoController = new DocumentoController(new DocumentoService());
+
         aulaView = new AulaView();
+
         panelesCargados = new boolean[4];
         for (int i = 0; i < panelesCargados.length; i++) {
             panelesCargados[i] = false;
         }
 
         cargarAulas();
+        cargarEventos();
+        cargarDocumentos();
     }
 
     /**
-     * Carga las aulas desde el servicio de base de datos y actualiza la
+     * Carga las aulas desde el controlador y actualiza el panel de aulas en la
      * interfaz de usuario. Si no hay aulas disponibles, se muestra un mensaje
      * correspondiente. Se limita el número de aulas a mostrar según la
      * constante MAX_AULAS.
      */
     public void cargarAulas() {
-        List<Aula> aulas = aulaService.getAulas();
+        List<Aula> aulas = aulaController.obtenerAulas();
 
         aulasPanel.removeAll();
 
-        // Si no hay aulas, mostrar el mensaje correspondiente
         if (aulas.isEmpty()) {
-           // noAulasText.setVisible(true);
-            //aulasPanel.add(noAulasText);
             aulasPanel.revalidate();
             aulasPanel.repaint();
             return;
         }
 
-       // noAulasText.setVisible(false);
         aulasPanel.setBackground(Color.white);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,41 +112,82 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         aulasPanel.repaint(); // Redibujar el panel
     }
 
-    /*public void cargarEventos() {
-    List<Evento> eventos = eventoService.getEventos(); // Suponiendo que tienes un servicio para eventos
+    /**
+     * Carga los eventos desde el controlador y actualiza el panel de eventos en
+     * la interfaz de usuario. Si no hay eventos disponibles, se muestra un
+     * mensaje correspondiente.
+     */
+    public void cargarEventos() {
+        List<Evento> eventos = eventoController.obtenerEventos(); // Obtener eventos desde el controlador
 
-    eventsPanel.removeAll();
+        eventosPanel.removeAll();
 
-    // Si no hay eventos, mostrar el mensaje correspondiente
-    if (eventos.isEmpty()) {
-        noEventosText.setVisible(true);
-        eventosPanel.add(noEventosText);
-        eventosPanel.revalidate();
-        eventosPanel.repaint();
-        return;
+        if (eventos.isEmpty()) {
+            eventosPanel.revalidate();
+            eventosPanel.repaint();
+            return;
+        }
+
+        eventosPanel.setBackground(Color.white);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.NORTH;
+
+        int numEventos = eventos.size();
+
+        for (int i = 0; i < numEventos; i++) {
+            Evento evento = eventos.get(i);
+            EventoCardTemplate card = new EventoCardTemplate(evento); // Crear un nuevo EventoCardTemplate
+            System.out.println("Evento: " + evento.getDescripcion());
+            // Aquí puedes pasar información al card si EventoCardTemplate tiene un constructor que acepte datos del evento
+
+            gbc.gridy = i;
+            eventosPanel.add(card, gbc);
+        }
+
+        eventosPanel.revalidate(); // Actualizar el panel
+        eventosPanel.repaint(); // Redibujar el panel
     }
 
-    noEventosText.setVisible(false);
-    eventosPanel.setBackground(Color.white);
+    /**
+     * Carga los documentos desde el controlador y actualiza el panel de
+     * documentos en la interfaz de usuario. Si no hay documentos disponibles,
+     * se muestra un mensaje correspondiente.
+     */
+    public void cargarDocumentos() {
+        List<Documento> documentos = documentoController.obtenerDocumentos(); // Obtener documentos desde el controlador
 
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.insets = new Insets(5, 5, 5, 5);
-    gbc.anchor = GridBagConstraints.NORTH;
+        documentosPanel.removeAll(); // Limpiar el panel de documentos
 
-    int numEventos = Math.min(eventos.size(), MAX_EVENTOS); // Asumiendo que tienes una constante similar a MAX_AULAS
+        if (documentos.isEmpty()) {
+            documentosPanel.revalidate();
+            documentosPanel.repaint();
+            return;
+        }
 
-    for (int i = 0; i < numEventos; i++) {
-        Evento evento = eventos.get(i);
-        EventoCardTemplate card = new EventoCardTemplate(evento, this); // Crea una tarjeta para el evento
+        documentosPanel.setBackground(Color.white); // Cambiar el color de fondo del panel
 
-        gbc.gridy = i; // Coloca cada tarjeta en una nueva fila
-        eventosPanel.add(card, gbc);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.NORTH;
+
+        // Recorre la lista de documentos y crea tarjetas para cada uno
+        for (int i = 0; i < documentos.size(); i++) {
+            Documento documento = documentos.get(i);
+            DocumentoSmallCardTemplate card = new DocumentoSmallCardTemplate(documento); // Crear un nuevo DocumentoCardTemplate
+
+            System.out.println("Documento: " + documento.getTitulo());
+
+            gbc.gridy = i; // Establecer la posición vertical
+            documentosPanel.add(card, gbc); // Agregar tarjeta al panel
+        }
+
+        documentosPanel.revalidate(); // Actualizar el panel
+        documentosPanel.repaint(); // Redibujar el panel
     }
-
-    eventosPanel.revalidate(); // Actualizar el panel
-    eventosPanel.repaint(); // Redibujar el panel
-}*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -168,6 +217,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         eventosPanel = new javax.swing.JPanel();
         documentosTitle = new javax.swing.JLabel();
         documentosPanel = new javax.swing.JPanel();
+        verDocumentosButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -383,7 +433,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
             .addGap(0, 869, Short.MAX_VALUE)
         );
 
-        jSeparator1.setBackground(new java.awt.Color(237, 237, 237));
+        jSeparator1.setBackground(new java.awt.Color(245, 245, 245));
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -394,17 +444,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         eventosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         eventosPanel.setBackground(new java.awt.Color(251, 251, 251));
-
-        javax.swing.GroupLayout eventosPanelLayout = new javax.swing.GroupLayout(eventosPanel);
-        eventosPanel.setLayout(eventosPanelLayout);
-        eventosPanelLayout.setHorizontalGroup(
-            eventosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        eventosPanelLayout.setVerticalGroup(
-            eventosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 307, Short.MAX_VALUE)
-        );
+        eventosPanel.setLayout(new java.awt.GridBagLayout());
 
         documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
         documentosTitle.setForeground(new java.awt.Color(51, 51, 51));
@@ -413,17 +453,22 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
+        documentosPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout documentosPanelLayout = new javax.swing.GroupLayout(documentosPanel);
-        documentosPanel.setLayout(documentosPanelLayout);
-        documentosPanelLayout.setHorizontalGroup(
-            documentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
-        );
-        documentosPanelLayout.setVerticalGroup(
-            documentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
-        );
+        verDocumentosButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
+        verDocumentosButton.setForeground(new java.awt.Color(153, 153, 153));
+        verDocumentosButton.setText("Ver todos los documentos");
+        verDocumentosButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -433,15 +478,16 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
                 .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 834, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(36, 36, 36)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(eventosTitle)
                     .addComponent(documentosTitle)
                     .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
+                    .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 382, Short.MAX_VALUE)
                 .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -456,14 +502,16 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGap(112, 112, 112)
+                .addGap(96, 96, 96)
                 .addComponent(eventosTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(31, 31, 31)
                 .addComponent(documentosTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -503,13 +551,13 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     private void verAulasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseClicked
         AulasView aulasView = new AulasView();
         aulasView.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_verAulasButtonMouseClicked
 
     private void verAulasButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseEntered
         Color color = new Color(204, 204, 204);
         verAulasButton.setForeground(color);
         verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
     }//GEN-LAST:event_verAulasButtonMouseEntered
 
     private void verAulasButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseExited
@@ -526,6 +574,25 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
             }
         }
     }//GEN-LAST:event_backgroundMouseClicked
+
+    private void verDocumentosButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseClicked
+        DocumentosView documentosView = new DocumentosView();
+        documentosView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_verDocumentosButtonMouseClicked
+
+    private void verDocumentosButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseEntered
+        Color color = new Color(204, 204, 204);
+        verDocumentosButton.setForeground(color);
+        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_verDocumentosButtonMouseEntered
+
+    private void verDocumentosButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseExited
+        Color color = new Color(153, 153, 153);
+        verDocumentosButton.setForeground(color);
+        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+    }//GEN-LAST:event_verDocumentosButtonMouseExited
 
     /**
      * @param args the command line arguments
@@ -582,6 +649,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAulas;
     private javax.swing.JLabel verAulasButton;
+    private javax.swing.JLabel verDocumentosButton;
     // End of variables declaration//GEN-END:variables
 
     @Override

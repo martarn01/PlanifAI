@@ -1,14 +1,12 @@
 package com.planifai.view;
 
+import com.planifai.model.Documento;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import com.planifai.utils.RoundedPanel;
 import java.awt.Color;
-import javax.swing.BorderFactory;
+import java.awt.Cursor;
+import java.awt.Window;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -21,7 +19,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public GeneracionDocumentoView() {
+    public GeneracionDocumentoView(Documento documento) {
         initComponents();
         // Obtener el tamaño de la pantalla
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -38,6 +36,11 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
     }
 
+    public GeneracionDocumentoView() {
+    }
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,26 +54,35 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         leftPanel = new javax.swing.JPanel();
         icon = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
+        ElemMenu1 = new javax.swing.JPanel();
+        ElemMenu2 = new javax.swing.JPanel();
+        ElemMenu3 = new javax.swing.JPanel();
         centerPanel = new javax.swing.JPanel();
         titleAulas = new javax.swing.JLabel();
         aulasPanel = new javax.swing.JPanel();
-        noAulasText = new javax.swing.JLabel();
         addClassButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
+        verAulasButton = new javax.swing.JLabel();
         rightPanel = new javax.swing.JPanel();
-        eventosTitle = new javax.swing.JLabel();
-        documentosTitle = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
+        eventosTitle = new javax.swing.JLabel();
+        eventosPanel = new javax.swing.JPanel();
+        documentosTitle = new javax.swing.JLabel();
+        documentosPanel = new javax.swing.JPanel();
+        verDocumentosButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setPreferredSize(new java.awt.Dimension(1536, 864));
+        background.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backgroundMouseClicked(evt);
+            }
+        });
 
-        leftPanel.setBackground(new java.awt.Color(243, 243, 243));
+        leftPanel.setBackground(new java.awt.Color(235, 241, 247));
 
         icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icono.png"))); // NOI18N
         icon.setToolTipText("Icono de la aplicación");
@@ -81,16 +93,66 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         title.setText("PlanifAI");
         title.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
+        ElemMenu1.setBackground(new java.awt.Color(235, 241, 247));
+
+        javax.swing.GroupLayout ElemMenu1Layout = new javax.swing.GroupLayout(ElemMenu1);
+        ElemMenu1.setLayout(ElemMenu1Layout);
+        ElemMenu1Layout.setHorizontalGroup(
+            ElemMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 149, Short.MAX_VALUE)
+        );
+        ElemMenu1Layout.setVerticalGroup(
+            ElemMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
+        ElemMenu2.setBackground(new java.awt.Color(235, 241, 247));
+
+        javax.swing.GroupLayout ElemMenu2Layout = new javax.swing.GroupLayout(ElemMenu2);
+        ElemMenu2.setLayout(ElemMenu2Layout);
+        ElemMenu2Layout.setHorizontalGroup(
+            ElemMenu2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 149, Short.MAX_VALUE)
+        );
+        ElemMenu2Layout.setVerticalGroup(
+            ElemMenu2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
+        ElemMenu3.setBackground(new java.awt.Color(235, 241, 247));
+
+        javax.swing.GroupLayout ElemMenu3Layout = new javax.swing.GroupLayout(ElemMenu3);
+        ElemMenu3.setLayout(ElemMenu3Layout);
+        ElemMenu3Layout.setHorizontalGroup(
+            ElemMenu3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 149, Short.MAX_VALUE)
+        );
+        ElemMenu3Layout.setVerticalGroup(
+            ElemMenu3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(ElemMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(ElemMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(ElemMenu3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,10 +164,18 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
                     .addGroup(leftPanelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ElemMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ElemMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ElemMenu3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         centerPanel.setBackground(new java.awt.Color(255, 255, 255));
+        centerPanel.setMaximumSize(new java.awt.Dimension(837, 896));
+        centerPanel.setMinimumSize(new java.awt.Dimension(837, 896));
 
         titleAulas.setFont(new java.awt.Font("Lato", 1, 32)); // NOI18N
         titleAulas.setForeground(new java.awt.Color(51, 51, 51));
@@ -115,27 +185,13 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
         aulasPanel.setBackground(new java.awt.Color(251, 251, 251));
         aulasPanel.setForeground(new java.awt.Color(236, 236, 236));
-
-        noAulasText.setFont(new java.awt.Font("Lato", 1, 24)); // NOI18N
-        noAulasText.setForeground(new java.awt.Color(216, 216, 216));
-        noAulasText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        noAulasText.setText("Aún no has añadido ninguna aula");
-
-        javax.swing.GroupLayout aulasPanelLayout = new javax.swing.GroupLayout(aulasPanel);
-        aulasPanel.setLayout(aulasPanelLayout);
-        aulasPanelLayout.setHorizontalGroup(
-            aulasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(aulasPanelLayout.createSequentialGroup()
-                .addComponent(noAulasText, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
-        );
-        aulasPanelLayout.setVerticalGroup(
-            aulasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(noAulasText, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
-        );
+        aulasPanel.setLayout(new java.awt.GridBagLayout());
 
         addClassButton.setBackground(new java.awt.Color(51, 51, 51));
         addClassButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addClassButtonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 addClassButtonMouseEntered(evt);
             }
@@ -163,106 +219,103 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
             .addGroup(addClassButtonLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(addAulaText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        verAulasButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
+        verAulasButton.setForeground(new java.awt.Color(153, 153, 153));
+        verAulasButton.setText("Ver todas las aulas");
+        verAulasButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                verAulasButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                verAulasButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                verAulasButtonMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
         centerPanel.setLayout(centerPanelLayout);
         centerPanelLayout.setHorizontalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addGap(65, 65, 65)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(centerPanelLayout.createSequentialGroup()
+                            .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                            .addComponent(verAulasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         centerPanelLayout.setVerticalGroup(
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(titleAulas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(65, 65, 65)
+                .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verAulasButton))
+                .addGap(35, 35, 35)
                 .addComponent(aulasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(42, 42, 42)
                 .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         rightPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        eventosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 24)); // NOI18N
-        eventosTitle.setForeground(new java.awt.Color(51, 51, 51));
-        eventosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        eventosTitle.setText("Próximos eventos");
-        eventosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 24)); // NOI18N
-        documentosTitle.setForeground(new java.awt.Color(51, 51, 51));
-        documentosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentosTitle.setText("Mis documentos");
-        documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
-        );
-
-        jPanel2.setBackground(new java.awt.Color(251, 251, 251));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 307, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
         rightPanel.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(rightPanelLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(eventosTitle)
-                            .addComponent(documentosTitle)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(86, Short.MAX_VALUE))
+            .addGap(0, 633, Short.MAX_VALUE)
         );
         rightPanelLayout.setVerticalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(eventosTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(documentosTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+            .addGap(0, 869, Short.MAX_VALUE)
         );
 
-        jSeparator1.setBackground(new java.awt.Color(237, 237, 237));
+        jSeparator1.setBackground(new java.awt.Color(245, 245, 245));
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        eventosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
+        eventosTitle.setForeground(new java.awt.Color(51, 51, 51));
+        eventosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        eventosTitle.setText("Próximos eventos");
+        eventosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        eventosPanel.setBackground(new java.awt.Color(251, 251, 251));
+        eventosPanel.setLayout(new java.awt.GridBagLayout());
+
+        documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
+        documentosTitle.setForeground(new java.awt.Color(51, 51, 51));
+        documentosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        documentosTitle.setText("Mis documentos");
+        documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
+        documentosPanel.setLayout(new java.awt.GridBagLayout());
+
+        verDocumentosButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
+        verDocumentosButton.setForeground(new java.awt.Color(153, 153, 153));
+        verDocumentosButton.setText("Ver todos los documentos");
+        verDocumentosButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                verDocumentosButtonMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -271,49 +324,114 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 834, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(eventosTitle)
+                    .addComponent(documentosTitle)
+                    .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(centerPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addGap(96, 96, 96)
+                .addComponent(eventosTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(documentosTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1591, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 2087, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 896, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addClassButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseClicked
+    
+    }//GEN-LAST:event_addClassButtonMouseClicked
+
     private void addClassButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseEntered
-        Color customColor = new Color(51, 51, 51);
-        addClassButton.setBackground(Color.white);
-        addAulaText.setForeground(customColor);
-        addClassButton.setBorder(LineBorder.createBlackLineBorder());
+
     }//GEN-LAST:event_addClassButtonMouseEntered
 
     private void addClassButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseExited
-        Color customColor = new Color(51, 51, 51);
-        addClassButton.setBackground(customColor);
-        addAulaText.setForeground(Color.white);
+
     }//GEN-LAST:event_addClassButtonMouseExited
+
+    private void verAulasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseClicked
+        AulasView aulasView = new AulasView();
+        aulasView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_verAulasButtonMouseClicked
+
+    private void verAulasButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseEntered
+        Color color = new Color(204, 204, 204);
+        verAulasButton.setForeground(color);
+        verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_verAulasButtonMouseEntered
+
+    private void verAulasButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verAulasButtonMouseExited
+        Color color = new Color(153, 153, 153);
+        verAulasButton.setForeground(color);
+        verAulasButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_verAulasButtonMouseExited
+
+    private void verDocumentosButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseClicked
+        DocumentosView documentosView = new DocumentosView();
+        documentosView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_verDocumentosButtonMouseClicked
+
+    private void verDocumentosButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseEntered
+        Color color = new Color(204, 204, 204);
+        verDocumentosButton.setForeground(color);
+        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_verDocumentosButtonMouseEntered
+
+    private void verDocumentosButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseExited
+        Color color = new Color(153, 153, 153);
+        verDocumentosButton.setForeground(color);
+        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_verDocumentosButtonMouseExited
+
+    private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
+        System.out.println("Mouse clicked in MainFrame");
+        for (Window window : Window.getWindows()) {
+            if (window != this && window.isVisible()) {
+                window.dispose(); // Cierra la ventana
+            }
+        }
+    }//GEN-LAST:event_backgroundMouseClicked
 
     /**
      * @param args the command line arguments
@@ -352,22 +470,26 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ElemMenu1;
+    private javax.swing.JPanel ElemMenu2;
+    private javax.swing.JPanel ElemMenu3;
     private javax.swing.JLabel addAulaText;
     private javax.swing.JPanel addClassButton;
     private javax.swing.JPanel aulasPanel;
     private javax.swing.JPanel background;
     private javax.swing.JPanel centerPanel;
+    private javax.swing.JPanel documentosPanel;
     private javax.swing.JLabel documentosTitle;
+    private javax.swing.JPanel eventosPanel;
     private javax.swing.JLabel eventosTitle;
     private javax.swing.JLabel icon;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel leftPanel;
-    private javax.swing.JLabel noAulasText;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAulas;
+    private javax.swing.JLabel verAulasButton;
+    private javax.swing.JLabel verDocumentosButton;
     // End of variables declaration//GEN-END:variables
 
     private void setBorder(Border createEmptyBorder) {

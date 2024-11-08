@@ -18,14 +18,13 @@ public class AulaCardTemplate extends javax.swing.JPanel {
     private MenuGestion menuDesplegable;
     private Aula aula;
     private AulaView aulaView;
-    private Color colorHover;
-    private Color colorCard;
+    private static final Color COLOR_HOVER = new Color(215, 197, 236);
+    private static final Color COLOR_CARD = new Color(227, 206, 253);
+
     private TipoElemento tipoElemento;
 
     public AulaCardTemplate(Aula aula, AulaListener aulaListener) {
         initComponents();
-        colorHover = new Color(215, 197, 236);
-        colorCard = new Color(227, 206, 253);;
         this.aula = aula;
 
         menuDesplegable = new MenuGestion(tipoElemento.AULA, aula.getIdAula());
@@ -154,12 +153,12 @@ public class AulaCardTemplate extends javax.swing.JPanel {
     }//GEN-LAST:event_formMouseClicked
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        aulaCard.setBackground(colorHover);
+        aulaCard.setBackground(COLOR_HOVER);
         aulaCard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
-        aulaCard.setBackground(colorCard);
+        aulaCard.setBackground(COLOR_CARD);
         aulaCard.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_formMouseExited
 
