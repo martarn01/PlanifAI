@@ -57,6 +57,7 @@ public class DocumentosView extends javax.swing.JFrame {
 
         // Cargar documentos en la tabla
         cargarDocumentos();
+  
     }
 
     /**
@@ -135,8 +136,8 @@ public class DocumentosView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         documentosTable = new javax.swing.JTable();
         titleAulas = new javax.swing.JLabel();
-        addClassButton = new javax.swing.JPanel();
-        addAulaText = new javax.swing.JLabel();
+        generarDocumentoButton = new javax.swing.JPanel();
+        generarDocumentoText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -218,35 +219,38 @@ public class DocumentosView extends javax.swing.JFrame {
         titleAulas.setText("Mis documentos");
         titleAulas.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        addClassButton.setBackground(new java.awt.Color(51, 51, 51));
-        addClassButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        generarDocumentoButton.setBackground(new java.awt.Color(51, 51, 51));
+        generarDocumentoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                generarDocumentoButtonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addClassButtonMouseEntered(evt);
+                generarDocumentoButtonMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                addClassButtonMouseExited(evt);
+                generarDocumentoButtonMouseExited(evt);
             }
         });
 
-        addAulaText.setFont(new java.awt.Font("Lato Semibold", 1, 16)); // NOI18N
-        addAulaText.setForeground(new java.awt.Color(255, 255, 255));
-        addAulaText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        addAulaText.setText("Generar documento");
+        generarDocumentoText.setFont(new java.awt.Font("Lato Semibold", 1, 16)); // NOI18N
+        generarDocumentoText.setForeground(new java.awt.Color(255, 255, 255));
+        generarDocumentoText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        generarDocumentoText.setText("Generar documento");
 
-        javax.swing.GroupLayout addClassButtonLayout = new javax.swing.GroupLayout(addClassButton);
-        addClassButton.setLayout(addClassButtonLayout);
-        addClassButtonLayout.setHorizontalGroup(
-            addClassButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addClassButtonLayout.createSequentialGroup()
+        javax.swing.GroupLayout generarDocumentoButtonLayout = new javax.swing.GroupLayout(generarDocumentoButton);
+        generarDocumentoButton.setLayout(generarDocumentoButtonLayout);
+        generarDocumentoButtonLayout.setHorizontalGroup(
+            generarDocumentoButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generarDocumentoButtonLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(addAulaText, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(generarDocumentoText, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        addClassButtonLayout.setVerticalGroup(
-            addClassButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addClassButtonLayout.createSequentialGroup()
+        generarDocumentoButtonLayout.setVerticalGroup(
+            generarDocumentoButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generarDocumentoButtonLayout.createSequentialGroup()
                 .addGap(0, 6, Short.MAX_VALUE)
-                .addComponent(addAulaText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(generarDocumentoText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
@@ -256,7 +260,7 @@ public class DocumentosView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerPanelLayout.createSequentialGroup()
                 .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generarDocumentoButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(titleAulas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1112, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -270,7 +274,7 @@ public class DocumentosView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(addClassButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(generarDocumentoButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(131, Short.MAX_VALUE))
         );
 
@@ -304,18 +308,18 @@ public class DocumentosView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addClassButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseEntered
+    private void generarDocumentoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseEntered
         Color customColor = new Color(51, 51, 51);
-        addClassButton.setBackground(Color.white);
-        addAulaText.setForeground(customColor);
-        addClassButton.setBorder(LineBorder.createBlackLineBorder());
-    }//GEN-LAST:event_addClassButtonMouseEntered
+        generarDocumentoButton.setBackground(Color.white);
+        generarDocumentoText.setForeground(customColor);
+        generarDocumentoButton.setBorder(LineBorder.createBlackLineBorder());
+    }//GEN-LAST:event_generarDocumentoButtonMouseEntered
 
-    private void addClassButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseExited
+    private void generarDocumentoButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseExited
         Color customColor = new Color(51, 51, 51);
-        addClassButton.setBackground(customColor);
-        addAulaText.setForeground(Color.white);
-    }//GEN-LAST:event_addClassButtonMouseExited
+        generarDocumentoButton.setBackground(customColor);
+        generarDocumentoText.setForeground(Color.white);
+    }//GEN-LAST:event_generarDocumentoButtonMouseExited
 
     private void titleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseEntered
         title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -329,6 +333,11 @@ public class DocumentosView extends javax.swing.JFrame {
         MainFrame mainframe = new MainFrame();
         mainframe.setVisible(true);
     }//GEN-LAST:event_titleMouseClicked
+
+    private void generarDocumentoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseClicked
+        GeneracionDocumentoView generacionDocumento=new GeneracionDocumentoView();
+        generacionDocumento.setVisible(true);
+    }//GEN-LAST:event_generarDocumentoButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -369,11 +378,11 @@ public class DocumentosView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel addAulaText;
-    private javax.swing.JPanel addClassButton;
     private javax.swing.JPanel background;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JTable documentosTable;
+    private javax.swing.JPanel generarDocumentoButton;
+    private javax.swing.JLabel generarDocumentoText;
     private javax.swing.JLabel icon;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel leftPanel;

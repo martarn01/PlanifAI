@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.planifai.view.MainFrameTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 2.764 s <<< FAILURE! -- in com.planifai.view.MainFrameTest
-com.planifai.view.MainFrameTest.testCargarAulas -- Time elapsed: 1.139 s <<< FAILURE!
+Tests run: 5, Failures: 4, Errors: 1, Skipped: 0, Time elapsed: 3.437 s <<< FAILURE! -- in com.planifai.view.MainFrameTest
+com.planifai.view.MainFrameTest.testCargarAulas -- Time elapsed: 1.469 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
 	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
@@ -11,7 +11,7 @@ org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-com.planifai.view.MainFrameTest.testCargarEventos -- Time elapsed: 0.409 s <<< FAILURE!
+com.planifai.view.MainFrameTest.testCargarEventos -- Time elapsed: 0.986 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
 	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
@@ -20,7 +20,7 @@ org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-com.planifai.view.MainFrameTest.testMain -- Time elapsed: 0.219 s <<< FAILURE!
+com.planifai.view.MainFrameTest.testMain -- Time elapsed: 0.344 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
 	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
@@ -29,16 +29,35 @@ org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-com.planifai.view.MainFrameTest.testCargarDocumentos -- Time elapsed: 0.555 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: The test case is a prototype.
-	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
-	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
-	at com.planifai.view.MainFrameTest.testCargarDocumentos(MainFrameTest.java:72)
+com.planifai.view.MainFrameTest.testCargarDocumentos -- Time elapsed: 0.007 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.Map.get(Object)" because "defaults" is null
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.validate(NimbusStyle.java:303)
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.getValues(NimbusStyle.java:819)
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.getInsets(NimbusStyle.java:492)
+	at java.desktop/javax.swing.plaf.synth.SynthStyle.installDefaults(SynthStyle.java:915)
+	at java.desktop/javax.swing.plaf.synth.SynthLookAndFeel.updateStyle(SynthLookAndFeel.java:297)
+	at java.desktop/javax.swing.plaf.synth.SynthPanelUI.updateStyle(SynthPanelUI.java:122)
+	at java.desktop/javax.swing.plaf.synth.SynthPanelUI.installDefaults(SynthPanelUI.java:106)
+	at java.desktop/javax.swing.plaf.basic.BasicPanelUI.installUI(BasicPanelUI.java:67)
+	at java.desktop/javax.swing.plaf.synth.SynthPanelUI.installUI(SynthPanelUI.java:68)
+	at java.desktop/javax.swing.JComponent.setUI(JComponent.java:740)
+	at java.desktop/javax.swing.JPanel.setUI(JPanel.java:153)
+	at java.desktop/javax.swing.JPanel.updateUI(JPanel.java:129)
+	at java.desktop/javax.swing.JPanel.<init>(JPanel.java:89)
+	at java.desktop/javax.swing.JPanel.<init>(JPanel.java:112)
+	at java.desktop/javax.swing.JPanel.<init>(JPanel.java:120)
+	at java.desktop/javax.swing.JRootPane.createGlassPane(JRootPane.java:509)
+	at java.desktop/javax.swing.JRootPane.<init>(JRootPane.java:336)
+	at java.desktop/javax.swing.JFrame.createRootPane(JFrame.java:279)
+	at java.desktop/javax.swing.JFrame.frameInit(JFrame.java:258)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:181)
+	at com.planifai.view.MainFrame.<init>(MainFrame.java:45)
+	at com.planifai.view.MainFrameTest.setUp(MainFrameTest.java:31)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-com.planifai.view.MainFrameTest.testOnAulaChanged -- Time elapsed: 0.392 s <<< FAILURE!
+com.planifai.view.MainFrameTest.testOnAulaChanged -- Time elapsed: 0.585 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: The test case is a prototype.
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
 	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)

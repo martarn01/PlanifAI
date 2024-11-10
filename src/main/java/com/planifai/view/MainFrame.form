@@ -59,10 +59,10 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="eventosTitle" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="documentosTitle" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="eventosPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="documentosPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="verDocumentosButton" alignment="0" min="-2" pref="266" max="-2" attributes="0"/>
+                      <Component id="documentosTitle" alignment="0" min="-2" pref="258" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="382" max="32767" attributes="0"/>
                   <Component id="rightPanel" min="-2" max="-2" attributes="0"/>
@@ -534,7 +534,7 @@
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Mis documentos"/>
+            <Property name="text" type="java.lang.String" value="Ducumentos recientes"/>
             <Property name="verticalAlignment" type="int" value="3"/>
           </Properties>
         </Component>

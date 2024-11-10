@@ -51,7 +51,7 @@ public class DocumentoService {
      */
     public List<Documento> getDocumentos() {
         List<Documento> documentos = new ArrayList<>();
-        String sql = "SELECT id_documento, titulo, contenido, fecha_creacion, tipo_documento, id_aula, id_evento FROM Documentos";
+        String sql = "SELECT * FROM Documentos ORDER BY fecha_creacion DESC";
 
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {

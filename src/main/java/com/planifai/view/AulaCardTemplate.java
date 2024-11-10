@@ -150,6 +150,8 @@ public class AulaCardTemplate extends javax.swing.JPanel {
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         aulaView.setVisible(true);
+        MainFrame mainframe = new MainFrame();
+        mainframe.dispose();
     }//GEN-LAST:event_formMouseClicked
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered

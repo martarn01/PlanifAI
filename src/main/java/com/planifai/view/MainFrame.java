@@ -449,7 +449,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         documentosTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
         documentosTitle.setForeground(new java.awt.Color(51, 51, 51));
         documentosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentosTitle.setText("Mis documentos");
+        documentosTitle.setText("Ducumentos recientes");
         documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
@@ -483,10 +483,10 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
                 .addGap(18, 18, 18)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(eventosTitle)
-                    .addComponent(documentosTitle)
                     .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(documentosTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 382, Short.MAX_VALUE)
                 .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))

@@ -12,10 +12,12 @@ public class DocumentoSmallCardTemplate extends javax.swing.JPanel {
 
     private static final Color COLOR_HOVER = new Color(240, 240, 240);
     private static final Color COLOR_CARD = new Color(255, 255, 255);
+    Documento documentoCard;
 
     public DocumentoSmallCardTemplate(Documento documento) {
         initComponents();
-        configurarDocumento(documento); // Configurar el documento al crear la tarjeta
+        configurarDocumento(documento);
+        documentoCard = documento;
     }
 
     /**
@@ -75,9 +77,9 @@ public class DocumentoSmallCardTemplate extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(nombreDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,8 +103,10 @@ public class DocumentoSmallCardTemplate extends javax.swing.JPanel {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));    }//GEN-LAST:event_formMouseExited
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        DocumentosView documentosView = new DocumentosView();
-        documentosView.setVisible(true);
+        GeneracionDocumentoView generacionDocumento = new GeneracionDocumentoView(documentoCard);
+        generacionDocumento.setVisible(true);
+        MainFrame mainframe = new MainFrame();
+        mainframe.dispose();
     }//GEN-LAST:event_formMouseClicked
 
 
