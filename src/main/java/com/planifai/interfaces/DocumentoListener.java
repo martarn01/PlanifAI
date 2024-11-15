@@ -1,10 +1,14 @@
 package com.planifai.interfaces;
 
 /**
+ * Listener para eventos de eliminación de un evento.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public interface DocumentoListener {
-        void onDocumentoDeleted();
 
+    /**
+     * Método invocado cuando un evento ha sido eliminado.
+     */
+    void onDocumentoDeleted();
 }

@@ -1,11 +1,8 @@
 package com.planifai.view;
 
 import com.planifai.model.Documento;
-import com.planifai.view.MenuGestion.TipoElemento;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.text.SimpleDateFormat;
 
 /**
  *
@@ -13,23 +10,14 @@ import java.text.SimpleDateFormat;
  */
 public class DocumentoCardTemplate extends javax.swing.JPanel {
 
-   private MenuGestion menuDesplegable;
-    private Documento documento;
-    private static final Color COLOR_HOVER = new Color(215, 197, 236);
-    private static final Color COLOR_CARD = new Color(227, 206, 253);
+    private static final Color COLOR_HOVER = new Color(240, 240, 240);
+    private static final Color COLOR_CARD = new Color(255, 255, 255);
+    Documento documentoCard;
 
-    /**
-     * Constructor de DocumentoCardTemplate.
-     *
-     * @param documento El documento que será mostrado en la tarjeta.
-     */
     public DocumentoCardTemplate(Documento documento) {
         initComponents();
-        this.documento = documento;
-        menuDesplegable = new MenuGestion(TipoElemento.DOCUMENTO, documento.getIdDocumento());
-        configurarDocumento(documento); // Configura el documento en la tarjeta
-        
-        this.setPreferredSize(new Dimension(1119, 69));
+        configurarDocumento(documento);
+        documentoCard = documento;
     }
 
     /**
@@ -40,9 +28,6 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
      */
     private void configurarDocumento(Documento documento) {
         nombreDocumento.setText(documento.getTitulo());
-        fechaCreacion.setText(new SimpleDateFormat("dd/MM/yyyy").format(documento.getFechaCreacion()));
-        tipoDocumento.setText(documento.getTipoDocumento());
-        // Agrega aquí más campos si es necesario, como el evento o aula asociados
     }
 
     /**
@@ -54,128 +39,79 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        background = new javax.swing.JPanel();
-        img = new javax.swing.JPanel();
+        documento = new javax.swing.JPanel();
         nombreDocumento = new javax.swing.JLabel();
-        fechaCreacion = new javax.swing.JLabel();
-        eventoAsociado = new javax.swing.JLabel();
-        aulaAsociada = new javax.swing.JLabel();
-        tipoDocumento = new javax.swing.JLabel();
-        menu = new javax.swing.JLabel();
 
-        background.setBackground(new java.awt.Color(255, 255, 255));
-
-        img.setBackground(new java.awt.Color(230, 230, 144));
-        img.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 5));
-        img.setLayout(new java.awt.GridBagLayout());
-
-        nombreDocumento.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        nombreDocumento.setForeground(new java.awt.Color(102, 102, 102));
-        nombreDocumento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nombreDocumento.setText("NombreDocumento");
-
-        fechaCreacion.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        fechaCreacion.setForeground(new java.awt.Color(102, 102, 102));
-        fechaCreacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        fechaCreacion.setText("Fecha de creación");
-
-        eventoAsociado.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        eventoAsociado.setForeground(new java.awt.Color(102, 102, 102));
-        eventoAsociado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        eventoAsociado.setText("Evento asociado");
-
-        aulaAsociada.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        aulaAsociada.setForeground(new java.awt.Color(102, 102, 102));
-        aulaAsociada.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        aulaAsociada.setText("Aula asociada");
-
-        tipoDocumento.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        tipoDocumento.setForeground(new java.awt.Color(102, 102, 102));
-        tipoDocumento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tipoDocumento.setText("Tipo de documento");
-
-        menu.setBackground(new java.awt.Color(102, 255, 102));
-        menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu1.png"))); // NOI18N
-        menu.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        menu.addMouseListener(new java.awt.event.MouseAdapter() {
+        setBackground(new java.awt.Color(255, 255, 255));
+        addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuMouseClicked(evt);
+                formMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                menuMouseEntered(evt);
+                formMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuMouseExited(evt);
+                formMouseExited(evt);
             }
         });
 
-        javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
-        background.setLayout(backgroundLayout);
-        backgroundLayout.setHorizontalGroup(
-            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(nombreDocumento)
-                .addGap(50, 50, 50)
-                .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(eventoAsociado, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(aulaAsociada, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(tipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+        documento.setBackground(new java.awt.Color(230, 230, 144));
+
+        javax.swing.GroupLayout documentoLayout = new javax.swing.GroupLayout(documento);
+        documento.setLayout(documentoLayout);
+        documentoLayout.setHorizontalGroup(
+            documentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 54, Short.MAX_VALUE)
         );
-        backgroundLayout.setVerticalGroup(
-            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(nombreDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(eventoAsociado, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(aulaAsociada, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(tipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+        documentoLayout.setVerticalGroup(
+            documentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
+
+        nombreDocumento.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
+        nombreDocumento.setText("Nombre del documento");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(nombreDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(nombreDocumento)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
-        int x = evt.getXOnScreen();
-        int y = evt.getYOnScreen();
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        this.setBackground(COLOR_HOVER);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_formMouseEntered
 
-        menuDesplegable.showMenu(x, y, documento.getIdDocumento());
-    }//GEN-LAST:event_menuMouseClicked
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+        this.setBackground(COLOR_CARD);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));    }//GEN-LAST:event_formMouseExited
 
-    private void menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseEntered
-        menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_menuMouseEntered
-
-    private void menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseExited
-        menu.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_menuMouseExited
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        GeneracionDocumentoView generacionDocumento = new GeneracionDocumentoView(documentoCard);
+        generacionDocumento.setVisible(true);
+        MainFrame mainframe = new MainFrame();
+        mainframe.dispose();
+    }//GEN-LAST:event_formMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel aulaAsociada;
-    private javax.swing.JPanel background;
-    private javax.swing.JLabel eventoAsociado;
-    private javax.swing.JLabel fechaCreacion;
-    private javax.swing.JPanel img;
-    private javax.swing.JLabel menu;
+    private javax.swing.JPanel documento;
     private javax.swing.JLabel nombreDocumento;
-    private javax.swing.JLabel tipoDocumento;
     // End of variables declaration//GEN-END:variables
 }

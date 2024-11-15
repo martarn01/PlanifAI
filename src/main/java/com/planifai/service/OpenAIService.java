@@ -4,13 +4,18 @@ import com.planifai.utils.OpenAIClient;
 import java.io.IOException;
 
 /**
+ * Servicio para interactuar con la API de OpenAI, usando un cliente de OpenAI
+ * para generar documentos basados en prompts de entrada.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class OpenAIService {
 
     private OpenAIClient openAIClient;
 
+    /**
+     * Constructor que inicializa el cliente de OpenAI.
+     */
     public OpenAIService() {
         openAIClient = new OpenAIClient();
 

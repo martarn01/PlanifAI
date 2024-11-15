@@ -30,7 +30,7 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         menuDesplegable = new MenuGestion(tipoElemento.AULA, aula.getIdAula());
         menuDesplegable.setAulaListener(aulaListener); // Establece el listener
 
-        aulaView = new AulaView();
+        aulaView = new AulaView(aula);
         cargarDatosAula();
 
     }

@@ -10,8 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- *
- * @author marta
+ * Clase OpenAIClient para interactuar con la API de OpenAI y enviar prompts.
+ * Esta clase permite enviar solicitudes a la API de OpenAI utilizando el modelo GPT y 
+ * recibir respuestas generadas. La autenticación se gestiona a través de una clave de API 
+ * almacenada como variable de entorno.
+ * 
+ * @author Marta Rosado Nabais
  */
 public class OpenAIClient {
 

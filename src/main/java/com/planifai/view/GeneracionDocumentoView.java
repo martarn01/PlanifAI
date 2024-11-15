@@ -1,7 +1,7 @@
 package com.planifai.view;
 
+import com.planifai.controller.OpenAIController;
 import com.planifai.model.Documento;
-import com.planifai.service.OpenAIService;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -14,15 +14,29 @@ import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 /**
+ * La clase GeneracionDocumentoView es una vista de la aplicación que permite la
+ * generación de documentos educativos. Proporciona una interfaz gráfica para
+ * que el usuario seleccione parámetros como nivel educativo, asignatura, tema y
+ * genere prompts personalizados para la creación de documentos como
+ * evaluaciones y planes de clase mediante un servicio de OpenAI.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class GeneracionDocumentoView extends javax.swing.JFrame {
 
     private HashMap<String, String[]> cursosPorNivel;
-    private OpenAIService openAIService;
+    private OpenAIController openAIController;
+
     private static final Color COLOR_CUSTOM = new Color(51, 51, 51);
 
+    /**
+     * Constructor que inicializa la interfaz de usuario con un documento
+     * existente. Configura el tamaño de la ventana, el ícono, el título y llena
+     * los campos con la información del documento.
+     *
+     * @param documento El documento preexistente que se va a visualizar o
+     * editar en la interfaz.
+     */
     public GeneracionDocumentoView(Documento documento) {
         initComponents();
 
@@ -39,7 +53,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         setIconImage(icon);
         setTitle("PlanifAI");
 
-        openAIService = new OpenAIService();
+        openAIController=new OpenAIController();
 
         // Inicializamos el mapa con niveles educativos y sus cursos correspondientes
         cursosPorNivel = new HashMap<>();
@@ -55,7 +69,48 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         documentoTitle.setText(documento.getTitulo());
         DocumentoTextArea.setText(documento.getContenido());
     }
+    
+     /**
+     * Constructor alternativo que inicializa la vista sin un documento
+     * preexistente. Configura la ventana de forma similar al otro constructor,
+     * pero sin cargar contenido de documento.
+     */
+    public GeneracionDocumentoView() {
+        initComponents();
 
+        // Obtener el tamaño de la pantalla
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Ajustar el tamaño de la ventana al tamaño de la pantalla
+        this.setSize(screenSize.width, screenSize.height);
+        this.setExtendedState(GeneracionDocumentoView.MAXIMIZED_BOTH);//maximizada por defecto
+        this.setResizable(false);
+    
+         openAIController=new OpenAIController();
+         
+        // Cambiar el ícono de la ventana
+        Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
+        setIconImage(icon);
+        setTitle("PlanifAI");
+
+        // Inicializamos el mapa con niveles educativos y sus cursos correspondientes
+        cursosPorNivel = new HashMap<>();
+        cursosPorNivel.put("Educación Infantil", new String[]{"Primer ciclo (0-3 años)", "Segundo ciclo (3-6 años)"});
+        cursosPorNivel.put("Educación Primaria", new String[]{"1º Primaria", "2º Primaria", "3º Primaria", "4º Primaria", "5º Primaria", "6º Primaria"});
+        cursosPorNivel.put("Educación Secundaria Obligatoria", new String[]{"1º ESO", "2º ESO", "3º ESO", "4º ESO"});
+        cursosPorNivel.put("Bachillerato", new String[]{"1º Bachillerato", "2º Bachillerato"});
+        cursosPorNivel.put("Formación Profesional", new String[]{"Grado Medio", "Grado Superior"});
+        cursosPorNivel.put("Educación Universitaria", new String[]{"Grado", "Máster", "Doctorado"});
+
+        nivelEducativoBox.addActionListener(evt -> actualizarCursos());
+    }
+
+    /**
+     * Método para actualizar los cursos en el JComboBox "cursoBox" en función
+     * del nivel educativo seleccionado. Cuando se selecciona un nivel
+     * educativo, este método obtiene los cursos correspondientes del mapa y los
+     * muestra en el JComboBox de cursos.
+     */
     private void actualizarCursos() {
         // Obtener el nivel educativo seleccionado
         String nivelSeleccionado = nivelEducativoBox.getSelectedItem().toString();
@@ -74,6 +129,15 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método para generar un prompt basado en los datos introducidos por el
+     * usuario en la interfaz. Comprueba que todos los campos necesarios estén
+     * rellenados y genera un prompt adecuado para la creación de un documento
+     * educativo (evaluación o plan de clase).
+     *
+     * @return El prompt generado, o una cadena vacía si falta algún campo
+     * requerido.
+     */
     private String generarPrompt() {
         // Verificar que todos los campos estén rellenos
         if (asignaturaField.getText().trim().isEmpty()
@@ -112,34 +176,16 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         return prompt;
     }
 
-    public GeneracionDocumentoView() {
-        initComponents();
-
-        // Obtener el tamaño de la pantalla
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Ajustar el tamaño de la ventana al tamaño de la pantalla
-        this.setSize(screenSize.width, screenSize.height);
-        this.setExtendedState(GeneracionDocumentoView.MAXIMIZED_BOTH);//maximizada por defecto
-        this.setResizable(false);
-
-        // Cambiar el ícono de la ventana
-        Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
-        setIconImage(icon);
-        setTitle("PlanifAI");
-
-        openAIService = new OpenAIService();
-
-        // Inicializamos el mapa con niveles educativos y sus cursos correspondientes
-        cursosPorNivel = new HashMap<>();
-        cursosPorNivel.put("Educación Infantil", new String[]{"Primer ciclo (0-3 años)", "Segundo ciclo (3-6 años)"});
-        cursosPorNivel.put("Educación Primaria", new String[]{"1º Primaria", "2º Primaria", "3º Primaria", "4º Primaria", "5º Primaria", "6º Primaria"});
-        cursosPorNivel.put("Educación Secundaria Obligatoria", new String[]{"1º ESO", "2º ESO", "3º ESO", "4º ESO"});
-        cursosPorNivel.put("Bachillerato", new String[]{"1º Bachillerato", "2º Bachillerato"});
-        cursosPorNivel.put("Formación Profesional", new String[]{"Grado Medio", "Grado Superior"});
-        cursosPorNivel.put("Educación Universitaria", new String[]{"Grado", "Máster", "Doctorado"});
-
-        nivelEducativoBox.addActionListener(evt -> actualizarCursos());
+    /**
+     * Método para generar y mostrar un documento educativo basado en los datos
+     * ingresados.
+     */
+    private void generarDocumento() {
+        String prompt = generarPrompt();
+        if (!prompt.isEmpty()) {
+            String respuesta = openAIController.obtenerRespuestaDeOpenAI(prompt);
+            DocumentoTextArea.setText(respuesta);
+        }
     }
 
     /**
@@ -155,9 +201,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         leftPanel = new javax.swing.JPanel();
         icon = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
-        ElemMenu1 = new javax.swing.JPanel();
-        ElemMenu2 = new javax.swing.JPanel();
-        ElemMenu3 = new javax.swing.JPanel();
         centerPanel = new javax.swing.JPanel();
         titleGenerarDocumetnos = new javax.swing.JLabel();
         generarDocumentoButton = new javax.swing.JPanel();
@@ -224,65 +267,15 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
             }
         });
 
-        ElemMenu1.setBackground(new java.awt.Color(235, 241, 247));
-
-        javax.swing.GroupLayout ElemMenu1Layout = new javax.swing.GroupLayout(ElemMenu1);
-        ElemMenu1.setLayout(ElemMenu1Layout);
-        ElemMenu1Layout.setHorizontalGroup(
-            ElemMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 149, Short.MAX_VALUE)
-        );
-        ElemMenu1Layout.setVerticalGroup(
-            ElemMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 32, Short.MAX_VALUE)
-        );
-
-        ElemMenu2.setBackground(new java.awt.Color(235, 241, 247));
-
-        javax.swing.GroupLayout ElemMenu2Layout = new javax.swing.GroupLayout(ElemMenu2);
-        ElemMenu2.setLayout(ElemMenu2Layout);
-        ElemMenu2Layout.setHorizontalGroup(
-            ElemMenu2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 149, Short.MAX_VALUE)
-        );
-        ElemMenu2Layout.setVerticalGroup(
-            ElemMenu2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 32, Short.MAX_VALUE)
-        );
-
-        ElemMenu3.setBackground(new java.awt.Color(235, 241, 247));
-
-        javax.swing.GroupLayout ElemMenu3Layout = new javax.swing.GroupLayout(ElemMenu3);
-        ElemMenu3.setLayout(ElemMenu3Layout);
-        ElemMenu3Layout.setHorizontalGroup(
-            ElemMenu3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 149, Short.MAX_VALUE)
-        );
-        ElemMenu3Layout.setVerticalGroup(
-            ElemMenu3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 32, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(ElemMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(ElemMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(ElemMenu3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(36, 36, 36)
+                .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         leftPanelLayout.setVerticalGroup(
@@ -295,12 +288,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
                     .addGroup(leftPanelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ElemMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ElemMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ElemMenu3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -674,7 +661,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         System.out.println("Prompt generado: " + prompt);
 
         // Llamar al servicio para generar el documento
-        String respuesta = openAIService.generarDocumento(prompt);
+        String respuesta = openAIController.obtenerRespuestaDeOpenAI(prompt);
         DocumentoTextArea.setText(respuesta);
 
     }//GEN-LAST:event_generarDocumentoButtonMouseClicked
@@ -787,9 +774,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea DocumentoTextArea;
     private javax.swing.JSpinner DuracionSpinner;
-    private javax.swing.JPanel ElemMenu1;
-    private javax.swing.JPanel ElemMenu2;
-    private javax.swing.JPanel ElemMenu3;
     private javax.swing.JTextField asignaturaField;
     private javax.swing.JLabel asignaturaLabel;
     private javax.swing.JPanel background;
