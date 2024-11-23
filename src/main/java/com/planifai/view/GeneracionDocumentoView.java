@@ -53,7 +53,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         setIconImage(icon);
         setTitle("PlanifAI");
 
-        openAIController=new OpenAIController();
+        openAIController = new OpenAIController();
 
         // Inicializamos el mapa con niveles educativos y sus cursos correspondientes
         cursosPorNivel = new HashMap<>();
@@ -69,8 +69,12 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         documentoTitle.setText(documento.getTitulo());
         DocumentoTextArea.setText(documento.getContenido());
     }
-    
-     /**
+
+    public String getContenidoGenerado() {
+        return DocumentoTextArea.getText();
+    }
+
+    /**
      * Constructor alternativo que inicializa la vista sin un documento
      * preexistente. Configura la ventana de forma similar al otro constructor,
      * pero sin cargar contenido de documento.
@@ -85,9 +89,9 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         this.setSize(screenSize.width, screenSize.height);
         this.setExtendedState(GeneracionDocumentoView.MAXIMIZED_BOTH);//maximizada por defecto
         this.setResizable(false);
-    
-         openAIController=new OpenAIController();
-         
+
+        openAIController = new OpenAIController();
+
         // Cambiar el ícono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
         setIconImage(icon);
@@ -143,14 +147,11 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         if (asignaturaField.getText().trim().isEmpty()
                 || temaField.getText().trim().isEmpty()
                 || nivelEducativoBox.getSelectedItem() == null
-                || cursoBox.getSelectedItem() == null
-                || objetivosTextArea.getText().trim().isEmpty()) {
-
+                || cursoBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(null, "Por favor, completa todos los campos requeridos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
-            return "";  // Devolver una cadena vacía si algún campo está vacío
+            return "";
         }
 
-        // Seleccionar el primer elemento del ComboBox si no se ha seleccionado ninguno
         if (tipoDocumentoComboBox.getSelectedItem() == null) {
             tipoDocumentoComboBox.setSelectedIndex(0);  // Seleccionar el primer elemento
         }
@@ -161,18 +162,39 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         String nivelEducativo = nivelEducativoBox.getSelectedItem().toString();
         String curso = cursoBox.getSelectedItem().toString();
         int duracion = (int) DuracionSpinner.getValue();  // Se obtiene la duración desde el spinner
-        String objetivosAprendizaje = objetivosTextArea.getText();
+        String datosExtra = extrasTextArea.getText();
 
         // Obtener el tipo de documento seleccionado
         String tipoDocumento = tipoDocumentoComboBox.getSelectedItem().toString();
+        String titulo = "";
 
         // Generar el prompt según el tipo de documento
         String prompt = "";
         if (tipoDocumento.equals("Evaluación")) {
-            prompt = "Genera una evaluación para la asignatura de " + asignatura + ", con el tema " + tema + ", dirigida a estudiantes de " + nivelEducativo + " en el curso " + curso + ". La duración de la evaluación será de " + duracion + " minutos. Los objetivos de aprendizaje de esta evaluación son los siguientes: " + objetivosAprendizaje + ". Asegúrate de incluir preguntas variadas que evalúen el conocimiento en los siguientes aspectos: comprensión, aplicación y análisis de conceptos.";
+            titulo = "Evaluación de " + asignatura + " - " + tema;
+
+            prompt = "Genera una evaluación para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
+                    + "dirigida a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
+                    + "La duración de la evaluación será de " + duracion + " minutos. "
+                    + "Los datos extra proporcionados para esta evaluación son los siguientes: " + datosExtra + ". "
+                    + "Asegúrate de incluir preguntas variadas que evalúen el conocimiento en los siguientes aspectos: "
+                    + "comprensión, aplicación, análisis de conceptos y resolución de problemas. "
+                    + "Puedes incluir preguntas de opción múltiple, verdadero/falso, de desarrollo y/o preguntas prácticas.";
+
         } else if (tipoDocumento.equals("Plan de Clase")) {
-            prompt = "Genera un plan de clase para la asignatura de " + asignatura + ", con el tema " + tema + ", dirigido a estudiantes de " + nivelEducativo + " en el curso " + curso + ". La duración de la clase será de " + duracion + " minutos. Los objetivos de aprendizaje son los siguientes: " + objetivosAprendizaje + ". Incluye una descripción detallada de las actividades, el enfoque pedagógico y los materiales que se utilizarán durante la clase. El plan debe ser interactivo y fomentar la participación de los estudiantes.";
+            titulo = "Plan de Clase de " + asignatura + " - " + tema;
+
+            prompt = "Genera un plan de clase para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
+                    + "dirigido a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
+                    + "La duración de la clase será de " + duracion + " minutos. "
+                    + "Los datos extra proporcionados para esta clase son los siguientes: " + datosExtra + ". "
+                    + "El plan debe incluir una descripción detallada de las actividades que se realizarán durante la clase, "
+                    + "el enfoque pedagógico que se utilizará, los materiales necesarios y la planificación de tiempos. "
+                    + "El plan debe fomentar la participación activa de los estudiantes, promover la reflexión y aplicar estrategias "
+                    + "que favorezcan el aprendizaje colaborativo. ";
+
         }
+        documentoTitle.setText(titulo);
         return prompt;
     }
 
@@ -219,7 +241,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         DuracionSpinner = new javax.swing.JSpinner();
         objetivosAprendizajeLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        objetivosTextArea = new javax.swing.JTextArea();
+        extrasTextArea = new javax.swing.JTextArea();
         minLabel = new javax.swing.JLabel();
         tipoDocumentoComboBox = new javax.swing.JComboBox<>();
         rightPanel = new javax.swing.JPanel();
@@ -377,10 +399,10 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         objetivosAprendizajeLabel.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         objetivosAprendizajeLabel.setText("Datos extras");
 
-        objetivosTextArea.setColumns(20);
-        objetivosTextArea.setRows(5);
-        objetivosTextArea.setToolTipText("Introduce los objetivos de aprendizaje");
-        jScrollPane2.setViewportView(objetivosTextArea);
+        extrasTextArea.setColumns(20);
+        extrasTextArea.setRows(5);
+        extrasTextArea.setToolTipText("Introduce los objetivos de aprendizaje");
+        jScrollPane2.setViewportView(extrasTextArea);
 
         minLabel.setFont(new java.awt.Font("Lato", 0, 12)); // NOI18N
         minLabel.setForeground(new java.awt.Color(204, 204, 204));
@@ -687,6 +709,9 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     }//GEN-LAST:event_backgroundMouseClicked
 
     private void descargarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_descargarButtonMouseClicked
+        String text = this.getContenidoGenerado();
+        GuardarDocumentoView guardarDocumentoView = new GuardarDocumentoView(text);
+        guardarDocumentoView.setVisible(true);
 
     }//GEN-LAST:event_descargarButtonMouseClicked
 
@@ -785,6 +810,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     private javax.swing.JPanel documentosPanel;
     private javax.swing.JLabel duracionLabel;
     private javax.swing.JPanel eventosPanel;
+    private javax.swing.JTextArea extrasTextArea;
     private javax.swing.JLabel generaDocumentoText;
     private javax.swing.JPanel generarDocumentoButton;
     private javax.swing.JPanel guardarButton;
@@ -800,7 +826,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> nivelEducativoBox;
     private javax.swing.JLabel nivelEducativoLabel;
     private javax.swing.JLabel objetivosAprendizajeLabel;
-    private javax.swing.JTextArea objetivosTextArea;
     private javax.swing.JPanel planClasePanel;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JTextField temaField;
