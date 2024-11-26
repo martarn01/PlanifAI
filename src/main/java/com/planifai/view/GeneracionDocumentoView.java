@@ -28,6 +28,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     private OpenAIController openAIController;
 
     private static final Color COLOR_CUSTOM = new Color(51, 51, 51);
+    private int id = -1;
 
     /**
      * Constructor que inicializa la interfaz de usuario con un documento
@@ -68,10 +69,8 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
         documentoTitle.setText(documento.getTitulo());
         DocumentoTextArea.setText(documento.getContenido());
-    }
-
-    public String getContenidoGenerado() {
-        return DocumentoTextArea.getText();
+        
+        id=documento.getIdDocumento();
     }
 
     /**
@@ -107,6 +106,10 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         cursosPorNivel.put("Educación Universitaria", new String[]{"Grado", "Máster", "Doctorado"});
 
         nivelEducativoBox.addActionListener(evt -> actualizarCursos());
+    }
+
+    public String getContenidoGenerado() {
+        return DocumentoTextArea.getText();
     }
 
     /**
@@ -726,7 +729,12 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     }//GEN-LAST:event_descargarButtonMouseExited
 
     private void guardarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseClicked
-        // TODO add your handling code here:
+        String nombreDocumento = documentoTitle.getText();
+        String contenido = DocumentoTextArea.getText();
+        String tipoDocumento = tipoDocumentoComboBox.getSelectedItem().toString();
+
+        AddDocumentView addDocumentView = new AddDocumentView(contenido, tipoDocumento, nombreDocumento, id);
+        addDocumentView.setVisible(true);
     }//GEN-LAST:event_guardarButtonMouseClicked
 
     private void guardarButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseEntered

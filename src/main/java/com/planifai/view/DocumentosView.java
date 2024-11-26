@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 public class DocumentosView extends javax.swing.JFrame {
 
     DocumentoController documentoController;
-    private static final int MAX_DOCUMENTOS = 5;
     private DefaultTableModel modeloTabla;
 
     /**

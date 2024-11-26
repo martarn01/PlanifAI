@@ -94,7 +94,7 @@ public class GuardarDocumentoView extends javax.swing.JFrame {
 
         title1.setFont(new java.awt.Font("Lato Semibold", 0, 22)); // NOI18N
         title1.setForeground(new java.awt.Color(51, 51, 51));
-        title1.setText("Guardar documento");
+        title1.setText("Descargar documento");
 
         nombreText.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         nombreText.setText("Nombre documento");
