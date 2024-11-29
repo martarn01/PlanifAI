@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Marta Rosado Nabais
  */
-public class EventoService { 
+public class EventoService {
 
     /**
      * Crea un nuevo evento en la base de datos.
@@ -142,5 +142,33 @@ public class EventoService {
         }
 
         return evento;
+    }
+
+    public List<Evento> obtenerEventosPorAula(int idAula) {
+        List<Evento> eventos = new ArrayList<>();
+
+        String query = "SELECT id_evento, descripcion, fecha_evento, tipo_evento, id_aula FROM eventos WHERE id_aula = ?";
+
+        try (Connection con = DatabaseConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setInt(1, idAula);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Evento evento = new Evento();
+                    evento.setIdEvento(rs.getInt("id_evento"));            
+                    evento.setDescripcion(rs.getString("descripcion"));   
+                    evento.setFechaEvento(rs.getTimestamp("fecha_evento"));
+                    evento.setTipoEvento(rs.getString("tipo_evento"));
+                    evento.setIdAula(rs.getInt("id_aula"));  
+
+                    eventos.add(evento); 
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener eventos por aula: " + e.getMessage());
+        }
+
+        return eventos;
     }
 }

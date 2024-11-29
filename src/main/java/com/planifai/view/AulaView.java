@@ -16,6 +16,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.List;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -49,7 +50,7 @@ public class AulaView extends javax.swing.JFrame {
 
         eventoController = new EventoController(new EventoService());
         documentoController = new DocumentoController(new DocumentoService());
-        
+
         cargarDocumentos();
         cargarEventos();
     }
@@ -58,13 +59,8 @@ public class AulaView extends javax.swing.JFrame {
 
     }
 
-    /**
-     * Carga los eventos desde el controlador y actualiza el panel de eventos en
-     * la interfaz de usuario. Si no hay eventos disponibles, se muestra un
-     * mensaje correspondiente.
-     */
     public void cargarEventos() {
-        List<Evento> eventos = eventoController.obtenerEventos(); // Obtener eventos desde el controlador
+        List<Evento> eventos = eventoController.obtenerEventosPorAula(aula.getIdAula());
         System.out.println("Cantidad de eventos obtenidos: " + eventos.size());
 
         eventosPanel.removeAll();
@@ -82,60 +78,52 @@ public class AulaView extends javax.swing.JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
 
-        int numEventos = eventos.size();
-
-        for (int i = 0; i < numEventos; i++) {
+        for (int i = 0; i < eventos.size(); i++) {
             Evento evento = eventos.get(i);
-            EventoCardTemplate card = new EventoCardTemplate(evento); // Crear un nuevo EventoCardTemplate
-            System.out.println("Evento: " + evento.getDescripcion());
-            // Aquí puedes pasar información al card si EventoCardTemplate tiene un constructor que acepte datos del evento
+            EventoCardTemplate card = new EventoCardTemplate(evento); 
+            System.out.println("Evento cargado: " + evento.getDescripcion());
 
             gbc.gridy = i;
-            eventosPanel.add(card, gbc);
+            eventosPanel.add(card, gbc); 
         }
 
-        eventosPanel.revalidate(); // Actualizar el panel
-        eventosPanel.repaint(); // Redibujar el panel
+        eventosPanel.revalidate();
+        eventosPanel.repaint();
     }
 
-    /**
-     * Carga los documentos desde el controlador y actualiza el panel de
-     * documentos en la interfaz de usuario. Si no hay documentos disponibles,
-     * se muestra un mensaje correspondiente.
-     */
-    public void cargarDocumentos() {
-        List<Documento> documentos = documentoController.obtenerDocumentos(); // Obtener documentos desde el controlador
-        System.out.println("Cantidad de eventos obtenidos: " + documentos.size());
+   public void cargarDocumentos() {
+       
+    List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
+    System.out.println("Cantidad de documentos obtenidos: " + documentos.size());
 
-        documentosPanel.removeAll(); // Limpiar el panel de documentos
+    documentosPanel.removeAll();
 
-        if (documentos.isEmpty()) {
-            documentosPanel.revalidate();
-            documentosPanel.repaint();
-            return;
-        }
-
-        documentosPanel.setBackground(Color.white); // Cambiar el color de fondo del panel
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-
-        // Recorre la lista de documentos y crea tarjetas para cada uno
-        for (int i = 0; i < documentos.size(); i++) {
-            Documento documento = documentos.get(i);
-            DocumentoCardTemplate card = new DocumentoCardTemplate(documento); // Crear un nuevo DocumentoCardTemplate
-
-            System.out.println("Documento: " + documento.getTitulo());
-
-            gbc.gridy = i; // Establecer la posición vertical
-            documentosPanel.add(card, gbc); // Agregar tarjeta al panel
-        }
-
-        documentosPanel.revalidate(); // Actualizar el panel
-        documentosPanel.repaint(); // Redibujar el panel
+    if (documentos.isEmpty()) {
+        documentosPanel.revalidate();
+        documentosPanel.repaint();
+        return;
     }
+
+    documentosPanel.setBackground(Color.white);
+
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.anchor = GridBagConstraints.NORTH;
+
+    for (int i = 0; i < documentos.size(); i++) {
+        Documento documento = documentos.get(i);
+        DocumentoCardTemplate card = new DocumentoCardTemplate(documento); 
+        System.out.println("Documento cargado: " + documento.getTitulo());
+
+        gbc.gridy = i; 
+        documentosPanel.add(card, gbc); 
+    }
+
+    documentosPanel.revalidate();
+    documentosPanel.repaint();
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -574,6 +562,7 @@ public class AulaView extends javax.swing.JFrame {
         Color customColor = new Color(51, 51, 51);
         addDocumentButton.setBackground(Color.white);
         addAulaText.setForeground(customColor);
+        addDocumentButton.setBorder(LineBorder.createBlackLineBorder());
     }//GEN-LAST:event_addDocumentButtonMouseEntered
 
     private void addDocumentButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseExited

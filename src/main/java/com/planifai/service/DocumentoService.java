@@ -110,7 +110,7 @@ public class DocumentoService {
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idDocumento);
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0; // True si se eliminó al menos una fila
+            return rowsAffected > 0; 
         } catch (SQLException e) {
             System.out.println("Error al eliminar el documento: " + e.getMessage());
             return false;
@@ -150,4 +150,32 @@ public class DocumentoService {
 
         return documento;
     }
+
+    public List<Documento> obtenerDocumentosPorAula(int idAula) {
+        List<Documento> documentos = new ArrayList<>();
+        String query = "SELECT * FROM documentos WHERE id_aula = ?";
+
+        try (Connection con = DatabaseConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setInt(1, idAula);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Documento documento = new Documento();
+                    documento.setIdDocumento(rs.getInt("id_documento"));
+                    documento.setTitulo(rs.getString("titulo"));
+                    documento.setContenido(rs.getString("contenido"));
+                    documento.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+                    documento.setTipoDocumento(rs.getString("tipo_documento"));
+                    documento.setIdAula(rs.getInt("id_aula"));
+                    documentos.add(documento);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return documentos;
+    }
+
 }

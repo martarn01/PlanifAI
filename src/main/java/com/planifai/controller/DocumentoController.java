@@ -81,4 +81,9 @@ public class DocumentoController {
     public boolean eliminarDocumento(int idDocumento) {
         return documentoService.eliminarDocumentoPorId(idDocumento);
     }
+    
+    public List<Documento> obtenerDocumentosPorAula(int idAula) {
+    return documentoService.obtenerDocumentosPorAula(idAula);
+}
+
 }

@@ -84,4 +84,8 @@ public class EventoController {
     public boolean actualizarEvento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula) {
         return eventoService.actualizarEvento(idEvento, descripcion, fechaEvento, tipoEvento, idAula);
     }
+    public List<Evento> obtenerEventosPorAula(int idAula) {
+    return eventoService.obtenerEventosPorAula(idAula);
+}
+
 }

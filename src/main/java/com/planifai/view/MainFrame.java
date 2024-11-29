@@ -35,7 +35,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     private DocumentoController documentoController;
     private AulaView aulaView;
     private boolean[] panelesCargados;
-    private static final int MAX_AULAS = 4;
+    private static final int MAX_CARGAS = 4;
 
     /**
      * Constructor de la clase MainFrame. Inicializa los componentes de la
@@ -98,7 +98,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
 
-        int numAulas = Math.min(aulas.size(), MAX_AULAS);
+        int numAulas = Math.min(aulas.size(), MAX_CARGAS);
 
         for (int i = 0; i < numAulas; i++) {
             Aula aula = aulas.get(i);
@@ -135,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
 
-        int numEventos = eventos.size();
+        int numEventos = Math.min(eventos.size(), MAX_CARGAS);
 
         for (int i = 0; i < numEventos; i++) {
             Evento evento = eventos.get(i);
@@ -173,7 +173,9 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
-
+        
+    int numDocumentos = Math.min(documentos.size(), MAX_CARGAS); 
+    
         // Recorre la lista de documentos y crea tarjetas para cada uno
         for (int i = 0; i < documentos.size(); i++) {
             Documento documento = documentos.get(i);
