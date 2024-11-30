@@ -80,50 +80,49 @@ public class AulaView extends javax.swing.JFrame {
 
         for (int i = 0; i < eventos.size(); i++) {
             Evento evento = eventos.get(i);
-            EventoCardTemplate card = new EventoCardTemplate(evento); 
+            EventoCardTemplate card = new EventoCardTemplate(evento);
             System.out.println("Evento cargado: " + evento.getDescripcion());
 
             gbc.gridy = i;
-            eventosPanel.add(card, gbc); 
+            eventosPanel.add(card, gbc);
         }
 
         eventosPanel.revalidate();
         eventosPanel.repaint();
     }
 
-   public void cargarDocumentos() {
-       
-    List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
-    System.out.println("Cantidad de documentos obtenidos: " + documentos.size());
+    public void cargarDocumentos() {
 
-    documentosPanel.removeAll();
+        List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
+        System.out.println("Cantidad de documentos obtenidos: " + documentos.size());
 
-    if (documentos.isEmpty()) {
+        documentosPanel.removeAll();
+
+        if (documentos.isEmpty()) {
+            documentosPanel.revalidate();
+            documentosPanel.repaint();
+            return;
+        }
+
+        documentosPanel.setBackground(Color.white);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.NORTH;
+
+        for (int i = 0; i < documentos.size(); i++) {
+            Documento documento = documentos.get(i);
+            DocumentoCardTemplate card = new DocumentoCardTemplate(documento);
+            System.out.println("Documento cargado: " + documento.getTitulo());
+
+            gbc.gridy = i;
+            documentosPanel.add(card, gbc);
+        }
+
         documentosPanel.revalidate();
         documentosPanel.repaint();
-        return;
     }
-
-    documentosPanel.setBackground(Color.white);
-
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.insets = new Insets(5, 5, 5, 5);
-    gbc.anchor = GridBagConstraints.NORTH;
-
-    for (int i = 0; i < documentos.size(); i++) {
-        Documento documento = documentos.get(i);
-        DocumentoCardTemplate card = new DocumentoCardTemplate(documento); 
-        System.out.println("Documento cargado: " + documento.getTitulo());
-
-        gbc.gridy = i; 
-        documentosPanel.add(card, gbc); 
-    }
-
-    documentosPanel.revalidate();
-    documentosPanel.repaint();
-}
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,21 +142,19 @@ public class AulaView extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         documentosTitle = new javax.swing.JLabel();
         verDocumentosButton = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         documentosTitle1 = new javax.swing.JLabel();
         documentosPanel = new javax.swing.JPanel();
+        notePanel2 = new javax.swing.JPanel();
+        noteSaveButton2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
         addDocumentButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
-        rightPanel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         eventosTitle = new javax.swing.JLabel();
         eventosPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        documentosTitle2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        addEventButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -235,7 +232,7 @@ public class AulaView extends javax.swing.JFrame {
 
         verDocumentosButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
         verDocumentosButton.setForeground(new java.awt.Color(153, 153, 153));
-        verDocumentosButton.setText("Ver todos los documentos");
+        verDocumentosButton.setText("Ver todos ");
         verDocumentosButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 verDocumentosButtonMouseClicked(evt);
@@ -248,26 +245,73 @@ public class AulaView extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 231, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-
         documentosTitle1.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
         documentosTitle1.setForeground(new java.awt.Color(51, 51, 51));
         documentosTitle1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentosTitle1.setText("Notas");
+        documentosTitle1.setText("Nota");
         documentosTitle1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
         documentosPanel.setMaximumSize(new java.awt.Dimension(0, 0));
         documentosPanel.setLayout(new java.awt.GridBagLayout());
+
+        notePanel2.setBackground(new java.awt.Color(187, 187, 187));
+
+        noteSaveButton2.setBackground(new java.awt.Color(204, 204, 204));
+        noteSaveButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        noteSaveButton2.setForeground(new java.awt.Color(153, 153, 153));
+
+        jLabel4.setBackground(new java.awt.Color(102, 102, 102));
+        jLabel4.setFont(new java.awt.Font("Lato", 0, 12)); // NOI18N
+        jLabel4.setText("Guardar");
+
+        javax.swing.GroupLayout noteSaveButton2Layout = new javax.swing.GroupLayout(noteSaveButton2);
+        noteSaveButton2.setLayout(noteSaveButton2Layout);
+        noteSaveButton2Layout.setHorizontalGroup(
+            noteSaveButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noteSaveButton2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        noteSaveButton2Layout.setVerticalGroup(
+            noteSaveButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, noteSaveButton2Layout.createSequentialGroup()
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addContainerGap())
+        );
+
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        jTextArea3.setBackground(new java.awt.Color(204, 204, 204));
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jTextArea3.setWrapStyleWord(true);
+        jTextArea3.setBorder(null);
+        jScrollPane3.setViewportView(jTextArea3);
+
+        javax.swing.GroupLayout notePanel2Layout = new javax.swing.GroupLayout(notePanel2);
+        notePanel2.setLayout(notePanel2Layout);
+        notePanel2Layout.setHorizontalGroup(
+            notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(notePanel2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(noteSaveButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        notePanel2Layout.setVerticalGroup(
+            notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notePanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(noteSaveButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         addDocumentButton.setBackground(new java.awt.Color(51, 51, 51));
         addDocumentButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -313,38 +357,43 @@ public class AulaView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(documentosTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(documentosTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(101, 101, 101))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                        .addComponent(verDocumentosButton)
+                        .addGap(67, 67, 67)
+                        .addComponent(documentosTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(186, 186, 186))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addDocumentButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(483, Short.MAX_VALUE)
+                    .addComponent(notePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(91, 91, 91)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(documentosTitle)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(documentosTitle)
+                            .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(documentosTitle1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15)
-                .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                        .addComponent(documentosTitle1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
                 .addComponent(addDocumentButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addGap(69, 69, 69))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(55, 55, 55)
+                    .addComponent(notePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(253, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
@@ -366,20 +415,7 @@ public class AulaView extends javax.swing.JFrame {
                 .addComponent(titleAula, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(186, Short.MAX_VALUE))
-        );
-
-        rightPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
-        rightPanelLayout.setHorizontalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 633, Short.MAX_VALUE)
-        );
-        rightPanelLayout.setVerticalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 869, Short.MAX_VALUE)
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         jSeparator1.setBackground(new java.awt.Color(245, 245, 245));
@@ -395,66 +431,21 @@ public class AulaView extends javax.swing.JFrame {
         eventosPanel.setBackground(new java.awt.Color(251, 251, 251));
         eventosPanel.setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
-
-        jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.setText("Corregir exámenes");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+        addEventButton.setBackground(new java.awt.Color(0, 0, 51));
+        addEventButton.setFont(new java.awt.Font("Lato", 1, 24)); // NOI18N
+        addEventButton.setForeground(new java.awt.Color(0, 0, 51));
+        addEventButton.setText("+");
+        addEventButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addEventButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addEventButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addEventButtonMouseExited(evt);
             }
         });
-
-        jCheckBox2.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox2.setText("Planificar clase");
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox2ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox3.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox3.setText("Corregir exámenes");
-        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox3ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
-                    .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox2)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox3)
-                .addContainerGap(100, Short.MAX_VALUE))
-        );
-
-        documentosTitle2.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
-        documentosTitle2.setForeground(new java.awt.Color(51, 51, 51));
-        documentosTitle2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentosTitle2.setText("To-Do");
-        documentosTitle2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        jLabel1.setBackground(new java.awt.Color(0, 0, 51));
-        jLabel1.setFont(new java.awt.Font("Lato", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 51));
-        jLabel1.setText("+");
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -468,19 +459,14 @@ public class AulaView extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(backgroundLayout.createSequentialGroup()
-                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(eventosTitle)
-                            .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 85, Short.MAX_VALUE))
+                        .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(backgroundLayout.createSequentialGroup()
-                        .addComponent(documentosTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addGap(18, 18, 18)
-                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                        .addComponent(eventosTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                        .addComponent(addEventButton)))
+                .addGap(587, 587, 587))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,20 +475,13 @@ public class AulaView extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addComponent(eventosTitle)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eventosTitle)
+                    .addComponent(addEventButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(eventosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(269, 269, 269)
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(documentosTitle2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -529,34 +508,11 @@ public class AulaView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backgroundMouseClicked
 
-    private void titleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseClicked
-        MainFrame mainframe = new MainFrame();
-        mainframe.setVisible(true);
-        this.dispose();    }//GEN-LAST:event_titleMouseClicked
-
-    private void titleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseEntered
-        title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_titleMouseEntered
-
-    private void titleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseExited
-        title.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_titleMouseExited
-
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
-
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox2ActionPerformed
-
-    private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox3ActionPerformed
-
-    private void addDocumentButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseClicked
-
-    }//GEN-LAST:event_addDocumentButtonMouseClicked
+    private void addDocumentButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseExited
+        Color customColor = new Color(51, 51, 51);
+        addDocumentButton.setBackground(customColor);
+        addAulaText.setForeground(Color.white);
+    }//GEN-LAST:event_addDocumentButtonMouseExited
 
     private void addDocumentButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseEntered
         Color customColor = new Color(51, 51, 51);
@@ -565,11 +521,24 @@ public class AulaView extends javax.swing.JFrame {
         addDocumentButton.setBorder(LineBorder.createBlackLineBorder());
     }//GEN-LAST:event_addDocumentButtonMouseEntered
 
-    private void addDocumentButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseExited
-        Color customColor = new Color(51, 51, 51);
-        addDocumentButton.setBackground(customColor);
-        addAulaText.setForeground(Color.white);
-    }//GEN-LAST:event_addDocumentButtonMouseExited
+    private void addDocumentButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseClicked
+        GeneracionDocumentoView generacionDocumentoView= new GeneracionDocumentoView();
+        generacionDocumentoView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_addDocumentButtonMouseClicked
+
+    private void titleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseExited
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_titleMouseExited
+
+    private void titleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseEntered
+        title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_titleMouseEntered
+
+    private void titleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseClicked
+        MainFrame mainframe = new MainFrame();
+        mainframe.setVisible(true);
+    }//GEN-LAST:event_titleMouseClicked
 
     private void verDocumentosButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseExited
         Color color = new Color(153, 153, 153);
@@ -588,6 +557,20 @@ public class AulaView extends javax.swing.JFrame {
         documentosView.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_verDocumentosButtonMouseClicked
+
+    private void addEventButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEventButtonMouseEntered
+        addEventButton.setForeground(Color.gray);
+    }//GEN-LAST:event_addEventButtonMouseEntered
+
+    private void addEventButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEventButtonMouseExited
+        Color color = new Color(0, 0, 51);
+        addEventButton.setForeground(color);
+    }//GEN-LAST:event_addEventButtonMouseExited
+
+    private void addEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEventButtonMouseClicked
+        AddEventView addEvenButton=new AddEventView(aula);
+        addEvenButton.setVisible(true);
+    }//GEN-LAST:event_addEventButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -627,25 +610,23 @@ public class AulaView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addAulaText;
     private javax.swing.JPanel addDocumentButton;
+    private javax.swing.JLabel addEventButton;
     private javax.swing.JPanel background;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel documentosPanel;
     private javax.swing.JLabel documentosTitle;
     private javax.swing.JLabel documentosTitle1;
-    private javax.swing.JLabel documentosTitle2;
     private javax.swing.JPanel eventosPanel;
     private javax.swing.JLabel eventosTitle;
     private javax.swing.JLabel icon;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JPanel leftPanel;
-    private javax.swing.JPanel rightPanel;
+    private javax.swing.JPanel notePanel2;
+    private javax.swing.JPanel noteSaveButton2;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAula;
     private javax.swing.JLabel verDocumentosButton;

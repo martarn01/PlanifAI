@@ -1,6 +1,7 @@
 package com.planifai.view;
 
 import com.planifai.controller.OpenAIController;
+import com.planifai.model.Aula;
 import com.planifai.model.Documento;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,15 +42,12 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     public GeneracionDocumentoView(Documento documento) {
         initComponents();
 
-        // Obtener el tamaño de la pantalla
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        // Ajustar el tamaño de la ventana al tamaño de la pantalla
         this.setSize(screenSize.width, screenSize.height);
-        this.setExtendedState(GeneracionDocumentoView.MAXIMIZED_BOTH);//maximizada por defecto
+        this.setExtendedState(GeneracionDocumentoView.MAXIMIZED_BOTH);
         this.setResizable(false);
 
-        // Cambiar el ícono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
         setIconImage(icon);
         setTitle("PlanifAI");

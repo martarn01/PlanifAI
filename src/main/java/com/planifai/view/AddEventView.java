@@ -1,108 +1,52 @@
 package com.planifai.view;
 
-import com.planifai.controller.AulaController;
 import com.planifai.controller.DocumentoController;
-import com.planifai.controller.EventoController;
 import com.planifai.model.Aula;
-import com.planifai.model.Evento;
-import com.planifai.service.AulaService;
+import com.planifai.model.Documento;
 import com.planifai.service.DocumentoService;
-import com.planifai.service.EventoService;
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
+import raven.datetime.component.date.DatePicker;
 
 /**
- * Vista para agregar o editar un documento. Permite ingresar los detalles del
- * documento, asociarlo a un aula y un evento, y guardarlo en la base de datos.
- * Si el ID del documento es diferente de -1, se realiza una edición del
- * documento, en caso contrario se crea uno nuevo.
  *
  * @author Marta Rosado Nabais
  */
-public class AddDocumentView extends javax.swing.JFrame {
-
-    private String contenido;
-    private String tipoDocumento;
-    private String nombreDocumento;
-    private int id;
-    private Map<String, Integer> aulaMap = new HashMap<>();
-    private Map<String, Integer> eventoMap = new HashMap<>();
+public class AddEventView extends javax.swing.JFrame {
 
     /**
-     * Constructor por defecto. Inicializa los componentes de la vista sin
-     * cargar datos.
+     * Creates new form AddEventView
      */
-    public AddDocumentView() {
+    public AddEventView() {
         initComponents();
-    }
-
-    /**
-     * Constructor que recibe los detalles de un documento existente. Este
-     * constructor permite cargar los datos de un documento para editarlo.
-     *
-     * @param contenido El contenido del documento.
-     * @param tipoDocumento El tipo de documento.
-     * @param nombreDocumento El nombre del documento.
-     * @param id El ID del documento, si es -1 se crea uno nuevo, de lo
-     * contrario se edita el documento existente.
-     */
-    public AddDocumentView(String contenido, String tipoDocumento, String nombreDocumento, int id) {
-        initComponents();
-        this.contenido = contenido;
-        this.tipoDocumento = tipoDocumento;
-        this.nombreDocumento = nombreDocumento;
-        this.id = id;
-
         this.setLocationRelativeTo(null);
-        nombreField.setText(nombreDocumento);
 
-        cargarAulas();
-        cargarEventos();
+        DatePicker datePicker = new DatePicker();
+        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
+        datePicker.setEditor(datePickerField);
+
     }
+    private DocumentoController documentoController;
 
-    /**
-     * Carga las aulas disponibles en un JComboBox. Obtiene la lista de aulas
-     * desde el controlador y las muestra en el combo box para que el usuario
-     * seleccione una.
-     */
-    private void cargarAulas() {
-        AulaController aulaController = new AulaController(new AulaService());
-        List<Aula> aulas = aulaController.obtenerAulas();
+    public AddEventView(Aula aula) {
+        initComponents();
+        this.setLocationRelativeTo(null);
 
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        documentoController = new DocumentoController(new DocumentoService());
+        DatePicker datePicker = new DatePicker();
+        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
+        datePicker.setEditor(datePickerField);
 
-        for (Aula aula : aulas) {
-            String aulaString = aula.getNombre();
-            aulaMap.put(aulaString, aula.getIdAula());
-            model.addElement(aulaString);
+        List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
+
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+
+        for (Documento documento : documentos) {
+            comboBoxModel.addElement(documento.getTitulo());
         }
 
-        aulaComboBox.setModel(model);
-    }
-
-    /**
-     * Carga los eventos disponibles en un JComboBox. Obtiene la lista de
-     * eventos desde el controlador y los muestra en el combo box para que el
-     * usuario seleccione uno.
-     */
-    private void cargarEventos() {
-        EventoController eventoController = new EventoController(new EventoService());
-        List<Evento> eventos = eventoController.obtenerEventos();
-
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-
-        for (Evento evento : eventos) {
-            String eventoString = evento.getDescripcion();
-            eventoMap.put(eventoString, evento.getIdEvento());
-            model.addElement(eventoString);
-        }
-
-        EventoComboBox.setModel(model);
-
+        DocumentsComboBox.setModel(comboBoxModel);
     }
 
     /**
@@ -116,7 +60,7 @@ public class AddDocumentView extends javax.swing.JFrame {
 
         background4 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
-        nombreText = new javax.swing.JLabel();
+        descripcionText = new javax.swing.JLabel();
         jSeparator9 = new javax.swing.JSeparator();
         nombreField = new javax.swing.JTextField();
         guardarButton = new javax.swing.JPanel();
@@ -124,7 +68,9 @@ public class AddDocumentView extends javax.swing.JFrame {
         text2 = new javax.swing.JLabel();
         EventoComboBox = new javax.swing.JComboBox<>();
         text1 = new javax.swing.JLabel();
-        aulaComboBox = new javax.swing.JComboBox<>();
+        datePickerField = new javax.swing.JFormattedTextField();
+        text3 = new javax.swing.JLabel();
+        DocumentsComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,10 +79,10 @@ public class AddDocumentView extends javax.swing.JFrame {
 
         title.setFont(new java.awt.Font("Lato Semibold", 0, 22)); // NOI18N
         title.setForeground(new java.awt.Color(51, 51, 51));
-        title.setText("Guardar documento");
+        title.setText("Añadir evento");
 
-        nombreText.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        nombreText.setText("Nombre documento");
+        descripcionText.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
+        descripcionText.setText("Descripción evento");
 
         jSeparator9.setBackground(new java.awt.Color(204, 204, 204));
         jSeparator9.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,32 +128,39 @@ public class AddDocumentView extends javax.swing.JFrame {
         );
 
         text2.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        text2.setText("Asociar con un evento");
+        text2.setText("Tipo evento");
 
+        EventoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Evaluación", "Reunión de padres", "Reunión de departamneto", "Excursión ", "Otro" }));
         EventoComboBox.setToolTipText("Formato del documento");
 
         text1.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        text1.setText("Asociar con una clase");
+        text1.setText("Fecha");
 
-        aulaComboBox.setToolTipText("Formato del documento");
+        datePickerField.setText("jFormattedTextField1");
+
+        text3.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
+        text3.setText("Tipo evento");
+
+        DocumentsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout background4Layout = new javax.swing.GroupLayout(background4);
         background4.setLayout(background4Layout);
         background4Layout.setHorizontalGroup(
             background4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, background4Layout.createSequentialGroup()
-                .addContainerGap(61, Short.MAX_VALUE)
-                .addGroup(background4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(82, Short.MAX_VALUE)
+                .addGroup(background4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(text3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(text1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(background4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(text2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nombreField)
-                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(nombreText, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(guardarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(EventoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(aulaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(text2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nombreField)
+                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descripcionText, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guardarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EventoComboBox, 0, 270, Short.MAX_VALUE)
+                    .addComponent(datePickerField, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DocumentsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(69, 69, 69))
         );
         background4Layout.setVerticalGroup(
@@ -216,20 +169,24 @@ public class AddDocumentView extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(title)
                 .addGap(20, 20, 20)
-                .addComponent(nombreText)
+                .addComponent(descripcionText)
                 .addGap(4, 4, 4)
                 .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(text1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(aulaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(datePickerField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(text2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(EventoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(text3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(DocumentsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(guardarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
@@ -250,30 +207,6 @@ public class AddDocumentView extends javax.swing.JFrame {
 
     private void guardarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseClicked
 
-        String nombre = nombreField.getText().trim();
-        String aula = aulaComboBox.getSelectedItem().toString();
-        String evento = EventoComboBox.getSelectedItem().toString();
-
-        if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Integer idAula = aulaMap.get(aula);
-        Integer idEvento = eventoMap.get(evento);
-
-        DocumentoController documentoController = new DocumentoController(new DocumentoService());
-
-        if (id == -1) {
-            // Crear  nuevo documento
-            documentoController.crearDocumento(nombre, contenido, tipoDocumento, idAula, idEvento);
-            JOptionPane.showMessageDialog(this, "Documento guardado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            // Actualizar  documento 
-            documentoController.actualizarDocumento(id, nombre, contenido, tipoDocumento, idAula, idEvento);
-            JOptionPane.showMessageDialog(this, "Documento editado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        }
-        this.dispose();
     }//GEN-LAST:event_guardarButtonMouseClicked
 
     private void guardarButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseEntered
@@ -305,36 +238,37 @@ public class AddDocumentView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddDocumentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEventView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddDocumentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEventView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddDocumentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEventView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddDocumentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEventView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddDocumentView().setVisible(true);
+                new AddEventView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> DocumentsComboBox;
     private javax.swing.JComboBox<String> EventoComboBox;
-    private javax.swing.JComboBox<String> aulaComboBox;
     private javax.swing.JPanel background4;
+    private javax.swing.JFormattedTextField datePickerField;
+    private javax.swing.JLabel descripcionText;
     private javax.swing.JPanel guardarButton;
     private javax.swing.JLabel guardarButtonText;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTextField nombreField;
-    private javax.swing.JLabel nombreText;
     private javax.swing.JLabel text1;
     private javax.swing.JLabel text2;
+    private javax.swing.JLabel text3;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

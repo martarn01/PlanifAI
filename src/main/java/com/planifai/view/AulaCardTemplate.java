@@ -11,7 +11,7 @@ import java.awt.LayoutManager;
  * Clase que representa un template de tarjeta para mostrar información de un
  * aula.
  *
- * @author marta rosado nabais
+ * @author Marta rosado nabais
  */
 public class AulaCardTemplate extends javax.swing.JPanel {
 
@@ -28,7 +28,7 @@ public class AulaCardTemplate extends javax.swing.JPanel {
         this.aula = aula;
 
         menuDesplegable = new MenuGestion(tipoElemento.AULA, aula.getIdAula());
-        menuDesplegable.setAulaListener(aulaListener); // Establece el listener
+        menuDesplegable.setAulaListener(aulaListener); 
 
         aulaView = new AulaView(aula);
         cargarDatosAula();
@@ -149,8 +149,6 @@ public class AulaCardTemplate extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-       
-        
         aulaView.setVisible(true);
         MainFrame mainframe = new MainFrame();
         mainframe.dispose();
