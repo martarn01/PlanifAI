@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import raven.datetime.component.date.DatePicker;
 
@@ -27,30 +26,38 @@ public class AddEventView extends javax.swing.JFrame {
 
     private DocumentoController documentoController;
     private EventoController eventoController;
-    private Map<String, Integer> aulaIdMap;
     private Map<String, Integer> documentoIdMap;
     private EventoListener eventoListener;
     private Aula aula;
 
     public AddEventView() {
         initComponents();
-        this.setLocationRelativeTo(null);
-
-        DatePicker datePicker = new DatePicker();
-        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
-        datePicker.setEditor(datePickerField);
-
-    }
-
-    public AddEventView(Aula aula) {
-        initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
         this.aula = aula;
 
         documentoController = new DocumentoController(new DocumentoService());
         eventoController = new EventoController(new EventoService());
-        aulaIdMap = new HashMap<>();
+        documentoIdMap = new HashMap<>();
+
+        DatePicker datePicker = new DatePicker();
+        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
+        datePicker.setEditor(datePickerField);
+
+        cargarDocumentos();
+
+    }
+
+    public AddEventView(Aula aula) {
+        initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
+        this.aula = aula;
+
+        documentoController = new DocumentoController(new DocumentoService());
+        eventoController = new EventoController(new EventoService());
         documentoIdMap = new HashMap<>();
 
         DatePicker datePicker = new DatePicker();
@@ -62,12 +69,11 @@ public class AddEventView extends javax.swing.JFrame {
 
     public void setEventoListener(EventoListener listener) {
         this.eventoListener = listener;
-        System.out.println("Listener establecido: " + (listener != null)); // Para debug
     }
 
     private void cargarDocumentos() {
         DocumentoController documentoController = new DocumentoController(new DocumentoService());
-        List<Documento> documentos = documentoController.obtenerDocumentos();
+        List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
 
         DocumentsComboBox.removeAllItems();
         DocumentsComboBox.addItem("Sin documento asociado");

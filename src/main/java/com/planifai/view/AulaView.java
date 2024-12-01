@@ -2,12 +2,14 @@ package com.planifai.view;
 
 import com.planifai.controller.DocumentoController;
 import com.planifai.controller.EventoController;
+import com.planifai.controller.NotaController;
 import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Aula;
 import com.planifai.model.Documento;
 import com.planifai.model.Evento;
 import com.planifai.service.DocumentoService;
 import com.planifai.service.EventoService;
+import com.planifai.service.NoteService;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -17,6 +19,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 /**
@@ -28,6 +31,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
     private Aula aula;
     private DocumentoController documentoController;
     private EventoController eventoController;
+    private NotaController notaController;
 
     public AulaView(Aula aula) {
         this.aula = aula;
@@ -51,9 +55,11 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
 
         eventoController = new EventoController(new EventoService());
         documentoController = new DocumentoController(new DocumentoService());
+        this.notaController = new NotaController(new NoteService());
 
         cargarDocumentos();
         cargarEventos();
+        cargarNota();
     }
 
     public AulaView() {
@@ -125,6 +131,13 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         documentosPanel.repaint();
     }
 
+    private void cargarNota() {
+        String contenido = notaController.obtenerNotaPorAula(aula.getIdAula());
+        if (contenido != null && !contenido.isEmpty()) {
+            noteTextArea.setText(contenido);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,11 +158,11 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         verDocumentosButton = new javax.swing.JLabel();
         documentosTitle1 = new javax.swing.JLabel();
         documentosPanel = new javax.swing.JPanel();
-        notePanel2 = new javax.swing.JPanel();
-        noteSaveButton2 = new javax.swing.JPanel();
+        notePanel = new javax.swing.JPanel();
+        noteSaveButton = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        noteTextArea = new javax.swing.JTextArea();
         addDocumentButton = new javax.swing.JPanel();
         addAulaText = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -256,28 +269,39 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         documentosPanel.setMaximumSize(new java.awt.Dimension(0, 0));
         documentosPanel.setLayout(new java.awt.GridBagLayout());
 
-        notePanel2.setBackground(new java.awt.Color(187, 187, 187));
+        notePanel.setBackground(new java.awt.Color(187, 187, 187));
 
-        noteSaveButton2.setBackground(new java.awt.Color(204, 204, 204));
-        noteSaveButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        noteSaveButton2.setForeground(new java.awt.Color(153, 153, 153));
+        noteSaveButton.setBackground(new java.awt.Color(204, 204, 204));
+        noteSaveButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        noteSaveButton.setForeground(new java.awt.Color(153, 153, 153));
+        noteSaveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                noteSaveButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                noteSaveButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                noteSaveButtonMouseExited(evt);
+            }
+        });
 
         jLabel4.setBackground(new java.awt.Color(102, 102, 102));
         jLabel4.setFont(new java.awt.Font("Lato", 0, 12)); // NOI18N
         jLabel4.setText("Guardar");
 
-        javax.swing.GroupLayout noteSaveButton2Layout = new javax.swing.GroupLayout(noteSaveButton2);
-        noteSaveButton2.setLayout(noteSaveButton2Layout);
-        noteSaveButton2Layout.setHorizontalGroup(
-            noteSaveButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(noteSaveButton2Layout.createSequentialGroup()
+        javax.swing.GroupLayout noteSaveButtonLayout = new javax.swing.GroupLayout(noteSaveButton);
+        noteSaveButton.setLayout(noteSaveButtonLayout);
+        noteSaveButtonLayout.setHorizontalGroup(
+            noteSaveButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noteSaveButtonLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
-        noteSaveButton2Layout.setVerticalGroup(
-            noteSaveButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, noteSaveButton2Layout.createSequentialGroup()
+        noteSaveButtonLayout.setVerticalGroup(
+            noteSaveButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, noteSaveButtonLayout.createSequentialGroup()
                 .addContainerGap(10, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addContainerGap())
@@ -286,31 +310,31 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTextArea3.setBackground(new java.awt.Color(204, 204, 204));
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jTextArea3.setWrapStyleWord(true);
-        jTextArea3.setBorder(null);
-        jScrollPane3.setViewportView(jTextArea3);
+        noteTextArea.setBackground(new java.awt.Color(204, 204, 204));
+        noteTextArea.setColumns(20);
+        noteTextArea.setRows(5);
+        noteTextArea.setWrapStyleWord(true);
+        noteTextArea.setBorder(null);
+        jScrollPane3.setViewportView(noteTextArea);
 
-        javax.swing.GroupLayout notePanel2Layout = new javax.swing.GroupLayout(notePanel2);
-        notePanel2.setLayout(notePanel2Layout);
-        notePanel2Layout.setHorizontalGroup(
-            notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(notePanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout notePanelLayout = new javax.swing.GroupLayout(notePanel);
+        notePanel.setLayout(notePanelLayout);
+        notePanelLayout.setHorizontalGroup(
+            notePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(notePanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(notePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(noteSaveButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(noteSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
-        notePanel2Layout.setVerticalGroup(
-            notePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notePanel2Layout.createSequentialGroup()
+        notePanelLayout.setVerticalGroup(
+            notePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(noteSaveButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(noteSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -371,7 +395,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(483, Short.MAX_VALUE)
-                    .addComponent(notePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(notePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(91, 91, 91)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -393,7 +417,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(55, 55, 55)
-                    .addComponent(notePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(notePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(253, Short.MAX_VALUE)))
         );
 
@@ -574,6 +598,43 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         addEventView.setVisible(true);
     }//GEN-LAST:event_addEventButtonMouseClicked
 
+    private void noteSaveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteSaveButtonMouseEntered
+        Color color = new Color(153, 153, 153);
+        noteSaveButton.setBackground(color);
+    }//GEN-LAST:event_noteSaveButtonMouseEntered
+
+    private void noteSaveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteSaveButtonMouseExited
+        Color color = new Color(204, 204, 204);
+        noteSaveButton.setBackground(color);
+    }//GEN-LAST:event_noteSaveButtonMouseExited
+
+    private void noteSaveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteSaveButtonMouseClicked
+        try {
+            String contenido = noteTextArea.getText().trim();
+
+            if (contenido.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "El contenido de la nota está vacío",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            notaController.crearNota(contenido, aula.getIdAula());
+
+            JOptionPane.showMessageDialog(this,
+                    "Nota guardada exitosamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al guardar la nota: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }    }//GEN-LAST:event_noteSaveButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -625,10 +686,10 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JPanel leftPanel;
-    private javax.swing.JPanel notePanel2;
-    private javax.swing.JPanel noteSaveButton2;
+    private javax.swing.JPanel notePanel;
+    private javax.swing.JPanel noteSaveButton;
+    private javax.swing.JTextArea noteTextArea;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAula;
     private javax.swing.JLabel verDocumentosButton;

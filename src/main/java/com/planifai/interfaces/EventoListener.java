@@ -1,7 +1,7 @@
 package com.planifai.interfaces;
 
 /**
- * Listener para eventos de eliminación de un documento.
+ * Listener para cambios en eventos.
  *
  * @author Marta Rosado Nabais
  */
