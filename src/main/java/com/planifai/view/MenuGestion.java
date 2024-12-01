@@ -15,8 +15,12 @@ import com.planifai.service.EventoService;
 import javax.swing.JOptionPane;
 
 /**
+ * Vista para gestionar las acciones relacionadas con Aulas, Eventos y
+ * Documentos en la aplicación PlanifAI. Esta clase se encarga de mostrar un
+ * menú contextual con opciones para realizar acciones sobre los elementos
+ * seleccionados.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class MenuGestion extends javax.swing.JFrame {
 
@@ -38,6 +42,14 @@ public class MenuGestion extends javax.swing.JFrame {
     private TipoElemento tipoElemento;
     private int idElemento;
 
+    /**
+     * Constructor que inicializa el menú de gestión para el tipo de elemento
+     * específico (Aula, Evento o Documento), según el parámetro recibido.
+     *
+     * @param tipoElemento El tipo de elemento (Aula, Evento, Documento) que se
+     * gestionará.
+     * @param idElemento El ID del elemento que se está gestionando.
+     */
     public MenuGestion(TipoElemento tipoElemento, int idElemento) {
         initComponents();
 
@@ -49,26 +61,55 @@ public class MenuGestion extends javax.swing.JFrame {
         documentoController = new DocumentoController(new DocumentoService());
     }
 
+    /**
+     * Constructor por defecto. Inicializa el menú para gestionar Aulas.
+     */
     public MenuGestion() {
         initComponents();
         aulaController = new AulaController(new AulaService());
     }
 
+    /**
+     * Muestra el menú en la ubicación especificada por las coordenadas (x, y) y
+     * establece el ID del elemento que se está gestionando.
+     *
+     * @param x Coordenada X para ubicar el menú.
+     * @param y Coordenada Y para ubicar el menú.
+     * @param id El ID del elemento que se gestionará.
+     */
     public void showMenu(int x, int y, int id) {
         setLocation(x, y);
         idElemento = id;
         setVisible(true);
     }
 
-    //LISTENERS
+    /**
+     * Establece el listener para las Aulas, que permitirá realizar acciones
+     * sobre ellas.
+     *
+     * @param listener El listener de Aula para manejar eventos relacionados.
+     */
     public void setAulaListener(AulaListener listener) {
         this.aulaListener = listener;
     }
 
+    /**
+     * Establece el listener para los Eventos, que permitirá realizar acciones
+     * sobre ellos.
+     *
+     * @param listener El listener de Evento para manejar eventos relacionados.
+     */
     public void setEventoListener(EventoListener listener) {
         this.eventoListener = listener;
     }
 
+    /**
+     * Establece el listener para los Documentos, que permitirá realizar
+     * acciones sobre ellos.
+     *
+     * @param listener El listener de Documento para manejar eventos
+     * relacionados.
+     */
     public void setDocumentoListener(DocumentoListener listener) {
         this.documentoListener = listener;
     }
@@ -203,41 +244,41 @@ public class MenuGestion extends javax.swing.JFrame {
     }//GEN-LAST:event_editarPanelMouseExited
 
     private void editarPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarPanelMouseClicked
-   // Lógica para obtener los datos que se van a editar
-    String nuevoNombre;
-    String nuevaAsignatura;
-    boolean exito;
+        // Lógica para obtener los datos que se van a editar
+        String nuevoNombre;
+        String nuevaAsignatura;
+        boolean exito;
 
-    switch (tipoElemento) {
-        case AULA:
+        switch (tipoElemento) {
+            case AULA:
 
-        Aula aula = aulaController.getAulaById(idElemento); // Asegúrate de que el idElemento es correcto
+                Aula aula = aulaController.getAulaById(idElemento); // Asegúrate de que el idElemento es correcto
 
-        if (aula != null) {
-            // Crear y mostrar el frame de edición
-            EditAulaView editAulaView = new EditAulaView(aulaController, aula, aulaListener);
-            editAulaView.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el aula a editar.");
+                if (aula != null) {
+                    // Crear y mostrar el frame de edición
+                    EditAulaView editAulaView = new EditAulaView(aulaController, aula, aulaListener);
+                    editAulaView.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró el aula a editar.");
+                }
+
+                dispose();
+                break;
+
+            case EVENTO:
+                // Aquí puedes implementar la lógica para editar un evento
+                // Lógica para editar evento (implementación futura)
+                break;
+
+            case DOCUMENTO:
+                // Aquí puedes implementar la lógica para editar un documento
+                // Lógica para editar documento (implementación futura)
+                break;
+
+            default:
+                JOptionPane.showMessageDialog(this, "Tipo de elemento no reconocido.");
+                break;
         }
-        
-        dispose();
-        break;
-
-        case EVENTO:
-            // Aquí puedes implementar la lógica para editar un evento
-            // Lógica para editar evento (implementación futura)
-            break;
-
-        case DOCUMENTO:
-            // Aquí puedes implementar la lógica para editar un documento
-            // Lógica para editar documento (implementación futura)
-            break;
-
-        default:
-            JOptionPane.showMessageDialog(this, "Tipo de elemento no reconocido.");
-            break;
-    }
     }//GEN-LAST:event_editarPanelMouseClicked
 
     private void eliminarPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarPanelMouseEntered
@@ -266,7 +307,7 @@ public class MenuGestion extends javax.swing.JFrame {
                     eliminado = aulaController.eliminarAula(idElemento);
                     break;
                 case EVENTO:
-                   eliminado = eventoController.eliminarEvento(idElemento);
+                    eliminado = eventoController.eliminarEvento(idElemento);
                     break;
                 case DOCUMENTO:
                     eliminado = documentoController.eliminarDocumento(idElemento);

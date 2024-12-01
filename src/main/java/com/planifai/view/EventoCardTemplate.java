@@ -10,6 +10,9 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 
 /**
+ * Plantilla de tarjeta para mostrar los detalles de un evento en la interfaz
+ * gráfica de la aplicación PlanifAI. Esta clase gestiona la interfaz visual de
+ * un evento y permite configurar su comportamiento al interactuar con él.
  *
  * @author Marta Rosado Nabais
  */
@@ -19,6 +22,12 @@ public class EventoCardTemplate extends javax.swing.JPanel {
     private EventoController eventoController;
     private EventoListener eventoListener;
 
+    /**
+     * Constructor de la plantilla de tarjeta de evento. Inicializa los
+     * componentes de la interfaz y configura el evento.
+     *
+     * @param evento El evento que se va a mostrar en la tarjeta.
+     */
     public EventoCardTemplate(Evento evento) {
         initComponents();
         configurarEvento(evento);
@@ -27,6 +36,13 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         eventoController = new EventoController(new EventoService());
     }
 
+    /**
+     * Establece un listener para manejar los eventos de interacción con la
+     * tarjeta del evento.
+     *
+     * @param listener El listener que manejará los eventos de la tarjeta del
+     * evento.
+     */
     public void setEventoListener(EventoListener listener) {
         this.eventoListener = listener;
     }
@@ -41,7 +57,6 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMM", Locale.ENGLISH);
 
-        // Extraer y formatear la fecha del evento
         String day = dayFormat.format(evento.getFechaEvento());
         String month = monthFormat.format(evento.getFechaEvento()).toUpperCase();
 

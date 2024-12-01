@@ -75,33 +75,4 @@ public class Aula {
     public void setDocumento(List<Documento> Documentos) {
         this.documentos = Documentos;
     }
-    
-     // Métodos de dominio específicos
-    public void agregarEvento(Evento evento) {
-        if (eventos == null) {
-            eventos = new ArrayList<>();
-        }
-        eventos.add(evento);
-        evento.setIdAula(this.idAula);
-    }
-    
-    public void removerEvento(Evento evento) {
-        if (eventos != null) {
-            eventos.remove(evento);
-        }
-    }
-    
-    public void agregarDocumento(Documento documento) {
-        if (documentos == null) {
-            documentos = new ArrayList<>();
-        }
-        documentos.add(documento);
-        documento.setIdAula(this.idAula);
-    }
-    
-    public void removerDocumento(Documento documento) {
-        if (documentos != null) {
-            documentos.remove(documento);
-        }
-    }
 }

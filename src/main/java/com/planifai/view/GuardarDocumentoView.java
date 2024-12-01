@@ -22,7 +22,10 @@ public class GuardarDocumentoView extends javax.swing.JFrame {
     private String text;
 
     /**
-     * Creates new form GuardarDocumentoView
+     * Constructor de la vista para guardar un documento. Inicializa los
+     * componentes de la interfaz y establece el contenido del documento.
+     *
+     * @param text El contenido del documento a guardar.
      */
     public GuardarDocumentoView(String text) {
         initComponents();
@@ -31,6 +34,10 @@ public class GuardarDocumentoView extends javax.swing.JFrame {
         this.text = text;
     }
 
+    /**
+     * Constructor por defecto. Inicializa los componentes de la interfaz sin un
+     * contenido de documento específico.
+     */
     public GuardarDocumentoView() {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

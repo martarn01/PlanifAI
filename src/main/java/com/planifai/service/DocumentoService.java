@@ -130,8 +130,8 @@ public class DocumentoService {
      * Obtiene un documento por su ID.
      *
      * @param idDocumento ID del documento a obtener.
-     * @return Un objeto Documento correspondiente al ID, o null si no se
-     * encontró.
+     * @return Un objeto {@link Documento} correspondiente al ID proporcionado,
+     * o null si no se encontró un documento con ese ID.
      */
     public Documento getDocumentoById(int idDocumento) {
         String sql = "SELECT id_documento, titulo, contenido, fecha_creacion, tipo_documento, id_aula, id_evento FROM Documentos WHERE id_documento = ?";
@@ -160,6 +160,18 @@ public class DocumentoService {
         return documento;
     }
 
+    /**
+     * Obtiene una lista de documentos asociados a un aula específica desde la
+     * base de datos. Este método ejecuta una consulta SQL para obtener todos
+     * los documentos que están relacionados con el aula cuyo ID se pasa como
+     * parámetro.
+     *
+     * @param idAula El identificador del aula cuyos documentos se desean
+     * obtener.
+     * @return Una lista de objetos {@link Documento} que representan los
+     * documentos asociados al aula especificada. Si no se encuentran documentos
+     * para el aula, se retorna una lista vacía.
+     */
     public List<Documento> obtenerDocumentosPorAula(int idAula) {
         List<Documento> documentos = new ArrayList<>();
         String query = "SELECT * FROM documentos WHERE id_aula = ?";

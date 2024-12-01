@@ -19,6 +19,9 @@ import javax.swing.JOptionPane;
 import raven.datetime.component.date.DatePicker;
 
 /**
+ * Vista para agregar un evento a un aula. Esta clase es responsable de mostrar
+ * la interfaz gráfica para crear un nuevo evento, permitiendo seleccionar
+ * documentos asociados y configurar la fecha del evento.
  *
  * @author Marta Rosado Nabais
  */
@@ -30,6 +33,10 @@ public class AddEventView extends javax.swing.JFrame {
     private EventoListener eventoListener;
     private Aula aula;
 
+    /**
+     * Constructor por defecto de la vista para agregar un evento. Inicializa
+     * los controladores, configura la interfaz gráfica, y carga los documentos.
+     */
     public AddEventView() {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -49,6 +56,13 @@ public class AddEventView extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Constructor de la vista para agregar un evento, con un aula especificada.
+     * Este constructor permite la creación de un evento asociado a un aula
+     * existente.
+     *
+     * @param aula El aula a la que se asociará el nuevo evento.
+     */
     public AddEventView(Aula aula) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -67,10 +81,22 @@ public class AddEventView extends javax.swing.JFrame {
         cargarDocumentos();
     }
 
+    /**
+     * Establece el listener para los eventos relacionados con la vista de
+     * agregar evento.
+     *
+     * @param listener El listener que se notificará cuando se cree un nuevo
+     * evento.
+     */
     public void setEventoListener(EventoListener listener) {
         this.eventoListener = listener;
     }
 
+    /**
+     * Carga los documentos disponibles asociados al aula en el combobox de la
+     * vista. El combobox permite seleccionar un documento para asociarlo al
+     * nuevo evento.
+     */
     private void cargarDocumentos() {
         DocumentoController documentoController = new DocumentoController(new DocumentoService());
         List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());

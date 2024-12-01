@@ -115,16 +115,11 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
      * muestra en el JComboBox de cursos.
      */
     private void actualizarCursos() {
-        // Obtener el nivel educativo seleccionado
         String nivelSeleccionado = nivelEducativoBox.getSelectedItem().toString();
 
-        System.out.println("Nivel seleccionado: " + nivelSeleccionado); // Depuración
-
-        // Obtener los cursos correspondientes a ese nivel
         String[] cursos = cursosPorNivel.get(nivelSeleccionado);
-        System.out.println("Cursos encontrados: " + (cursos != null ? cursos.length : "No se encontraron cursos")); // Depuración
+        System.out.println("Cursos encontrados: " + (cursos != null ? cursos.length : "No se encontraron cursos"));
 
-        // Actualizar el modelo del segundo JComboBox con los cursos correspondientes
         if (cursos != null) {
             cursoBox.setModel(new DefaultComboBoxModel<>(cursos));
         } else {
@@ -142,7 +137,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
      * requerido.
      */
     private String generarPrompt() {
-        // Verificar que todos los campos estén rellenos
         if (asignaturaField.getText().trim().isEmpty()
                 || temaField.getText().trim().isEmpty()
                 || nivelEducativoBox.getSelectedItem() == null
@@ -152,22 +146,19 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         }
 
         if (tipoDocumentoComboBox.getSelectedItem() == null) {
-            tipoDocumentoComboBox.setSelectedIndex(0);  // Seleccionar el primer elemento
+            tipoDocumentoComboBox.setSelectedIndex(0);  
         }
 
-        // Obtener los valores de los campos
         String asignatura = asignaturaField.getText();
         String tema = temaField.getText();
         String nivelEducativo = nivelEducativoBox.getSelectedItem().toString();
         String curso = cursoBox.getSelectedItem().toString();
-        int duracion = (int) DuracionSpinner.getValue();  // Se obtiene la duración desde el spinner
+        int duracion = (int) DuracionSpinner.getValue();  
         String datosExtra = extrasTextArea.getText();
 
-        // Obtener el tipo de documento seleccionado
         String tipoDocumento = tipoDocumentoComboBox.getSelectedItem().toString();
         String titulo = "";
 
-        // Generar el prompt según el tipo de documento
         String prompt = "";
         if (tipoDocumento.equals("Evaluación")) {
             titulo = "Evaluación de " + asignatura + " - " + tema;

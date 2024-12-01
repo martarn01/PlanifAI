@@ -1,7 +1,6 @@
 package com.planifai.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Clase que representa un evento en el sistema. Cada evento está asociado a un
@@ -37,7 +36,7 @@ public class Evento {
      * aula.
      * @param idDocumento ID del documento asociado al evento, puede ser null.
      * @param aula Objeto Aula asociado al evento.
-     * @param documentos Lista de documentos relacionados con el evento.
+     * @param documento documento relacionado.
      */
     public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, Documento documento) {
         this.idEvento = idEvento;

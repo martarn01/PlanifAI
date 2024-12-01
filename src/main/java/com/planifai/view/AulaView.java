@@ -24,6 +24,11 @@ import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 /**
+ * Clase que representa la vista detallada de un aula en la aplicación. Esta
+ * vista permite visualizar los eventos, documentos y notas asociados a un aula,
+ * así como interactuar con ellos a través de las tarjetas correspondientes.
+ * Implementa los listeners para manejar eventos de los objetos Evento y
+ * Documento.
  *
  * @author Marta Rosado Nabais
  */
@@ -34,6 +39,12 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
     private EventoController eventoController;
     private NotaController notaController;
 
+    /**
+     * Constructor que inicializa la vista del aula con su información y carga
+     * los eventos, documentos y notas asociados.
+     *
+     * @param aula El aula cuyo datos serán mostrados en la vista.
+     */
     public AulaView(Aula aula) {
         this.aula = aula;
 
@@ -63,10 +74,19 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
         cargarNota();
     }
 
+    /**
+     * Constructor vacío. Se utiliza en el caso de que no se pase un aula al
+     * inicializar.
+     */
     public AulaView() {
 
     }
 
+    /**
+     * Carga y muestra los eventos asociados al aula. Los eventos se muestran en
+     * tarjetas dentro de un panel. Si no hay eventos, se actualiza la vista sin
+     * agregar tarjetas.
+     */
     public void cargarEventos() {
         List<Evento> eventos = eventoController.obtenerEventosPorAula(aula.getIdAula());
         System.out.println("Cantidad de eventos obtenidos: " + eventos.size());
@@ -98,6 +118,11 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
         eventosPanel.repaint();
     }
 
+    /**
+     * Carga y muestra los documentos asociados al aula. Los documentos se
+     * muestran en tarjetas dentro de un panel. Si no hay documentos, se
+     * actualiza la vista sin agregar tarjetas.
+     */
     public void cargarDocumentos() {
 
         List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
@@ -132,6 +157,10 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
         documentosPanel.repaint();
     }
 
+    /**
+     * Carga la nota asociada al aula. Si existe una nota, se muestra en el área
+     * de texto correspondiente.
+     */
     private void cargarNota() {
         String contenido = notaController.obtenerNotaPorAula(aula.getIdAula());
         if (contenido != null && !contenido.isEmpty()) {

@@ -11,7 +11,7 @@ import java.awt.LayoutManager;
  * Clase que representa un template de tarjeta para mostrar información de un
  * aula.
  *
- * @author Marta rosado nabais
+ * @author Marta Rosado Nabais
  */
 public class AulaCardTemplate extends javax.swing.JPanel {
 
@@ -23,18 +23,34 @@ public class AulaCardTemplate extends javax.swing.JPanel {
 
     private TipoElemento tipoElemento;
 
+    /**
+     * Constructor que inicializa el template de tarjeta para un aula
+     * específico. Configura el menú desplegable y la vista del aula.
+     *
+     * @param aula El aula cuyo datos serán mostrados en el template.
+     * @param aulaListener El listener que maneja los eventos relacionados con
+     * el aula.
+     */
     public AulaCardTemplate(Aula aula, AulaListener aulaListener) {
         initComponents();
         this.aula = aula;
 
         menuDesplegable = new MenuGestion(tipoElemento.AULA, aula.getIdAula());
-        menuDesplegable.setAulaListener(aulaListener); 
+        menuDesplegable.setAulaListener(aulaListener);
 
         aulaView = new AulaView(aula);
         cargarDatosAula();
 
     }
 
+    /**
+     * Constructor que inicializa el template de tarjeta para un aula específico
+     * con un layout personalizado.
+     *
+     * @param aula El aula cuyo datos serán mostrados en el template.
+     * @param layout El layout que se utilizará para organizar los componentes
+     * del template.
+     */
     public AulaCardTemplate(Aula aula, LayoutManager layout) {
         super(layout);
         this.aula = aula;

@@ -17,8 +17,13 @@ import com.planifai.interfaces.AulaListener;
 import java.awt.Window;
 
 /**
+ * Clase que representa la vista detallada de un aula en la aplicación. Esta
+ * vista permite visualizar los eventos, documentos y notas asociados a un aula,
+ * así como interactuar con ellos a través de las tarjetas correspondientes.
+ * Implementa los listeners para manejar eventos de los objetos Evento y
+ * Documento.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class AulasView extends javax.swing.JFrame implements AulaListener {
 
@@ -27,10 +32,15 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
     private boolean[] panelesCargados;
     private static final int MAX_AULAS = 8;
 
+    /**
+     * Constructor que inicializa la vista del aula con su información y carga
+     * los eventos, documentos y notas asociados.
+     *
+     * @param aula El aula cuyo datos serán mostrados en la vista.
+     */
     public AulasView() {
         initComponents();
 
-        // Obtener el tamaño de la pantalla
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Ajustar el tamaño de la ventana al tamaño de la pantalla
@@ -81,7 +91,7 @@ public class AulasView extends javax.swing.JFrame implements AulaListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
-        aulasPanel.setLayout(new GridLayout(5, 2, 5, 5)); 
+        aulasPanel.setLayout(new GridLayout(5, 2, 5, 5));
 
         int numAulas = Math.min(aulas.size(), MAX_AULAS);
 

@@ -35,28 +35,22 @@ public class DocumentosView extends javax.swing.JFrame {
     public DocumentosView() {
         initComponents();
 
-        // Obtener el modelo de la tabla desde documentosTable
         modeloTabla = (DefaultTableModel) documentosTable.getModel();
 
-        // Ajustar el tamaño de la ventana
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(screenSize.width, screenSize.height);
         this.setExtendedState(DocumentosView.MAXIMIZED_BOTH);
         this.setResizable(false);
 
-        // Cambiar el ícono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
         setIconImage(icon);
         setTitle("PlanifAI");
 
-        // Inicializar el controlador
         documentoController = new DocumentoController(new DocumentoService());
 
         estilizarTabla();
 
-        // Cargar documentos en la tabla
         cargarDocumentos();
-  
     }
 
     /**
@@ -64,13 +58,10 @@ public class DocumentosView extends javax.swing.JFrame {
      * Excluye las columnas idDocumento y contenido.
      */
     public void cargarDocumentos() {
-        // Limpiar los datos existentes en la tabla
         modeloTabla.setRowCount(0);
 
-        // Obtener la lista de documentos desde el controlador
         List<Documento> documentos = documentoController.obtenerDocumentos();
 
-        // Agregar documentos al modelo de la tabla, excluyendo idDocumento y contenido
         for (Documento documento : documentos) {
             Object[] fila = new Object[]{
                 documento.getTitulo(),
@@ -83,16 +74,17 @@ public class DocumentosView extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Estiliza la tabla de documentos para mejorar su apariencia visual.
+     * Configura el color de las filas, las cabeceras y otros aspectos visuales.
+     */
     private void estilizarTabla() {
-        // Obtener el modelo de la tabla desde documentosTable
         modeloTabla = (DefaultTableModel) documentosTable.getModel();
 
-        // Cambiar el color de fondo de la tabla y desactivar líneas de rejilla
         documentosTable.setGridColor(new Color(200, 200, 200));
         documentosTable.setShowGrid(false);
-        documentosTable.setRowHeight(25); // Altura de cada fila
+        documentosTable.setRowHeight(25);
 
-        // Color alternado de filas
         documentosTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -109,12 +101,10 @@ public class DocumentosView extends javax.swing.JFrame {
             }
         });
 
-        // Cambiar el estilo del encabezado
         documentosTable.getTableHeader().setBackground(new Color(100, 150, 200));
         documentosTable.getTableHeader().setForeground(Color.WHITE);
         documentosTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-        // Ajustar bordes y relleno
         documentosTable.setIntercellSpacing(new Dimension(0, 0));
     }
 
@@ -334,7 +324,7 @@ public class DocumentosView extends javax.swing.JFrame {
     }//GEN-LAST:event_titleMouseClicked
 
     private void generarDocumentoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseClicked
-        GeneracionDocumentoView generacionDocumento=new GeneracionDocumentoView();
+        GeneracionDocumentoView generacionDocumento = new GeneracionDocumentoView();
         generacionDocumento.setVisible(true);
     }//GEN-LAST:event_generarDocumentoButtonMouseClicked
 

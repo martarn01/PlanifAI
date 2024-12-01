@@ -9,8 +9,13 @@ import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 /**
+ * Clase que representa una tarjeta visual para mostrar información sobre un
+ * documento. Esta clase permite mostrar un documento en una interfaz de usuario
+ * y manejar eventos relacionados con él. Los documentos pueden ser asociados
+ * con un listener para ejecutar acciones cuando el usuario interactúa con
+ * ellos.
  *
- * @author marta
+ * @author Marta Rosado Nabais
  */
 public class DocumentoCardTemplate extends javax.swing.JPanel {
 
@@ -20,17 +25,27 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
     private DocumentoController documentoController;
     private DocumentoListener documentoListener;
 
+    /**
+     * Constructor que inicializa la tarjeta del documento.
+     *
+     * @param documento El documento que se va a mostrar en la tarjeta.
+     */
     public DocumentoCardTemplate(Documento documento) {
         initComponents();
         configurarDocumento(documento);
         documentoCard = documento;
-        documentoController=new DocumentoController(new DocumentoService());
-    }
-    
-        public void setDocumentoListener(DocumentoListener listener) {
-        this.documentoListener = listener;
+        documentoController = new DocumentoController(new DocumentoService());
     }
 
+    /**
+     * Establece un listener para manejar los eventos del documento.
+     *
+     * @param listener El listener que manejará los eventos relacionados con el
+     * documento.
+     */
+    public void setDocumentoListener(DocumentoListener listener) {
+        this.documentoListener = listener;
+    }
 
     /**
      * Configura los datos del documento en la tarjeta.

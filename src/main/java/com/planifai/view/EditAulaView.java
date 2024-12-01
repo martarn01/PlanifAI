@@ -10,6 +10,9 @@ import com.planifai.interfaces.AulaListener;
 import com.planifai.model.Aula;
 
 /**
+ * Vista para editar los detalles de un aula en la aplicación PlanifAI. Esta
+ * clase gestiona la interfaz gráfica donde el usuario puede modificar el nombre
+ * y la asignatura de un aula ya existente.
  *
  * @author Marta Rosado Nabais
  */
@@ -21,26 +24,45 @@ public class EditAulaView extends javax.swing.JFrame {
 
     private AulaListener aulaListener;
 
-    public EditAulaView(AulaController aulaController, Aula aulaToEdit,  AulaListener aulaListener) {
+    /**
+     * Constructor de la vista de edición de aula. Inicializa los componentes,
+     * establece la ubicación de la ventana y carga los datos del aula a editar.
+     *
+     * @param aulaController El controlador encargado de gestionar la lógica de
+     * las aulas.
+     * @param aulaToEdit El aula que se desea editar.
+     * @param aulaListener Un listener para gestionar eventos relacionados con
+     * el aula.
+     */
+    public EditAulaView(AulaController aulaController, Aula aulaToEdit, AulaListener aulaListener) {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.aulaService = new AulaService();
         this.aulaController = aulaController;
         this.aulaToEdit = aulaToEdit;
-        this.aulaListener = aulaListener; // Inicializa el aulaListener
+        this.aulaListener = aulaListener;
 
         setAulaData();
     }
 
+    /**
+     * Constructor vacío, utilizado si no se desea inicializar un aula para
+     * editar.
+     */
     public EditAulaView() {
     }
 
+    /**
+     * Establece los datos del aula a editar en los campos correspondientes. Si
+     * el aula a editar no es nula, se cargan el nombre y la asignatura del
+     * aula.
+     */
     private void setAulaData() {
         if (aulaToEdit != null) {
             nombreField.setText(aulaToEdit.getNombre());
             asignaturaField.setText(aulaToEdit.getAsignatura());
-            title.setText("Editar Aula"); // Cambia el título del frame
+            title.setText("Editar Aula"); 
         }
     }
 
