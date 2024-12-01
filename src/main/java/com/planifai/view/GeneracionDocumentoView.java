@@ -1,7 +1,6 @@
 package com.planifai.view;
 
 import com.planifai.controller.OpenAIController;
-import com.planifai.model.Aula;
 import com.planifai.model.Documento;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,7 +26,6 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
     private HashMap<String, String[]> cursosPorNivel;
     private OpenAIController openAIController;
-
     private static final Color COLOR_CUSTOM = new Color(51, 51, 51);
     private int id = -1;
 
@@ -677,16 +675,10 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void generarDocumentoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseClicked
-        // Llamar al método para generar el prompt
         String prompt = generarPrompt();
-
-        // Aquí puedes usar el prompt para la generación del documento
-        System.out.println("Prompt generado: " + prompt);
-
-        // Llamar al servicio para generar el documento
+        DocumentoTextArea.setText("Cargando...");
         String respuesta = openAIController.obtenerRespuestaDeOpenAI(prompt);
         DocumentoTextArea.setText(respuesta);
-
     }//GEN-LAST:event_generarDocumentoButtonMouseClicked
 
     private void generarDocumentoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseEntered

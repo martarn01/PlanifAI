@@ -89,8 +89,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
         for (int i = 0; i < eventos.size(); i++) {
             Evento evento = eventos.get(i);
             EventoCardTemplate card = new EventoCardTemplate(evento);
-            System.out.println("Evento cargado: " + evento.getDescripcion());
-
+            card.setEventoListener(this);
             gbc.gridy = i;
             eventosPanel.add(card, gbc);
         }
@@ -393,9 +392,9 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(documentosTitle1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(addDocumentButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+                .addContainerGap(384, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(55, 55, 55)
@@ -422,7 +421,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
                 .addComponent(titleAula, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(218, Short.MAX_VALUE))
         );
 
         jSeparator1.setBackground(new java.awt.Color(245, 245, 245));
@@ -659,13 +658,11 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
 
     @Override
     public void onEventoDeleted() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        cargarEventos();
     }
 
     @Override
     public void onEventoCreated() {
-        // List<Evento> eventosActualizados = eventoController.obtenerEventosPorAula(aula.getIdAula());
-        System.out.println("****************Se llama a onCreated interfaz");
         cargarEventos();
     }
 

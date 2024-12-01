@@ -28,15 +28,20 @@ public class DocumentoService {
      * @param idAula ID del aula asociada al documento (puede ser null).
      * @param idEvento ID del evento asociado al documento (puede ser null).
      */
-    public void crearDocumento(String titulo, String contenido, String tipoDocumento, int idAula, int idEvento) {
-        String sql = "INSERT INTO Documentos (titulo, contenido, tipo_documento, id_aula, id_evento) VALUES (?, ?, ?, ?, ?)";
-
+    public void crearDocumento(String titulo, String contenido, String tipoDocumento, Integer idAula, Integer idEvento) {
+        String sql = "INSERT INTO documentos (titulo, contenido, tipo_documento, id_aula, id_evento) VALUES (?, ?, ?, ?, ?)";
+        System.out.println("Entrando en el documento");
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, titulo);
             pstmt.setString(2, contenido);
             pstmt.setString(3, tipoDocumento);
-            pstmt.setObject(4, idAula); // id_aula puede ser NULL
-            pstmt.setObject(5, idEvento); // id_evento puede ser NULL
+            pstmt.setObject(4, idAula);
+            if (idEvento == null) {
+                pstmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                pstmt.setInt(5, idEvento);
+            }
+
             pstmt.executeUpdate();
             System.out.println("Documento guardado exitosamente.");
         } catch (SQLException ex) {
@@ -60,8 +65,8 @@ public class DocumentoService {
                 String contenido = rs.getString("contenido");
                 Timestamp fechaCreacion = rs.getTimestamp("fecha_creacion");
                 String tipoDocumento = rs.getString("tipo_documento");
-                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; 
-                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; 
+                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null;
+                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null;
 
                 documentos.add(new Documento(idDocumento, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null, null));
             }
@@ -82,14 +87,18 @@ public class DocumentoService {
      * @param idEvento ID del evento asociado al documento (puede ser null).
      * @return true si la actualización fue exitosa, false en caso contrario.
      */
-    public boolean actualizarDocumento(int idDocumento, String nuevoTitulo, String nuevoContenido, String nuevoTipoDocumento, int idAula, int idEvento) {
-        String sql = "UPDATE Documentos SET titulo = ?, contenido = ?, tipo_documento = ?, id_aula = ?, id_evento = ? WHERE id_documento = ?";
+    public boolean actualizarDocumento(int idDocumento, String nuevoTitulo, String nuevoContenido, String nuevoTipoDocumento, Integer idAula, Integer idEvento) {
+        String sql = "UPDATE documentos SET titulo = ?, contenido = ?, tipo_documento = ?, id_aula = ?, id_evento = ? WHERE id_documento = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, nuevoTitulo);
             pstmt.setString(2, nuevoContenido);
             pstmt.setString(3, nuevoTipoDocumento);
             pstmt.setObject(4, idAula); // id_aula puede ser NULL
-            pstmt.setObject(5, idEvento); // id_evento puede ser NULL
+            if (idEvento == null) {
+                pstmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                pstmt.setInt(5, idEvento);
+            }
             pstmt.setInt(6, idDocumento);
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -110,7 +119,7 @@ public class DocumentoService {
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idDocumento);
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0; 
+            return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("Error al eliminar el documento: " + e.getMessage());
             return false;
@@ -138,10 +147,10 @@ public class DocumentoService {
                 String contenido = rs.getString("contenido");
                 Timestamp fechaCreacion = rs.getTimestamp("fecha_creacion");
                 String tipoDocumento = rs.getString("tipo_documento");
-                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; 
-                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; 
-                
-                documento = new Documento(idDoc, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null,null);
+                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null;
+                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null;
+
+                documento = new Documento(idDoc, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null, null);
             }
 
         } catch (SQLException ex) {
@@ -151,12 +160,11 @@ public class DocumentoService {
         return documento;
     }
 
- public List<Documento> obtenerDocumentosPorAula(int idAula) {
+    public List<Documento> obtenerDocumentosPorAula(int idAula) {
         List<Documento> documentos = new ArrayList<>();
         String query = "SELECT * FROM documentos WHERE id_aula = ?";
 
-        try (Connection con = DatabaseConnection.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
 
             pst.setInt(1, idAula);
 

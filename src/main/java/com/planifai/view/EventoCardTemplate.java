@@ -1,8 +1,13 @@
 package com.planifai.view;
 
+import com.planifai.controller.EventoController;
+import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Evento;
+import com.planifai.service.EventoService;
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,11 +15,20 @@ import java.util.Locale;
  */
 public class EventoCardTemplate extends javax.swing.JPanel {
 
-    
+    private Evento evento;
+    private EventoController eventoController;
+    private EventoListener eventoListener;
+
     public EventoCardTemplate(Evento evento) {
         initComponents();
         configurarEvento(evento);
 
+        this.evento = evento;
+        eventoController = new EventoController(new EventoService());
+    }
+
+    public void setEventoListener(EventoListener listener) {
+        this.eventoListener = listener;
     }
 
     /**
@@ -50,6 +64,7 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         dayText = new javax.swing.JLabel();
         dayText1 = new javax.swing.JLabel();
         infoText = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JLabel();
 
         background.setBackground(new java.awt.Color(238, 238, 238));
 
@@ -87,6 +102,22 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         infoText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         infoText.setText("Texto sobre el evento en cuestión");
 
+        deleteButton.setBackground(new java.awt.Color(204, 204, 204));
+        deleteButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(153, 153, 153));
+        deleteButton.setText("x");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -95,14 +126,18 @@ public class EventoCardTemplate extends javax.swing.JPanel {
                 .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(infoText, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(deleteButton)
+                .addContainerGap())
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(infoText))
+                .addGap(13, 13, 13)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(infoText)
+                    .addComponent(deleteButton)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -117,12 +152,65 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar este Evento?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                boolean eliminado = eventoController.eliminarEvento(evento.getIdEvento());
+
+                if (eliminado) {
+                    if (eventoListener != null) {
+                        eventoListener.onEventoDeleted();
+                    }
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Evento eliminado exitosamente",
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "No se pudo eliminar el evento",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al eliminar el evento: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_deleteButtonMouseClicked
+
+    private void deleteButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseEntered
+        Color color = new Color(102, 102, 102);
+        deleteButton.setForeground(color);
+    }//GEN-LAST:event_deleteButtonMouseEntered
+
+    private void deleteButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseExited
+        Color color = new Color(204, 204, 204);
+        deleteButton.setForeground(color);
+    }//GEN-LAST:event_deleteButtonMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JPanel date;
     private javax.swing.JLabel dayText;
     private javax.swing.JLabel dayText1;
+    private javax.swing.JLabel deleteButton;
     private javax.swing.JLabel infoText;
     // End of variables declaration//GEN-END:variables
 }

@@ -97,6 +97,8 @@ public class AddDocumentView extends javax.swing.JFrame {
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
+        model.addElement("Ninguno");
+
         for (Evento evento : eventos) {
             String eventoString = evento.getDescripcion();
             eventoMap.put(eventoString, evento.getIdEvento());
@@ -254,7 +256,6 @@ public class AddDocumentView extends javax.swing.JFrame {
 
         String nombre = nombreField.getText().trim();
         String aula = aulaComboBox.getSelectedItem().toString();
-        String evento = EventoComboBox.getSelectedItem().toString();
 
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El nombre es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
@@ -262,16 +263,21 @@ public class AddDocumentView extends javax.swing.JFrame {
         }
 
         Integer idAula = aulaMap.get(aula);
-        Integer idEvento = eventoMap.get(evento);
+
+        Integer idEvento = null;
+        if (EventoComboBox.getSelectedItem() != null
+                && !EventoComboBox.getSelectedItem().toString().equals("Ninguno")) {
+            String evento = EventoComboBox.getSelectedItem().toString();
+            idEvento = eventoMap.get(evento);
+        }
 
         DocumentoController documentoController = new DocumentoController(new DocumentoService());
 
         if (id == -1) {
-            // Crear  nuevo documento
+            System.out.println("ENTRA EN GUARDAR");
             documentoController.crearDocumento(nombre, contenido, tipoDocumento, idAula, idEvento);
             JOptionPane.showMessageDialog(this, "Documento guardado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Actualizar  documento 
             documentoController.actualizarDocumento(id, nombre, contenido, tipoDocumento, idAula, idEvento);
             JOptionPane.showMessageDialog(this, "Documento editado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }

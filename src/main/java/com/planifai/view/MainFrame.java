@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
 import com.planifai.interfaces.DocumentoListener;
+import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Documento;
 import com.planifai.model.Evento;
 import com.planifai.service.DocumentoService;
@@ -29,7 +30,7 @@ import java.awt.Window;
  *
  * @author Marta Rosado Nabais
  */
-public class MainFrame extends javax.swing.JFrame implements AulaListener, DocumentoListener {
+public class MainFrame extends javax.swing.JFrame implements AulaListener, DocumentoListener, EventoListener {
 
     private AulaController aulaController;
     private EventoController eventoController;
@@ -140,10 +141,8 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
 
         for (int i = 0; i < numEventos; i++) {
             Evento evento = eventos.get(i);
-            EventoCardTemplate card = new EventoCardTemplate(evento); // Crear un nuevo EventoCardTemplate
-            System.out.println("Evento: " + evento.getDescripcion());
-            // Aquí puedes pasar información al card si EventoCardTemplate tiene un constructor que acepte datos del evento
-
+            EventoCardTemplate card = new EventoCardTemplate(evento);
+            card.setEventoListener(this);
             gbc.gridy = i;
             eventosPanel.add(card, gbc);
         }
@@ -158,9 +157,9 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
      * se muestra un mensaje correspondiente.
      */
     public void cargarDocumentos() {
-        List<Documento> documentos = documentoController.obtenerDocumentos(); // Obtener documentos desde el controlador
+        List<Documento> documentos = documentoController.obtenerDocumentos();
 
-        documentosPanel.removeAll(); // Limpiar el panel de documentos
+        documentosPanel.removeAll();
 
         if (documentos.isEmpty()) {
             documentosPanel.revalidate();
@@ -168,7 +167,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
             return;
         }
 
-        documentosPanel.setBackground(Color.white); // Cambiar el color de fondo del panel
+        documentosPanel.setBackground(Color.white);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -177,13 +176,10 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
 
         int numDocumentos = Math.min(documentos.size(), MAX_CARGAS);
 
-        // Recorre la lista de documentos y crea tarjetas para cada uno
-        for (int i = 0; i < documentos.size(); i++) {
+        for (int i = 0; i < numDocumentos; i++) {
             Documento documento = documentos.get(i);
-            DocumentoCardTemplate card = new DocumentoCardTemplate(documento); // Crear un nuevo DocumentoCardTemplate
+            DocumentoCardTemplate card = new DocumentoCardTemplate(documento);
             card.setDocumentoListener(this);
-
-            System.out.println("Documento: " + documento.getTitulo());
 
             gbc.gridy = i; // Establecer la posición vertical
             documentosPanel.add(card, gbc); // Agregar tarjeta al panel
@@ -489,7 +485,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
 
     private void addClassButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addClassButtonMouseClicked
         AddAulaView addAulaView = new AddAulaView();
-        addAulaView.setAulaAddedListener(this); // Asigna el listener
+        addAulaView.setAulaAddedListener(this);
         addAulaView.setVisible(true);
     }//GEN-LAST:event_addClassButtonMouseClicked
 
@@ -515,7 +511,7 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
         System.out.println("Mouse clicked in MainFrame");
         for (Window window : Window.getWindows()) {
             if (window != this && window.isVisible()) {
-                window.dispose(); // Cierra la ventana
+                window.dispose();
             }
         }
     }//GEN-LAST:event_backgroundMouseClicked
@@ -602,6 +598,16 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
     @Override
     public void onDocumentoDeleted() {
         cargarDocumentos();
+    }
+
+    @Override
+    public void onEventoDeleted() {
+        cargarEventos();
+    }
+
+    @Override
+    public void onEventoCreated() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
