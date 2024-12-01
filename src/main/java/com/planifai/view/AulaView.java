@@ -3,6 +3,7 @@ package com.planifai.view;
 import com.planifai.controller.DocumentoController;
 import com.planifai.controller.EventoController;
 import com.planifai.controller.NotaController;
+import com.planifai.interfaces.DocumentoListener;
 import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Aula;
 import com.planifai.model.Documento;
@@ -26,7 +27,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Marta Rosado Nabais
  */
-public class AulaView extends javax.swing.JFrame implements EventoListener {
+public class AulaView extends javax.swing.JFrame implements EventoListener, DocumentoListener {
 
     private Aula aula;
     private DocumentoController documentoController;
@@ -121,6 +122,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         for (int i = 0; i < documentos.size(); i++) {
             Documento documento = documentos.get(i);
             DocumentoCardTemplate card = new DocumentoCardTemplate(documento);
+            card.setDocumentoListener(this);
             System.out.println("Documento cargado: " + documento.getTitulo());
 
             gbc.gridy = i;
@@ -155,7 +157,6 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         titleAula = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         documentosTitle = new javax.swing.JLabel();
-        verDocumentosButton = new javax.swing.JLabel();
         documentosTitle1 = new javax.swing.JLabel();
         documentosPanel = new javax.swing.JPanel();
         notePanel = new javax.swing.JPanel();
@@ -243,21 +244,6 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         documentosTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         documentosTitle.setText("Documentos");
         documentosTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        verDocumentosButton.setFont(new java.awt.Font("Lato", 0, 16)); // NOI18N
-        verDocumentosButton.setForeground(new java.awt.Color(153, 153, 153));
-        verDocumentosButton.setText("Ver todos ");
-        verDocumentosButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                verDocumentosButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                verDocumentosButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                verDocumentosButtonMouseExited(evt);
-            }
-        });
 
         documentosTitle1.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
         documentosTitle1.setForeground(new java.awt.Color(51, 51, 51));
@@ -382,9 +368,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(documentosTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                        .addComponent(verDocumentosButton)
-                        .addGap(67, 67, 67)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
                         .addComponent(documentosTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(186, 186, 186))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -403,9 +387,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(documentosTitle)
-                            .addComponent(verDocumentosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(documentosTitle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(documentosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -440,7 +422,7 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
                 .addComponent(titleAula, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(212, Short.MAX_VALUE))
         );
 
         jSeparator1.setBackground(new java.awt.Color(245, 245, 245));
@@ -565,24 +547,6 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         mainframe.setVisible(true);
     }//GEN-LAST:event_titleMouseClicked
 
-    private void verDocumentosButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseExited
-        Color color = new Color(153, 153, 153);
-        verDocumentosButton.setForeground(color);
-        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_verDocumentosButtonMouseExited
-
-    private void verDocumentosButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseEntered
-        Color color = new Color(204, 204, 204);
-        verDocumentosButton.setForeground(color);
-        verDocumentosButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_verDocumentosButtonMouseEntered
-
-    private void verDocumentosButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verDocumentosButtonMouseClicked
-        DocumentosView documentosView = new DocumentosView();
-        documentosView.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_verDocumentosButtonMouseClicked
-
     private void addEventButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEventButtonMouseEntered
         addEventButton.setForeground(Color.gray);
     }//GEN-LAST:event_addEventButtonMouseEntered
@@ -626,7 +590,6 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
                     "Nota guardada exitosamente",
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE);
-
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -692,7 +655,6 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
     private javax.swing.JTextArea noteTextArea;
     private javax.swing.JLabel title;
     private javax.swing.JLabel titleAula;
-    private javax.swing.JLabel verDocumentosButton;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -705,5 +667,10 @@ public class AulaView extends javax.swing.JFrame implements EventoListener {
         // List<Evento> eventosActualizados = eventoController.obtenerEventosPorAula(aula.getIdAula());
         System.out.println("****************Se llama a onCreated interfaz");
         cargarEventos();
+    }
+
+    @Override
+    public void onDocumentoDeleted() {
+        cargarDocumentos();
     }
 }

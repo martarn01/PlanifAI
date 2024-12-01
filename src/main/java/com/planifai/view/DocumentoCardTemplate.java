@@ -1,8 +1,12 @@
 package com.planifai.view;
 
+import com.planifai.controller.DocumentoController;
+import com.planifai.interfaces.DocumentoListener;
 import com.planifai.model.Documento;
+import com.planifai.service.DocumentoService;
 import java.awt.Color;
 import java.awt.Cursor;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,13 +16,21 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
 
     private static final Color COLOR_HOVER = new Color(240, 240, 240);
     private static final Color COLOR_CARD = new Color(255, 255, 255);
-    Documento documentoCard;
+    private Documento documentoCard;
+    private DocumentoController documentoController;
+    private DocumentoListener documentoListener;
 
     public DocumentoCardTemplate(Documento documento) {
         initComponents();
         configurarDocumento(documento);
         documentoCard = documento;
+        documentoController=new DocumentoController(new DocumentoService());
     }
+    
+        public void setDocumentoListener(DocumentoListener listener) {
+        this.documentoListener = listener;
+    }
+
 
     /**
      * Configura los datos del documento en la tarjeta.
@@ -41,6 +53,7 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
 
         documento = new javax.swing.JPanel();
         nombreDocumento = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -71,6 +84,22 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
         nombreDocumento.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
         nombreDocumento.setText("Nombre del documento");
 
+        deleteButton.setBackground(new java.awt.Color(204, 204, 204));
+        deleteButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(153, 153, 153));
+        deleteButton.setText("x");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,13 +108,17 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
                 .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(nombreDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(deleteButton)
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(nombreDocumento)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,8 +142,61 @@ public class DocumentoCardTemplate extends javax.swing.JPanel {
         mainframe.dispose();
     }//GEN-LAST:event_formMouseClicked
 
+    private void deleteButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseEntered
+        Color color = new Color(102, 102, 102);
+        deleteButton.setForeground(color);
+    }//GEN-LAST:event_deleteButtonMouseEntered
+
+    private void deleteButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseExited
+        Color color = new Color(204, 204, 204);
+        deleteButton.setForeground(color);
+    }//GEN-LAST:event_deleteButtonMouseExited
+
+    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar este documento?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                boolean eliminado = documentoController.eliminarDocumento(documentoCard.getIdDocumento());
+
+                if (eliminado) {
+                    if (documentoListener != null) {
+                        documentoListener.onDocumentoDeleted();
+                    }
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Documento eliminado exitosamente",
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "No se pudo eliminar el documento",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al eliminar el documento: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_deleteButtonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel deleteButton;
     private javax.swing.JPanel documento;
     private javax.swing.JLabel nombreDocumento;
     // End of variables declaration//GEN-END:variables

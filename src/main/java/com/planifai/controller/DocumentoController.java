@@ -4,12 +4,11 @@ import com.planifai.model.Documento;
 import com.planifai.service.DocumentoService;
 import java.util.List;
 
-
 /**
- * Controlador para manejar las operaciones relacionadas con documentos.
- * Permite crear, obtener, actualizar y eliminar documentos utilizando
- * el servicio correspondiente.
- * 
+ * Controlador para manejar las operaciones relacionadas con documentos. Permite
+ * crear, obtener, actualizar y eliminar documentos utilizando el servicio
+ * correspondiente.
+ *
  * @author Marta Rosado Nabais
  */
 public class DocumentoController {
@@ -42,7 +41,8 @@ public class DocumentoController {
      * Obtiene un documento por su ID.
      *
      * @param idDocumento ID del documento a obtener.
-     * @return Documento objeto que representa el documento encontrado, o null si no se encuentra.
+     * @return Documento objeto que representa el documento encontrado, o null
+     * si no se encuentra.
      */
     public Documento getDocumentoById(int idDocumento) {
         return documentoService.getDocumentoById(idDocumento);
@@ -65,7 +65,8 @@ public class DocumentoController {
      * @param nuevoContenido Nuevo contenido del documento.
      * @param nuevoTipoDocumento Nuevo tipo del documento.
      * @param idAula Nuevo ID del aula asociada al documento, puede ser null.
-     * @param idEvento Nuevo ID del evento asociado al documento, puede ser null.
+     * @param idEvento Nuevo ID del evento asociado al documento, puede ser
+     * null.
      * @return true si la actualización fue exitosa, false en caso contrario.
      */
     public boolean actualizarDocumento(int idDocumento, String nuevoTitulo, String nuevoContenido, String nuevoTipoDocumento, Integer idAula, Integer idEvento) {
@@ -76,14 +77,15 @@ public class DocumentoController {
      * Elimina un documento por su ID.
      *
      * @param idDocumento ID del documento a eliminar.
-     * @return true si el documento fue eliminado con éxito, false en caso contrario.
+     * @return true si el documento fue eliminado con éxito, false en caso
+     * contrario.
      */
     public boolean eliminarDocumento(int idDocumento) {
         return documentoService.eliminarDocumentoPorId(idDocumento);
     }
-    
+
     public List<Documento> obtenerDocumentosPorAula(int idAula) {
-    return documentoService.obtenerDocumentosPorAula(idAula);
-}
+        return documentoService.obtenerDocumentosPorAula(idAula);
+    }
 
 }

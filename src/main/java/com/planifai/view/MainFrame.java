@@ -15,6 +15,7 @@ import java.awt.Insets;
 import java.util.List;
 import javax.swing.border.LineBorder;
 import com.planifai.interfaces.AulaListener;
+import com.planifai.interfaces.DocumentoListener;
 import com.planifai.model.Documento;
 import com.planifai.model.Evento;
 import com.planifai.service.DocumentoService;
@@ -28,7 +29,7 @@ import java.awt.Window;
  *
  * @author Marta Rosado Nabais
  */
-public class MainFrame extends javax.swing.JFrame implements AulaListener {
+public class MainFrame extends javax.swing.JFrame implements AulaListener, DocumentoListener {
 
     private AulaController aulaController;
     private EventoController eventoController;
@@ -173,13 +174,14 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
-        
-    int numDocumentos = Math.min(documentos.size(), MAX_CARGAS); 
-    
+
+        int numDocumentos = Math.min(documentos.size(), MAX_CARGAS);
+
         // Recorre la lista de documentos y crea tarjetas para cada uno
         for (int i = 0; i < documentos.size(); i++) {
             Documento documento = documentos.get(i);
             DocumentoCardTemplate card = new DocumentoCardTemplate(documento); // Crear un nuevo DocumentoCardTemplate
+            card.setDocumentoListener(this);
 
             System.out.println("Documento: " + documento.getTitulo());
 
@@ -595,6 +597,11 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener {
     @Override
     public void onAulaChanged() {
         cargarAulas();
+    }
+
+    @Override
+    public void onDocumentoDeleted() {
+        cargarDocumentos();
     }
 
 }

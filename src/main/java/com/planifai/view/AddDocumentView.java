@@ -52,6 +52,8 @@ public class AddDocumentView extends javax.swing.JFrame {
      */
     public AddDocumentView(String contenido, String tipoDocumento, String nombreDocumento, int id) {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         this.contenido = contenido;
         this.tipoDocumento = tipoDocumento;
         this.nombreDocumento = nombreDocumento;
