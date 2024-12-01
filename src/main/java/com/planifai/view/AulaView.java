@@ -2,6 +2,7 @@ package com.planifai.view;
 
 import com.planifai.controller.DocumentoController;
 import com.planifai.controller.EventoController;
+import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Aula;
 import com.planifai.model.Documento;
 import com.planifai.model.Evento;
@@ -22,7 +23,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Marta Rosado Nabais
  */
-public class AulaView extends javax.swing.JFrame {
+public class AulaView extends javax.swing.JFrame implements EventoListener {
 
     private Aula aula;
     private DocumentoController documentoController;
@@ -522,7 +523,7 @@ public class AulaView extends javax.swing.JFrame {
     }//GEN-LAST:event_addDocumentButtonMouseEntered
 
     private void addDocumentButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDocumentButtonMouseClicked
-        GeneracionDocumentoView generacionDocumentoView= new GeneracionDocumentoView();
+        GeneracionDocumentoView generacionDocumentoView = new GeneracionDocumentoView();
         generacionDocumentoView.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_addDocumentButtonMouseClicked
@@ -568,8 +569,9 @@ public class AulaView extends javax.swing.JFrame {
     }//GEN-LAST:event_addEventButtonMouseExited
 
     private void addEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addEventButtonMouseClicked
-        AddEventView addEvenButton=new AddEventView(aula);
-        addEvenButton.setVisible(true);
+        AddEventView addEventView = new AddEventView(aula);
+        addEventView.setEventoListener(this);
+        addEventView.setVisible(true);
     }//GEN-LAST:event_addEventButtonMouseClicked
 
     /**
@@ -631,4 +633,16 @@ public class AulaView extends javax.swing.JFrame {
     private javax.swing.JLabel titleAula;
     private javax.swing.JLabel verDocumentosButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onEventoDeleted() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void onEventoCreated() {
+        // List<Evento> eventosActualizados = eventoController.obtenerEventosPorAula(aula.getIdAula());
+        System.out.println("****************Se llama a onCreated interfaz");
+        cargarEventos();
+    }
 }

@@ -1,12 +1,22 @@
 package com.planifai.view;
 
 import com.planifai.controller.DocumentoController;
+import com.planifai.controller.EventoController;
+import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Aula;
 import com.planifai.model.Documento;
 import com.planifai.service.DocumentoService;
+import com.planifai.service.EventoService;
 import java.awt.Color;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import raven.datetime.component.date.DatePicker;
 
 /**
@@ -15,9 +25,13 @@ import raven.datetime.component.date.DatePicker;
  */
 public class AddEventView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AddEventView
-     */
+    private DocumentoController documentoController;
+    private EventoController eventoController;
+    private Map<String, Integer> aulaIdMap;
+    private Map<String, Integer> documentoIdMap;
+    private EventoListener eventoListener;
+    private Aula aula;
+
     public AddEventView() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -27,26 +41,41 @@ public class AddEventView extends javax.swing.JFrame {
         datePicker.setEditor(datePickerField);
 
     }
-    private DocumentoController documentoController;
 
     public AddEventView(Aula aula) {
         initComponents();
         this.setLocationRelativeTo(null);
 
+        this.aula = aula;
+
         documentoController = new DocumentoController(new DocumentoService());
+        eventoController = new EventoController(new EventoService());
+        aulaIdMap = new HashMap<>();
+        documentoIdMap = new HashMap<>();
+
         DatePicker datePicker = new DatePicker();
         datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
         datePicker.setEditor(datePickerField);
 
-        List<Documento> documentos = documentoController.obtenerDocumentosPorAula(aula.getIdAula());
+        cargarDocumentos();
+    }
 
-        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+    public void setEventoListener(EventoListener listener) {
+        this.eventoListener = listener;
+        System.out.println("Listener establecido: " + (listener != null)); // Para debug
+    }
+
+    private void cargarDocumentos() {
+        DocumentoController documentoController = new DocumentoController(new DocumentoService());
+        List<Documento> documentos = documentoController.obtenerDocumentos();
+
+        DocumentsComboBox.removeAllItems();
+        DocumentsComboBox.addItem("Sin documento asociado");
 
         for (Documento documento : documentos) {
-            comboBoxModel.addElement(documento.getTitulo());
+            DocumentsComboBox.addItem(documento.getTitulo());
+            documentoIdMap.put(documento.getTitulo(), documento.getIdDocumento());
         }
-
-        DocumentsComboBox.setModel(comboBoxModel);
     }
 
     /**
@@ -206,7 +235,52 @@ public class AddEventView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseClicked
+        try {
+            String descripcion = nombreField.getText().trim();
+            if (descripcion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La descripción no puede estar vacía", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            String fechaStr = datePickerField.getText().trim();
+            if (fechaStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date fecha = dateFormat.parse(fechaStr);
+            Timestamp fechaEvento = new Timestamp(fecha.getTime());
+
+            String tipoEvento = EventoComboBox.getSelectedItem().toString();
+            if (tipoEvento == null || tipoEvento.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de evento", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int idAula = aula.getIdAula();
+
+            Integer idDocumento = null;
+            if (DocumentsComboBox.getSelectedIndex() > 0) {
+                String documentoSeleccionado = DocumentsComboBox.getSelectedItem().toString();
+                idDocumento = documentoIdMap.get(documentoSeleccionado);
+            }
+
+            eventoController.crearEvento(descripcion, fechaEvento, tipoEvento, idAula, idDocumento);
+
+            JOptionPane.showMessageDialog(this, "Evento creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            this.dispose();
+
+            if (eventoListener != null) {
+                eventoListener.onEventoCreated();
+            }
+
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Error en el formato de la fecha", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al crear el evento: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_guardarButtonMouseClicked
 
     private void guardarButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseEntered

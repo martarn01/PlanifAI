@@ -1,6 +1,8 @@
 package com.planifai.service;
 
 import com.planifai.model.Aula;
+import com.planifai.model.Documento;
+import com.planifai.model.Evento;
 import com.planifai.utils.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,14 @@ import java.util.List;
  * @author Marta Rosado Nabais
  */
 public class AulaService {
+
+    private final EventoService eventoService;
+    private final DocumentoService documentoService;
+
+    public AulaService() {
+        this.eventoService = new EventoService();
+        this.documentoService = new DocumentoService();
+    }
 
     /**
      * Crea una nueva aula en la base de datos.
@@ -46,21 +56,31 @@ public class AulaService {
      */
     public List<Aula> getAulas() {
         List<Aula> aulas = new ArrayList<>();
-        String sql = "SELECT id_aula, nombre, asignatura FROM Aulas ORDER BY nombre";
+        String sql = "SELECT id_aula, nombre, asignatura FROM Aulas";
 
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                int id = rs.getInt("id_aula");
-                String nombre = rs.getString("nombre");
-                String asignatura = rs.getString("asignatura");
+                Aula aula = new Aula(
+                        rs.getInt("id_aula"),
+                        rs.getString("nombre"),
+                        rs.getString("asignatura")
+                );
 
-                aulas.add(new Aula(id, nombre, asignatura, null, null, null));
+                // Cargar documentos y eventos para cada aula
+                List<Documento> documentos = documentoService.obtenerDocumentosPorAula(aula.getIdAula());
+                List<Evento> eventos = eventoService.obtenerEventosPorAula(aula.getIdAula());
+
+                aula.setDocumento(documentos);
+                aula.setEventos(eventos);
+
+                aulas.add(aula);
             }
 
         } catch (SQLException ex) {
-            System.out.println("Error al cargar aulas desde la base de datos: " + ex.getMessage());
+            System.out.println("Error al obtener las aulas: " + ex.getMessage());
         }
+
         return aulas;
     }
 
@@ -122,11 +142,18 @@ public class AulaService {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt("id_aula");
-                String nombre = rs.getString("nombre");
-                String asignatura = rs.getString("asignatura");
+                aula = new Aula(
+                        rs.getInt("id_aula"),
+                        rs.getString("nombre"),
+                        rs.getString("asignatura")
+                );
 
-                aula = new Aula(id, nombre, asignatura, null, null, null);
+                // Cargar documentos y eventos asociados
+                List<Documento> documentos = documentoService.obtenerDocumentosPorAula(idAula);
+                List<Evento> eventos = eventoService.obtenerEventosPorAula(idAula);
+
+                aula.setDocumento(documentos);
+                aula.setEventos(eventos);
             }
 
         } catch (SQLException ex) {

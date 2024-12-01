@@ -60,10 +60,10 @@ public class DocumentoService {
                 String contenido = rs.getString("contenido");
                 Timestamp fechaCreacion = rs.getTimestamp("fecha_creacion");
                 String tipoDocumento = rs.getString("tipo_documento");
-                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; // Maneja NULL
-                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; // Maneja NULL
+                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; 
+                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; 
 
-                documentos.add(new Documento(idDocumento, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null, null, null));
+                documentos.add(new Documento(idDocumento, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null, null));
             }
         } catch (SQLException ex) {
             System.out.println("Error al cargar documentos desde la base de datos: " + ex.getMessage());
@@ -138,10 +138,10 @@ public class DocumentoService {
                 String contenido = rs.getString("contenido");
                 Timestamp fechaCreacion = rs.getTimestamp("fecha_creacion");
                 String tipoDocumento = rs.getString("tipo_documento");
-                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; // Maneja NULL
-                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; // Maneja NULL
-
-                documento = new Documento(idDoc, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null, null, null);
+                Integer idAula = rs.getObject("id_aula") != null ? rs.getInt("id_aula") : null; 
+                Integer idEvento = rs.getObject("id_evento") != null ? rs.getInt("id_evento") : null; 
+                
+                documento = new Documento(idDoc, titulo, contenido, fechaCreacion, tipoDocumento, idAula, idEvento, null,null);
             }
 
         } catch (SQLException ex) {
@@ -151,11 +151,12 @@ public class DocumentoService {
         return documento;
     }
 
-    public List<Documento> obtenerDocumentosPorAula(int idAula) {
+ public List<Documento> obtenerDocumentosPorAula(int idAula) {
         List<Documento> documentos = new ArrayList<>();
         String query = "SELECT * FROM documentos WHERE id_aula = ?";
 
-        try (Connection con = DatabaseConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getConnection(); 
+             PreparedStatement pst = con.prepareStatement(query)) {
 
             pst.setInt(1, idAula);
 
@@ -172,7 +173,7 @@ public class DocumentoService {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al obtener documentos por aula: " + e.getMessage());
         }
 
         return documentos;

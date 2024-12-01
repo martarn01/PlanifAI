@@ -19,8 +19,7 @@ public class Documento {
     private Integer idEvento; // Puede ser null si no está asociado a un evento
     private Aula aula;  // Relación con Aula
     private Evento evento;  // Relación con Evento
-    private SituacionAprendizaje situacionAprendizaje;  // Relación con SituacionAprendizaje
-
+    
     /**
      * Constructor por defecto de la clase Documento.
      */
@@ -41,10 +40,8 @@ public class Documento {
      * está asociado.
      * @param aula Objeto Aula asociado al documento.
      * @param evento Objeto Evento asociado al documento.
-     * @param situacionAprendizaje Objeto SituacionAprendizaje asociado al
-     * documento.
      */
-    public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento, Aula aula, Evento evento, SituacionAprendizaje situacionAprendizaje) {
+    public Documento(int idDocumento, String titulo, String contenido, Timestamp fechaCreacion, String tipoDocumento, Integer idAula, Integer idEvento, Aula aula, Evento evento) {
         this.idDocumento = idDocumento;
         this.titulo = titulo;
         this.contenido = contenido;
@@ -54,7 +51,6 @@ public class Documento {
         this.idEvento = idEvento;
         this.aula = aula;
         this.evento = evento;
-        this.situacionAprendizaje = situacionAprendizaje;
     }
 
     public int getIdDocumento() {
@@ -127,14 +123,6 @@ public class Documento {
 
     public void setEvento(Evento evento) {
         this.evento = evento;
-    }
-
-    public SituacionAprendizaje getSituacionAprendizaje() {
-        return situacionAprendizaje;
-    }
-
-    public void setSituacionAprendizaje(SituacionAprendizaje situacionAprendizaje) {
-        this.situacionAprendizaje = situacionAprendizaje;
     }
 
 }

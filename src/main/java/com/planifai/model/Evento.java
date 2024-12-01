@@ -17,8 +17,8 @@ public class Evento {
     private String tipoEvento;
     private int idAula;      // Debe estar asociado a un aula
     private Integer idDocumento; // Puede ser nullprivate 
-    Aula aula;
-    List<Documento> documentos;  // Relación Uno a Muchos con Documento
+    private Aula aula;
+    private Documento documento;
 
     /**
      * Constructor por defecto de la clase Evento.
@@ -39,7 +39,7 @@ public class Evento {
      * @param aula Objeto Aula asociado al evento.
      * @param documentos Lista de documentos relacionados con el evento.
      */
-    public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, List<Documento> documentos) {
+    public Evento(int idEvento, String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento, Aula aula, Documento documento) {
         this.idEvento = idEvento;
         this.descripcion = descripcion;
         this.fechaEvento = fechaEvento;
@@ -47,7 +47,7 @@ public class Evento {
         this.idAula = idAula;
         this.idDocumento = idDocumento;
         this.aula = aula;
-        this.documentos = documentos;
+        this.documento = documento;
     }
 
     public int getIdEvento() {
@@ -106,12 +106,12 @@ public class Evento {
         this.aula = aula;
     }
 
-    public List<Documento> getDocumentos() {
-        return documentos;
+    public Documento getDocumento() {
+        return documento;
     }
 
-    public void setDocumentos(List<Documento> documentos) {
-        this.documentos = documentos;
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
     }
 
 }

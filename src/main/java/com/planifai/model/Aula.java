@@ -1,5 +1,6 @@
 package com.planifai.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,8 @@ public class Aula {
     private int idAula;
     private String nombre;
     private String asignatura;
-    private List<Evento> eventos; // Relación Uno a Muchos con Evento
-    private List<Documento> Documentos; // Relación Uno a Muchos con documentos
-    private List<SituacionAprendizaje> situacionesAprendizaje; // Relación Uno a Muchos con SituacionAprendizaje
+    private List<Evento> eventos;
+    private List<Documento> documentos;
 
     public Aula() {
     }
@@ -27,18 +27,13 @@ public class Aula {
      * @param idAula Identificador único de la aula
      * @param nombre Nombre de la aula
      * @param asignatura Asignatura asociada a la aula
-     * @param eventos Lista de eventos asociados a la aula
-     * @param Documento Lista de documentos asociados a la aula
-     * @param situacionesAprendizaje Lista de situaciones de aprendizaje
-     * asociadas a la aula
      */
-    public Aula(int idAula, String nombre, String asignatura, List<Evento> eventos, List<Documento> Documento, List<SituacionAprendizaje> situacionesAprendizaje) {
+    public Aula(int idAula, String nombre, String asignatura) {
         this.idAula = idAula;
         this.nombre = nombre;
         this.asignatura = asignatura;
-        this.eventos = eventos;
-        this.Documentos = Documento;
-        this.situacionesAprendizaje = situacionesAprendizaje;
+        this.eventos = new ArrayList<>();
+        this.documentos = new ArrayList<>();
     }
 
     public int getIdAula() {
@@ -73,19 +68,40 @@ public class Aula {
         this.eventos = eventos;
     }
 
-    public List<SituacionAprendizaje> getSituacionesAprendizaje() {
-        return situacionesAprendizaje;
-    }
-
-    public void setSituacionesAprendizaje(List<SituacionAprendizaje> situacionesAprendizaje) {
-        this.situacionesAprendizaje = situacionesAprendizaje;
-    }
-
     public List<Documento> getDocumento() {
-        return Documentos;
+        return documentos;
     }
 
     public void setDocumento(List<Documento> Documentos) {
-        this.Documentos = Documentos;
+        this.documentos = Documentos;
+    }
+    
+     // Métodos de dominio específicos
+    public void agregarEvento(Evento evento) {
+        if (eventos == null) {
+            eventos = new ArrayList<>();
+        }
+        eventos.add(evento);
+        evento.setIdAula(this.idAula);
+    }
+    
+    public void removerEvento(Evento evento) {
+        if (eventos != null) {
+            eventos.remove(evento);
+        }
+    }
+    
+    public void agregarDocumento(Documento documento) {
+        if (documentos == null) {
+            documentos = new ArrayList<>();
+        }
+        documentos.add(documento);
+        documento.setIdAula(this.idAula);
+    }
+    
+    public void removerDocumento(Documento documento) {
+        if (documentos != null) {
+            documentos.remove(documento);
+        }
     }
 }

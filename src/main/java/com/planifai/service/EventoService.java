@@ -1,5 +1,6 @@
 package com.planifai.service;
 
+import com.planifai.model.Documento;
 import com.planifai.model.Evento;
 import com.planifai.utils.DatabaseConnection;
 import java.sql.Connection;
@@ -19,6 +20,35 @@ import java.util.List;
  */
 public class EventoService {
 
+    private DocumentoService documentoService;
+
+    public EventoService() {
+        this.documentoService = new DocumentoService();
+    }
+
+    public void crearEvento(String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula, Integer idDocumento) {
+        String sql = "INSERT INTO Eventos (descripcion, fecha_evento, tipo_evento, id_aula, id_documento) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, descripcion);
+            pstmt.setTimestamp(2, fechaEvento);
+            pstmt.setString(3, tipoEvento);
+            pstmt.setInt(4, idAula);
+
+            if (idDocumento != null) {
+                pstmt.setInt(5, idDocumento);
+            } else {
+                pstmt.setNull(5, java.sql.Types.INTEGER);
+            }
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al crear el evento: " + ex.getMessage());
+        }
+    }
+
     /**
      * Crea un nuevo evento en la base de datos.
      *
@@ -26,72 +56,67 @@ public class EventoService {
      * @param fechaEvento Fecha y hora del evento.
      * @param tipoEvento Tipo del evento.
      * @param idAula ID del aula asociada al evento.
+     * @param idDocumento ID del documento asociado al evento.
      */
-    public void crearEvento(String descripcion, Timestamp fechaEvento, String tipoEvento, int idAula) {
-        String sql = "INSERT INTO Eventos (descripcion, fecha_evento, tipo_evento, id_aula) VALUES (?, ?, ?, ?)";
+    public boolean actualizarEvento(int idEvento, String descripcion, Timestamp fechaEvento,
+            String tipoEvento, int idAula, Integer idDocumento) {
+        String sql = "UPDATE Eventos SET descripcion = ?, fecha_evento = ?, tipo_evento = ?, "
+                + "id_aula = ?, id_documento = ? WHERE id_evento = ?";
 
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, descripcion);
             pstmt.setTimestamp(2, fechaEvento);
             pstmt.setString(3, tipoEvento);
             pstmt.setInt(4, idAula);
-            pstmt.executeUpdate();
-            System.out.println("Evento guardado exitosamente.");
-        } catch (SQLException ex) {
-            System.out.println("Error al guardar el evento: " + ex.getMessage());
-        }
-    }
-
-    /**
-     * Obtiene todos los eventos de la base de datos, ordenados por fecha.
-     *
-     * @return Lista de objetos Evento.
-     */
-    public List<Evento> getEventos() {
-        List<Evento> eventos = new ArrayList<>();
-        String sql = "SELECT id_evento, descripcion, fecha_evento, tipo_evento, id_aula FROM Eventos ORDER BY fecha_evento";
-
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                int id = rs.getInt("id_evento");
-                String descripcion = rs.getString("descripcion");
-                Timestamp fecha = rs.getTimestamp("fecha_evento");
-                String tipo = rs.getString("tipo_evento");
-                int idAula = rs.getInt("id_aula");
-
-                // Se eliminó idDocumento
-                eventos.add(new Evento(id, descripcion, fecha, tipo, idAula, null, null, null)); // Ajustar según tus necesidades
+            if (idDocumento != null) {
+                pstmt.setInt(5, idDocumento);
+            } else {
+                pstmt.setNull(5, java.sql.Types.INTEGER);
             }
-        } catch (SQLException ex) {
-            System.out.println("Error al cargar eventos desde la base de datos: " + ex.getMessage());
-        }
-        return eventos;
-    }
+            pstmt.setInt(6, idEvento);
 
-    /**
-     * Actualiza un evento existente en la base de datos.
-     *
-     * @param idEvento ID del evento a actualizar.
-     * @param nuevaDescripcion Nueva descripción del evento.
-     * @param nuevaFechaEvento Nueva fecha y hora del evento.
-     * @param nuevoTipoEvento Nuevo tipo del evento.
-     * @param idAula Nuevo ID del aula asociada al evento.
-     * @return true si la actualización fue exitosa, false en caso contrario.
-     */
-    public boolean actualizarEvento(int idEvento, String nuevaDescripcion, Timestamp nuevaFechaEvento, String nuevoTipoEvento, int idAula) {
-        String sql = "UPDATE Eventos SET descripcion = ?, fecha_evento = ?, tipo_evento = ?, id_aula = ? WHERE id_evento = ?";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nuevaDescripcion);
-            pstmt.setTimestamp(2, nuevaFechaEvento);
-            pstmt.setString(3, nuevoTipoEvento);
-            pstmt.setInt(4, idAula);
-            pstmt.setInt(5, idEvento);
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.out.println("Error al actualizar el evento: " + e.getMessage());
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException ex) {
+            System.out.println("Error al actualizar el evento: " + ex.getMessage());
             return false;
         }
+    }
+
+      /**
+     * Obtiene todos los eventos de la base de datos.
+     *
+     * @return Lista de todos los eventos
+     */
+    public List<Evento> obtenerEventos() {
+        List<Evento> eventos = new ArrayList<>();
+        String sql = "SELECT * FROM eventos ORDER BY fecha_evento";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Evento evento = new Evento();
+                evento.setIdEvento(rs.getInt("id_evento"));
+                evento.setDescripcion(rs.getString("descripcion"));
+                evento.setFechaEvento(rs.getTimestamp("fecha_evento"));
+                evento.setTipoEvento(rs.getString("tipo_evento"));
+                evento.setIdAula(rs.getInt("id_aula"));
+                
+                Integer idDocumento = rs.getObject("id_documento") != null ? 
+                                    rs.getInt("id_documento") : null;
+                evento.setIdDocumento(idDocumento);
+                
+                eventos.add(evento);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los eventos: " + ex.getMessage());
+        }
+
+        return eventos;
     }
 
     /**
@@ -119,22 +144,30 @@ public class EventoService {
      * @return Objeto Evento correspondiente al ID, o null si no se encuentra.
      */
     public Evento getEventoById(int idEvento) {
-        String sql = "SELECT id_evento, descripcion, fecha_evento, tipo_evento, id_aula FROM Eventos WHERE id_evento = ?";
+        String sql = "SELECT * FROM eventos WHERE id_evento = ?";
         Evento evento = null;
 
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setInt(1, idEvento);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt("id_evento");
-                String descripcion = rs.getString("descripcion");
-                Timestamp fecha = rs.getTimestamp("fecha_evento");
-                String tipo = rs.getString("tipo_evento");
-                int idAula = rs.getInt("id_aula");
+                evento = new Evento();
+                evento.setIdEvento(rs.getInt("id_evento"));
+                evento.setDescripcion(rs.getString("descripcion"));
+                evento.setFechaEvento(rs.getTimestamp("fecha_evento"));
+                evento.setTipoEvento(rs.getString("tipo_evento"));
+                evento.setIdAula(rs.getInt("id_aula"));
 
-                // Se eliminó idDocumento
-                evento = new Evento(id, descripcion, fecha, tipo, idAula, null, null, null); // Ajustar según tus necesidades
+                Integer idDocumento = rs.getObject("id_documento") != null
+                        ? rs.getInt("id_documento") : null;
+                evento.setIdDocumento(idDocumento);
+
+                if (idDocumento != null) {
+                    Documento documento = documentoService.getDocumentoById(idDocumento);
+                    evento.setDocumento(documento);
+                }
             }
 
         } catch (SQLException ex) {
@@ -146,8 +179,7 @@ public class EventoService {
 
     public List<Evento> obtenerEventosPorAula(int idAula) {
         List<Evento> eventos = new ArrayList<>();
-
-        String query = "SELECT id_evento, descripcion, fecha_evento, tipo_evento, id_aula FROM eventos WHERE id_aula = ?";
+        String query = "SELECT * FROM eventos WHERE id_aula = ?";
 
         try (Connection con = DatabaseConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
 
@@ -156,13 +188,24 @@ public class EventoService {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     Evento evento = new Evento();
-                    evento.setIdEvento(rs.getInt("id_evento"));            
-                    evento.setDescripcion(rs.getString("descripcion"));   
+                    evento.setIdEvento(rs.getInt("id_evento"));
+                    evento.setDescripcion(rs.getString("descripcion"));
                     evento.setFechaEvento(rs.getTimestamp("fecha_evento"));
                     evento.setTipoEvento(rs.getString("tipo_evento"));
-                    evento.setIdAula(rs.getInt("id_aula"));  
+                    evento.setIdAula(rs.getInt("id_aula"));
 
-                    eventos.add(evento); 
+                    // Manejar el id_documento que puede ser null
+                    Integer idDocumento = rs.getObject("id_documento") != null
+                            ? rs.getInt("id_documento") : null;
+                    evento.setIdDocumento(idDocumento);
+
+                    // Si hay un documento asociado, cargarlo
+                    if (idDocumento != null) {
+                        Documento documento = documentoService.getDocumentoById(idDocumento);
+                        evento.setDocumento(documento);
+                    }
+
+                    eventos.add(evento);
                 }
             }
         } catch (SQLException e) {
