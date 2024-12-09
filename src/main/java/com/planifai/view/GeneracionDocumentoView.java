@@ -10,6 +10,7 @@ import java.awt.Cursor;
 import java.awt.Window;
 import java.util.HashMap;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
@@ -65,8 +66,8 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
         documentoTitle.setText(documento.getTitulo());
         DocumentoTextArea.setText(documento.getContenido());
-        
-        id=documento.getIdDocumento();
+
+        id = documento.getIdDocumento();
     }
 
     /**
@@ -146,44 +147,73 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         }
 
         if (tipoDocumentoComboBox.getSelectedItem() == null) {
-            tipoDocumentoComboBox.setSelectedIndex(0);  
+            tipoDocumentoComboBox.setSelectedIndex(0);
         }
 
         String asignatura = asignaturaField.getText();
         String tema = temaField.getText();
         String nivelEducativo = nivelEducativoBox.getSelectedItem().toString();
         String curso = cursoBox.getSelectedItem().toString();
-        int duracion = (int) DuracionSpinner.getValue();  
+        int duracion = (int) DuracionSpinner.getValue();
         String datosExtra = extrasTextArea.getText();
 
         String tipoDocumento = tipoDocumentoComboBox.getSelectedItem().toString();
         String titulo = "";
+String prompt = "";
+if (tipoDocumento.equals("Evaluación")) {
+    titulo = "Evaluación de " + asignatura + " - " + tema;
 
-        String prompt = "";
-        if (tipoDocumento.equals("Evaluación")) {
-            titulo = "Evaluación de " + asignatura + " - " + tema;
+    prompt = "Genera una evaluación para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
+            + "dirigida a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
+            + "La duración de la evaluación será de " + duracion + " minutos. "
+            + "Los datos extra proporcionados para esta evaluación son los siguientes: " + datosExtra + ". "
+            + "Asegúrate de incluir preguntas variadas que evalúen el conocimiento en los siguientes aspectos: "
+            + "comprensión, aplicación, análisis de conceptos y resolución de problemas. "
+            + "Puedes incluir preguntas de opción múltiple, verdadero/falso, de desarrollo y/o preguntas prácticas.";
 
-            prompt = "Genera una evaluación para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
-                    + "dirigida a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
-                    + "La duración de la evaluación será de " + duracion + " minutos. "
-                    + "Los datos extra proporcionados para esta evaluación son los siguientes: " + datosExtra + ". "
-                    + "Asegúrate de incluir preguntas variadas que evalúen el conocimiento en los siguientes aspectos: "
-                    + "comprensión, aplicación, análisis de conceptos y resolución de problemas. "
-                    + "Puedes incluir preguntas de opción múltiple, verdadero/falso, de desarrollo y/o preguntas prácticas.";
+} else if (tipoDocumento.equals("Plan de Clase")) {
+    titulo = "Plan de Clase de " + asignatura + " - " + tema;
 
-        } else if (tipoDocumento.equals("Plan de Clase")) {
-            titulo = "Plan de Clase de " + asignatura + " - " + tema;
+    prompt = "Genera un plan de clase para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
+            + "dirigido a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
+            + "La duración de la clase será de " + duracion + " minutos. "
+            + "Los datos extra proporcionados para esta clase son los siguientes: " + datosExtra + ". "
+            + "El plan debe incluir una descripción detallada de las actividades que se realizarán durante la clase, "
+            + "el enfoque pedagógico que se utilizará, los materiales necesarios y la planificación de tiempos. "
+            + "El plan debe fomentar la participación activa de los estudiantes, promover la reflexión y aplicar estrategias "
+            + "que favorezcan el aprendizaje colaborativo.";
 
-            prompt = "Genera un plan de clase para la asignatura de " + asignatura + ", con el tema '" + tema + "', "
-                    + "dirigido a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
-                    + "La duración de la clase será de " + duracion + " minutos. "
-                    + "Los datos extra proporcionados para esta clase son los siguientes: " + datosExtra + ". "
-                    + "El plan debe incluir una descripción detallada de las actividades que se realizarán durante la clase, "
-                    + "el enfoque pedagógico que se utilizará, los materiales necesarios y la planificación de tiempos. "
-                    + "El plan debe fomentar la participación activa de los estudiantes, promover la reflexión y aplicar estrategias "
-                    + "que favorezcan el aprendizaje colaborativo. ";
+} else if (tipoDocumento.equals("Rúbrica de Evaluación")) {
+    titulo = "Rúbrica de Evaluación para " + tema;
 
-        }
+    prompt = "Genera una rúbrica de evaluación para el tema '" + tema + "' en la asignatura '" + asignatura + "', "
+            + "dirigida a estudiantes de " + nivelEducativo + " en el curso " + curso + ". "
+            + "Incluye criterios como comprensión, originalidad, calidad técnica y presentación. "
+            + "Proporciona descripciones y puntuaciones para cada nivel de desempeño: insuficiente, suficiente, bueno, excelente.";
+
+} else if (tipoDocumento.equals("Guía de Estudio")) {
+    titulo = "Guía de Estudio de " + asignatura + " - " + tema;
+
+    prompt = "Crea una guía de estudio para la asignatura de " + asignatura + ", con el tema '" + tema + "'. "
+            + "La guía debe incluir un resumen de los conceptos clave, ejemplos relevantes, "
+            + "y preguntas de repaso para autoevaluación. "
+            + "Los datos adicionales proporcionados son: " + datosExtra + ".";
+
+} else if (tipoDocumento.equals("Programación Didáctica")) {
+    titulo = "Programación Didáctica de " + asignatura;
+
+    prompt = "Genera una programación didáctica para la asignatura de " + asignatura + " en el nivel " + nivelEducativo + ". "
+            + "Debe incluir los objetivos de aprendizaje, competencias a desarrollar, metodología de enseñanza, "
+            + "y un cronograma de actividades distribuidas durante el período lectivo.";
+
+} else if (tipoDocumento.equals("Lista de Recursos")) {
+    titulo = "Lista de Recursos para " + tema;
+
+    prompt = "Genera una lista de recursos educativos sobre el tema '" + tema + "' en la asignatura '" + asignatura + "'. "
+            + "Incluye libros, artículos académicos, videos y enlaces a sitios web relevantes. "
+            + "Proporciona una breve descripción de cada recurso para facilitar su uso.";
+}
+
         documentoTitle.setText(titulo);
         return prompt;
     }
@@ -390,6 +420,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         objetivosAprendizajeLabel.setText("Datos extras");
 
         extrasTextArea.setColumns(20);
+        extrasTextArea.setLineWrap(true);
         extrasTextArea.setRows(5);
         extrasTextArea.setToolTipText("Introduce los objetivos de aprendizaje");
         jScrollPane2.setViewportView(extrasTextArea);
@@ -461,7 +492,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plan de Clase", "Evaluación" }));
+        tipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plan de Clase", "Evaluación", "Rúbrica de Evaluación", "Guía de Estudio", "Lista de Recursos", "Programación Didáctica" }));
 
         javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
         centerPanel.setLayout(centerPanelLayout);
@@ -469,17 +500,17 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
             centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerPanelLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerPanelLayout.createSequentialGroup()
-                        .addComponent(tipoDocumentoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(280, 280, 280))
-                    .addComponent(titleGenerarDocumetnos, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(titleGenerarDocumetnos, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(centerPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(generarDocumentoButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(planClasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(centerPanelLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(tipoDocumentoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         centerPanelLayout.setVerticalGroup(
@@ -516,7 +547,7 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
         documentoTitle.setFont(new java.awt.Font("Lato Semibold", 1, 22)); // NOI18N
         documentoTitle.setForeground(new java.awt.Color(51, 51, 51));
         documentoTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        documentoTitle.setText("Título el documento");
+        documentoTitle.setText("Título del documento");
         documentoTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         eventosPanel.setBackground(new java.awt.Color(251, 251, 251));
@@ -524,6 +555,8 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
 
         documentosPanel.setBackground(new java.awt.Color(251, 251, 251));
         documentosPanel.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         DocumentoTextArea.setColumns(20);
         DocumentoTextArea.setRows(5);
@@ -666,10 +699,35 @@ public class GeneracionDocumentoView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void generarDocumentoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseClicked
-        String prompt = generarPrompt();
-        DocumentoTextArea.setText("Cargando...");
-        String respuesta = openAIController.obtenerRespuestaDeOpenAI(prompt);
-        DocumentoTextArea.setText(respuesta);
+        new Thread(() -> {
+            JOptionPane pane = new JOptionPane("Generando documento, por favor espera...", JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = pane.createDialog(null, "Procesando");
+            dialog.setModal(false);
+            dialog.setVisible(true);
+
+            try {
+                Thread.sleep(3000); 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dialog.dispose();
+        }).start();
+
+        new Thread(() -> {
+            try {
+                String prompt = generarPrompt();
+                String respuesta = openAIController.obtenerRespuestaDeOpenAI(prompt);
+
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    DocumentoTextArea.setText(respuesta);
+                });
+            } catch (Exception e) {
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    DocumentoTextArea.setText("Ocurrió un error al generar el documento.");
+                });
+                e.printStackTrace();
+            }
+        }).start();
     }//GEN-LAST:event_generarDocumentoButtonMouseClicked
 
     private void generarDocumentoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generarDocumentoButtonMouseEntered

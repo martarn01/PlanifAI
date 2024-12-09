@@ -30,6 +30,7 @@ public class GuardarDocumentoView extends javax.swing.JFrame {
     public GuardarDocumentoView(String text) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
         this.text = text;
     }
@@ -41,6 +42,7 @@ public class GuardarDocumentoView extends javax.swing.JFrame {
     public GuardarDocumentoView() {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
     }
 

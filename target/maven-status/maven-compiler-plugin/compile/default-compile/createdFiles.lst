@@ -50,6 +50,7 @@ com\planifai\interfaces\DocumentoListener.class
 com\planifai\controller\EventoController.class
 com\planifai\view\GuardarDocumentoView$1.class
 com\planifai\controller\NotaController.class
+com\planifai\view\EventoCardTemplate$2.class
 com\planifai\view\DocumentoCardTemplate$1.class
 com\planifai\view\MenuGestion$TipoElemento.class
 com\planifai\view\GeneracionDocumentoView$7.class
@@ -63,6 +64,7 @@ com\planifai\view\AulaView$6.class
 com\planifai\view\MenuGestion$2.class
 com\planifai\view\GuardarDocumentoView$2.class
 com\planifai\service\AulaService.class
+com\planifai\view\EventoCardTemplate$1.class
 com\planifai\view\MainFrame$1.class
 com\planifai\view\MainFrame.class
 com\planifai\view\GeneracionDocumentoView$4.class

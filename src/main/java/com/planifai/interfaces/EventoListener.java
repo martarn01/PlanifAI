@@ -16,4 +16,10 @@ public interface EventoListener {
      * Método invocado cuando un evento ha sido creado.
      */
     void onEventoCreated();
+    
+    /**
+     * Método invocado cuando un evento ha sido editado.
+     */
+    void onEventoChanged();
+    
 }

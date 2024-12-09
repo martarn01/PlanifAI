@@ -1,10 +1,14 @@
 package com.planifai.view;
 
+import com.planifai.controller.AulaController;
 import com.planifai.controller.EventoController;
 import com.planifai.interfaces.EventoListener;
+import com.planifai.model.Aula;
 import com.planifai.model.Evento;
+import com.planifai.service.AulaService;
 import com.planifai.service.EventoService;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import javax.swing.JOptionPane;
@@ -21,6 +25,8 @@ public class EventoCardTemplate extends javax.swing.JPanel {
     private Evento evento;
     private EventoController eventoController;
     private EventoListener eventoListener;
+    private AulaController aulaController;
+    private Aula aula;
 
     /**
      * Constructor de la plantilla de tarjeta de evento. Inicializa los
@@ -32,7 +38,10 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         initComponents();
         configurarEvento(evento);
 
+        aulaController = new AulaController(new AulaService());
+        aula = aulaController.getAulaById(evento.getIdAula());
         this.evento = evento;
+
         eventoController = new EventoController(new EventoService());
     }
 
@@ -82,6 +91,17 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         deleteButton = new javax.swing.JLabel();
 
         background.setBackground(new java.awt.Color(238, 238, 238));
+        background.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backgroundMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backgroundMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backgroundMouseExited(evt);
+            }
+        });
 
         date.setBackground(new java.awt.Color(246, 128, 93));
 
@@ -218,6 +238,21 @@ public class EventoCardTemplate extends javax.swing.JPanel {
         Color color = new Color(204, 204, 204);
         deleteButton.setForeground(color);
     }//GEN-LAST:event_deleteButtonMouseExited
+
+    private void backgroundMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseEntered
+        this.setBackground(Color.BLUE);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_backgroundMouseEntered
+
+    private void backgroundMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseExited
+        this.setBackground(new Color(238, 238, 238));
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));     }//GEN-LAST:event_backgroundMouseExited
+
+    private void backgroundMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundMouseClicked
+        AddEventView addEventView = new AddEventView(evento, aula);
+        addEventView.setEventoListener(eventoListener);
+        addEventView.setVisible(true);
+    }//GEN-LAST:event_backgroundMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

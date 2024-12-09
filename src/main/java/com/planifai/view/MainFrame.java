@@ -607,7 +607,12 @@ public class MainFrame extends javax.swing.JFrame implements AulaListener, Docum
 
     @Override
     public void onEventoCreated() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        cargarEventos();
+    }
+
+    @Override
+    public void onEventoChanged() {
+        cargarEventos();
     }
 
 }

@@ -5,12 +5,15 @@ import com.planifai.controller.EventoController;
 import com.planifai.interfaces.EventoListener;
 import com.planifai.model.Aula;
 import com.planifai.model.Documento;
+import com.planifai.model.Evento;
 import com.planifai.service.DocumentoService;
 import com.planifai.service.EventoService;
 import java.awt.Color;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,8 @@ public class AddEventView extends javax.swing.JFrame {
     private Map<String, Integer> documentoIdMap;
     private EventoListener eventoListener;
     private Aula aula;
+    private Documento documento;
+    private Evento evento;
 
     /**
      * Constructor por defecto de la vista para agregar un evento. Inicializa
@@ -79,6 +84,42 @@ public class AddEventView extends javax.swing.JFrame {
         datePicker.setEditor(datePickerField);
 
         cargarDocumentos();
+    }
+
+    public AddEventView(Evento evento, Aula aula) {
+        initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
+        this.evento = evento;
+        this.aula = aula;
+
+        documentoController = new DocumentoController(new DocumentoService());
+        eventoController = new EventoController(new EventoService());
+        documentoIdMap = new HashMap<>();
+
+        nombreField.setText(evento.getDescripcion());
+        EventoComboBox.setSelectedItem(evento.getTipoEvento());
+        Timestamp timestamp = evento.getFechaEvento();
+        LocalDate fechaEvento = timestamp.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        DatePicker datePicker = new DatePicker();
+        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED);
+        datePicker.setEditor(datePickerField);
+        datePicker.setSelectedDate(fechaEvento);
+
+        cargarDocumentos();
+
+        if (evento.getIdDocumento() != null) {
+            documento = documentoController.getDocumentoById(evento.getIdDocumento());
+        }
+
+        if (documento == null) {
+            DocumentsComboBox.setSelectedItem("Sin documento asociado");
+        } else {
+            DocumentsComboBox.setSelectedItem(documento.getTitulo());
+        }
     }
 
     /**
@@ -200,7 +241,7 @@ public class AddEventView extends javax.swing.JFrame {
         datePickerField.setText("jFormattedTextField1");
 
         text3.setFont(new java.awt.Font("Lato", 0, 14)); // NOI18N
-        text3.setText("Tipo evento");
+        text3.setText("Documento asociado");
 
         DocumentsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -269,12 +310,14 @@ public class AddEventView extends javax.swing.JFrame {
     private void guardarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarButtonMouseClicked
         try {
             String descripcion = nombreField.getText().trim();
+            String tipoEvento = EventoComboBox.getSelectedItem().toString();
+            String fechaStr = datePickerField.getText().trim();
+
             if (descripcion.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "La descripción no puede estar vacía", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String fechaStr = datePickerField.getText().trim();
             if (fechaStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -284,13 +327,7 @@ public class AddEventView extends javax.swing.JFrame {
             Date fecha = dateFormat.parse(fechaStr);
             Timestamp fechaEvento = new Timestamp(fecha.getTime());
 
-            String tipoEvento = EventoComboBox.getSelectedItem().toString();
-            if (tipoEvento == null || tipoEvento.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de evento", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int idAula = aula.getIdAula();
+            Integer idAula = aula.getIdAula();
 
             Integer idDocumento = null;
             if (DocumentsComboBox.getSelectedIndex() > 0) {
@@ -298,20 +335,27 @@ public class AddEventView extends javax.swing.JFrame {
                 idDocumento = documentoIdMap.get(documentoSeleccionado);
             }
 
-            eventoController.crearEvento(descripcion, fechaEvento, tipoEvento, idAula, idDocumento);
+            if (evento.getIdEvento() == -1) {
+                eventoController.crearEvento(descripcion, fechaEvento, tipoEvento, idAula, idDocumento);
+                JOptionPane.showMessageDialog(this, "Evento creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                if (eventoListener != null) {
+                    eventoListener.onEventoCreated();
+                }
+            } else {
+                eventoController.editarEvento(evento.getIdEvento(), descripcion, fechaEvento, tipoEvento, idAula, idDocumento);
+                JOptionPane.showMessageDialog(this, "Evento actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-            JOptionPane.showMessageDialog(this, "Evento creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                if (eventoListener != null) {
+                    eventoListener.onEventoChanged();
+                }
+            }
 
             this.dispose();
-
-            if (eventoListener != null) {
-                eventoListener.onEventoCreated();
-            }
 
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(this, "Error en el formato de la fecha", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al crear el evento: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al guardar el evento: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_guardarButtonMouseClicked
 

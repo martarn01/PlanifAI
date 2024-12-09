@@ -57,6 +57,8 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
         this.setSize(screenSize.width, screenSize.height);
         this.setExtendedState(MainFrame.MAXIMIZED_BOTH);//maximizada por defecto
         this.setResizable(true);
+                setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
 
         // Cambiar el ícono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\resources\\images\\icono.png");
@@ -698,5 +700,10 @@ public class AulaView extends javax.swing.JFrame implements EventoListener, Docu
     @Override
     public void onDocumentoDeleted() {
         cargarDocumentos();
+    }
+
+    @Override
+    public void onEventoChanged() {
+        cargarEventos();
     }
 }

@@ -195,8 +195,6 @@ public class DocumentoService {
         } catch (SQLException e) {
             System.err.println("Error al obtener documentos por aula: " + e.getMessage());
         }
-
         return documentos;
     }
-
 }

@@ -190,13 +190,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="tipoDocumentoComboBox" min="-2" pref="136" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="280" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="titleGenerarDocumetnos" alignment="0" min="-2" pref="422" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="titleGenerarDocumetnos" min="-2" pref="422" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -205,6 +199,11 @@
                           <Component id="generarDocumentoButton" min="-2" max="-2" attributes="0"/>
                           <Component id="planClasePanel" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="tipoDocumentoComboBox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -480,6 +479,7 @@
                     <Component class="javax.swing.JTextArea" name="extrasTextArea">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
+                        <Property name="lineWrap" type="boolean" value="true"/>
                         <Property name="rows" type="int" value="5"/>
                         <Property name="toolTipText" type="java.lang.String" value="Introduce los objetivos de aprendizaje"/>
                       </Properties>
@@ -502,9 +502,13 @@
             <Component class="javax.swing.JComboBox" name="tipoDocumentoComboBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
+                  <StringArray count="6">
                     <StringItem index="0" value="Plan de Clase"/>
                     <StringItem index="1" value="Evaluaci&#xf3;n"/>
+                    <StringItem index="2" value="R&#xfa;brica de Evaluaci&#xf3;n"/>
+                    <StringItem index="3" value="Gu&#xed;a de Estudio"/>
+                    <StringItem index="4" value="Lista de Recursos"/>
+                    <StringItem index="5" value="Programaci&#xf3;n Did&#xe1;ctica"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -554,7 +558,7 @@
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="T&#xed;tulo el documento"/>
+            <Property name="text" type="java.lang.String" value="T&#xed;tulo del documento"/>
             <Property name="verticalAlignment" type="int" value="3"/>
           </Properties>
         </Component>
@@ -577,6 +581,9 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
         </Container>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+          <Properties>
+            <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+          </Properties>
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
