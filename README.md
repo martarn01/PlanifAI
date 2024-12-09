@@ -1,0 +1,2 @@
+PlanifAI es una aplicación de escritorio diseñada para ayudar a los docentes a gestionar aulas, eventos, documentos y notas en un entorno académico. Con PlanifAI, los usuarios pueden crear, editar y eliminar aulas, asociar documentos a estas aulas, gestionar eventos y almacenar notas, todo de manera centralizada y eficiente. Además, la aplicación ofrece una integración con la inteligencia artificial de OpenAI para generar documentos educativos de forma automática, como planes de clase y evaluaciones, facilitando el trabajo administrativo de los docentes.
+
