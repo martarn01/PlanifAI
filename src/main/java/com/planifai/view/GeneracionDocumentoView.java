@@ -745,7 +745,7 @@ if (tipoDocumento.equals("Evaluación")) {
         System.out.println("Mouse clicked in MainFrame");
         for (Window window : Window.getWindows()) {
             if (window != this && window.isVisible()) {
-                window.dispose(); // Cierra la ventana
+                window.dispose(); 
             }
         }
     }//GEN-LAST:event_backgroundMouseClicked

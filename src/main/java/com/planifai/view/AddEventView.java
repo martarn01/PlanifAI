@@ -335,7 +335,7 @@ public class AddEventView extends javax.swing.JFrame {
                 idDocumento = documentoIdMap.get(documentoSeleccionado);
             }
 
-            if (evento.getIdEvento() == -1) {
+            if (evento  == null) {
                 eventoController.crearEvento(descripcion, fechaEvento, tipoEvento, idAula, idDocumento);
                 JOptionPane.showMessageDialog(this, "Evento creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 if (eventoListener != null) {

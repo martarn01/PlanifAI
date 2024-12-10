@@ -11,10 +11,10 @@ import org.json.JSONObject;
 
 /**
  * Clase OpenAIClient para interactuar con la API de OpenAI y enviar prompts.
- * Esta clase permite enviar solicitudes a la API de OpenAI utilizando el modelo GPT y 
- * recibir respuestas generadas. La autenticación se gestiona a través de una clave de API 
- * almacenada como variable de entorno.
- * 
+ * Esta clase permite enviar solicitudes a la API de OpenAI utilizando el modelo
+ * GPT y recibir respuestas generadas. La autenticación se gestiona a través de
+ * una clave de API almacenada como variable de entorno.
+ *
  * @author Marta Rosado Nabais
  */
 public class OpenAIClient {
@@ -58,6 +58,9 @@ public class OpenAIClient {
             if (response.isSuccessful()) {
                 String responseData = response.body().string();
                 JSONObject jsonResponse = new JSONObject(responseData);
+
+                // Imprimir el JSON recibido
+                System.out.println("JSON recibido: " + responseData);
 
                 // Obtener la respuesta generada por el modelo
                 JSONArray choices = jsonResponse.getJSONArray("choices");
